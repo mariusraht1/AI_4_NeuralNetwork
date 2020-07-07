@@ -1,6 +1,5 @@
-package application.model;
+package mnist;
 
-import application.filemanager.MNISTImageDecoder;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 

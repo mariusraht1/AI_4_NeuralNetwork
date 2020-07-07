@@ -5,13 +5,13 @@ import java.io.File;
 import application.History;
 import application.Log;
 import application.Utilities;
-import application.filemanager.MNISTImageDecoder;
-import application.model.Digit;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import mnist.Digit;
+import mnist.MNISTImageDecoder;
 
 public class MainScene {
 	@FXML

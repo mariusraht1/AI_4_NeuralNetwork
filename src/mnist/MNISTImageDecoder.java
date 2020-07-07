@@ -1,8 +1,8 @@
-package application.filemanager;
+package mnist;
 
 import java.io.File;
 
-import application.model.Digit;
+import application.Filemanager;
 
 public class MNISTImageDecoder {
 	private static MNISTImageDecoder instance;

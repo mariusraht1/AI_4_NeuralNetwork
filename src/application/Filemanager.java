@@ -1,4 +1,4 @@
-package application.filemanager;
+package application;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
