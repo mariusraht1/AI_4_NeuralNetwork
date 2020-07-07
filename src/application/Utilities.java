@@ -2,6 +2,7 @@ package application;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -9,6 +10,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Random;
+
+import javafx.stage.FileChooser;
 
 public class Utilities {
 	private static Utilities instance;
@@ -122,5 +125,10 @@ public class Utilities {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public File chooseFile() {
+	    FileChooser fileChooser = new FileChooser();
+	    return fileChooser.showOpenDialog(Main.getPrimaryStage());
 	}
 }
