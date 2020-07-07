@@ -1,5 +1,5 @@
-# AI_3_EvolutionarySystem
-Evolutionary System for Traveling Salesman Problem
+# AI_4_NeuralNetwork
+Neural Network for determination of handwritten digits
 
 <b>Installation Note:</b>
 
