@@ -6,26 +6,26 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/javafx/windows/mod/javafx.base.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/windows/mod/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/windows/mod/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/windows/mod/javafx.graphics.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/windows/mod/javafx.swing.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/windows/mod/javafx.web.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/osx/mod/javafx.base.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/osx/mod/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/osx/mod/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/osx/mod/javafx.graphics.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/osx/mod/javafx.swing.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/osx/mod/javafx.web.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/linux/mod/javafx.base.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/linux/mod/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/linux/mod/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/linux/mod/javafx.graphics.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/linux/mod/javafx.swing.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/linux/mod/javafx.web.jar"/>
-	<classpathentry kind="lib" path="lib/javafx/linux/lib"/>
-	<classpathentry kind="lib" path="lib/javafx/osx/lib"/>
-	<classpathentry kind="lib" path="lib/javafx/windows/lib"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux/javafx.base.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux/javafx.media.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx/javafx.base.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx/javafx.media.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows/javafx.base.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows/javafx.media.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx"/>
+	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
