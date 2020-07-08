@@ -30,7 +30,8 @@ public class MainScene {
 	@FXML
 	private void initialize() {
 		Log.getInstance().setOutputControl(lv_console);
-
+		
+		
 	}
 
 	@FXML
