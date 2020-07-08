@@ -1,4 +1,4 @@
-package mnist;
+package application.mnist;
 
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;

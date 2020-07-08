@@ -1,4 +1,4 @@
-package mnist;
+package application.mnist;
 
 import java.io.File;
 
