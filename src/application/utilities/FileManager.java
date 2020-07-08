@@ -1,4 +1,4 @@
-package application;
+package application.utilities;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,16 +8,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.zip.GZIPInputStream;
 
-public class Filemanager {
-	private static Filemanager instance;
+import application.Main;
+import javafx.stage.FileChooser;
 
-	public static Filemanager getInstance() {
+public class FileManager {
+	private static FileManager instance;
+
+	public static FileManager getInstance() {
 		if (instance == null) {
-			instance = new Filemanager();
+			instance = new FileManager();
 		}
 
 		return instance;
 	}
+	
+	public File chooseFile() {
+	    FileChooser fileChooser = new FileChooser();
+	    return fileChooser.showOpenDialog(Main.getPrimaryStage());
+	}
+	
 
 	public byte[] read(File file) {
 		byte[] fileContent = null;

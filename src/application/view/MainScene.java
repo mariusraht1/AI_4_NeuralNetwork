@@ -4,14 +4,14 @@ import java.io.File;
 
 import application.History;
 import application.Log;
-import application.Utilities;
+import application.network.Digit;
+import application.utilities.FileManager;
+import application.utilities.MNISTImageDecoder;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import application.mnist.Digit;
-import application.mnist.MNISTImageDecoder;
 
 public class MainScene {
 	@FXML
@@ -35,7 +35,7 @@ public class MainScene {
 
 	@FXML
 	private void onAction_chooseImageFile() {
-		File imageFile = Utilities.getInstance().chooseFile();
+		File imageFile = FileManager.getInstance().chooseFile();
 		if (imageFile != null) {
 			tf_imageFile.setText(imageFile.getAbsolutePath());
 		}
@@ -43,7 +43,7 @@ public class MainScene {
 
 	@FXML
 	private void onAction_chooseLabelFile() {
-		File labelFile = Utilities.getInstance().chooseFile();
+		File labelFile = FileManager.getInstance().chooseFile();
 		if (labelFile != null) {
 			tf_labelFile.setText(labelFile.getAbsolutePath());
 		}

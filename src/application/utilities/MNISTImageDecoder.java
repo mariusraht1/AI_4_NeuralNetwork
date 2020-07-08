@@ -1,8 +1,8 @@
-package application.mnist;
+package application.utilities;
 
 import java.io.File;
 
-import application.Filemanager;
+import application.network.Digit;
 
 public class MNISTImageDecoder {
 	private static MNISTImageDecoder instance;
@@ -80,11 +80,11 @@ public class MNISTImageDecoder {
 	}
 
 	public void readFiles(File imageFile, File labelFile) {
-		byte[] imageFileContent = Filemanager.getInstance().read(imageFile);
-		this.imageFileContent = Filemanager.getInstance().unzip(imageFile, imageFileContent);
+		byte[] imageFileContent = FileManager.getInstance().read(imageFile);
+		this.imageFileContent = FileManager.getInstance().unzip(imageFile, imageFileContent);
 
-		byte[] labelFileContent = Filemanager.getInstance().read(labelFile);
-		this.labelFileContent = Filemanager.getInstance().unzip(labelFile, labelFileContent);
+		byte[] labelFileContent = FileManager.getInstance().read(labelFile);
+		this.labelFileContent = FileManager.getInstance().unzip(labelFile, labelFileContent);
 
 		this.labelIndex = labelOffset;
 		this.imageIndex = imageOffset;
