@@ -1,9 +1,12 @@
-package application.network;
+package application.layer;
 
 import java.util.ArrayList;
 
+import application.network.Connection;
+import application.network.Neuron;
+
 public class Layer {
-	private int id = 0;
+	protected int id = 0;
 
 	public int getId() {
 		return id;
@@ -13,7 +16,7 @@ public class Layer {
 		this.id = id;
 	}
 
-	private ArrayList<Neuron> neuronList = new ArrayList<Neuron>();
+	protected ArrayList<Neuron> neuronList = new ArrayList<Neuron>();
 
 	public ArrayList<Neuron> getNeuronList() {
 		return neuronList;
@@ -23,7 +26,7 @@ public class Layer {
 		this.neuronList = neuronList;
 	}
 
-	public Layer(int id) {
+	protected Layer(int id) {
 		this.id = id;
 	}
 

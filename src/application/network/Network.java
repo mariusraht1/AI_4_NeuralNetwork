@@ -3,6 +3,10 @@ package application.network;
 import java.util.ArrayList;
 
 import application.image.ImageDecoder;
+import application.layer.HiddenLayer;
+import application.layer.InputLayer;
+import application.layer.Layer;
+import application.layer.OutputLayer;
 
 public class Network {
 	private int numOfNeurons = 0;
@@ -44,7 +48,7 @@ public class Network {
 	}
 
 	public void generateLayers() {
-		Layer inputLayer = new Layer(1);
+		InputLayer inputLayer = new InputLayer(1);
 		for (int i = 0; i < this.numOfNeurons; i++) {
 			inputLayer.getNeuronList().add(new Neuron(i));
 		}
@@ -52,7 +56,7 @@ public class Network {
 
 		int numOfNeuronsHiddenLayer = 32;
 
-		Layer hiddenLayer1 = new Layer(2);
+		HiddenLayer hiddenLayer1 = new HiddenLayer(2);
 		for (int i = 0; i < numOfNeuronsHiddenLayer; i++) {
 			hiddenLayer1.getNeuronList().add(new Neuron(i));
 		}
@@ -60,14 +64,14 @@ public class Network {
 		this.layerList.add(hiddenLayer1);
 		
 
-		Layer hiddenLayer2 = new Layer(3);
+		HiddenLayer hiddenLayer2 = new HiddenLayer(3);
 		for (int i = 0; i < numOfNeuronsHiddenLayer; i++) {
 			hiddenLayer2.getNeuronList().add(new Neuron(i));
 		}
 		hiddenLayer2.connectWith(hiddenLayer1);
 		this.layerList.add(hiddenLayer2);
 
-		Layer outputLayer = new Layer(4);
+		OutputLayer outputLayer = new OutputLayer(4);
 		for (int i = 0; i < 10; i++) {
 			outputLayer.getNeuronList().add(new Neuron(i));
 		}
