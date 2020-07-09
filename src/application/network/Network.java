@@ -29,6 +29,28 @@ public class Network {
 		this.layerList = layerList;
 	}
 
+	private InputLayer inputLayer;
+
+	public InputLayer getInputLayer() {
+		return inputLayer;
+	}
+
+	public void setInputLayer(InputLayer inputLayer) {
+		this.inputLayer = inputLayer;
+	}
+
+	private OutputLayer outputLayer;
+
+	public OutputLayer getOutputLayer() {
+		return outputLayer;
+	}
+
+	public void setOutputLayer(OutputLayer outputLayer) {
+		this.outputLayer = outputLayer;
+	}
+
+	private final int numOfNeuronsHiddenLayer = 32;
+	
 	private static Network instance;
 
 	public static Network getInstance() {
@@ -52,20 +74,17 @@ public class Network {
 		for (int i = 0; i < this.numOfNeurons; i++) {
 			inputLayer.getNeuronList().add(new Neuron(i));
 		}
-		this.layerList.add(inputLayer);
-
-		int numOfNeuronsHiddenLayer = 32;
+		this.inputLayer = inputLayer;
 
 		HiddenLayer hiddenLayer1 = new HiddenLayer(2);
-		for (int i = 0; i < numOfNeuronsHiddenLayer; i++) {
+		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
 			hiddenLayer1.getNeuronList().add(new Neuron(i));
 		}
 		hiddenLayer1.connectWith(inputLayer);
 		this.layerList.add(hiddenLayer1);
-		
 
 		HiddenLayer hiddenLayer2 = new HiddenLayer(3);
-		for (int i = 0; i < numOfNeuronsHiddenLayer; i++) {
+		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
 			hiddenLayer2.getNeuronList().add(new Neuron(i));
 		}
 		hiddenLayer2.connectWith(hiddenLayer1);
@@ -76,7 +95,7 @@ public class Network {
 			outputLayer.getNeuronList().add(new Neuron(i));
 		}
 		outputLayer.connectWith(hiddenLayer2);
-		this.layerList.add(outputLayer);
+		this.outputLayer = outputLayer;
 	}
 
 	public void setInputValues(double[] values) {
@@ -94,6 +113,17 @@ public class Network {
 
 	public void play(Digit digit) {
 		double[] grayTones = digit.toGrayDoubleArray();
-		Network.getInstance().setInputValues(grayTones);
+		setInputValues(grayTones);
+		// NEW Calculate digit
+		
+		
+		// NEW Add rate of certainty to history by round
+		// Larger if the network is uncertain of the prediction
+		double cost = this.outputLayer.getCost(digit);
+		
+		// NEW Backpropagation
+		// Minimize cost over all ran predictions: Calculate slope to reduce cost
+		// If slope is negative, reduce weight/bias; if it's positive, increase weight/bias
+		
 	}
 }

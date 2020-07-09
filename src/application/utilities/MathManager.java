@@ -5,11 +5,11 @@ import java.text.DecimalFormatSymbols;
 import java.util.Random;
 
 public class MathManager {
-	private static GeneralUtilities instance;
+	private static MathManager instance;
 
-	public static GeneralUtilities getInstance() {
+	public static MathManager getInstance() {
 		if (instance == null) {
-			instance = new GeneralUtilities();
+			instance = new MathManager();
 		}
 
 		return instance;
@@ -73,5 +73,30 @@ public class MathManager {
 
 	public double sigmoid(double value) {
 		return 1 / (1 + Math.exp(-value));
+	}
+
+	public double tanh(double value) {
+		return Math.tanh(value);
+	}
+
+	public double relu(double value) {
+		double result = value;
+
+		if (result < 0) {
+			result = 0.0;
+		}
+
+		return result;
+	}
+
+	public double leaky_relu(double value) {
+		double a = 0.01;
+		double result = value;
+
+		if (result < 0) {
+			result *= a;
+		}
+
+		return result;
 	}
 }
