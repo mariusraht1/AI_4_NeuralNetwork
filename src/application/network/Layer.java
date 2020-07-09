@@ -26,4 +26,12 @@ public class Layer {
 	public Layer(int id) {
 		this.id = id;
 	}
+
+	public void connectWith(Layer layer) {
+		for (Neuron targetNeuron : this.neuronList) {
+			for (Neuron sourceNeuron : layer.getNeuronList()) {
+				targetNeuron.getInboundConnectionList().add(new Connection(sourceNeuron));
+			}
+		}
+	}
 }

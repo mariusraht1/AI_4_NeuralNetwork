@@ -13,14 +13,14 @@ public class Neuron {
 		this.id = id;
 	}
 	
-	private double value = 0.0;	
+	private double activationValue = 0.0;	
 
-	public double getValue() {
-		return value;
+	public double getActivationValue() {
+		return activationValue;
 	}
 
-	public void setValue(double value) {
-		this.value = value;
+	public void setActivationValue(double activationValue) {
+		this.activationValue = activationValue;
 	}
 
 	private ArrayList<Connection> inboundConnectionList = new ArrayList<Connection>();
@@ -37,16 +37,16 @@ public class Neuron {
 		this.id = id;
 	}
 	
-	public Neuron(int id, ArrayList<Connection> connectionList) {
+	public Neuron(int id, double activationValue) {
 		this.id = id;
-		this.inboundConnectionList = connectionList;
+		this.activationValue = activationValue;
 	}
 	
 	public double sumInboundValues() {
 		double sum = 0.0;
 		
 		for(Connection connection : inboundConnectionList) {
-			sum += (connection.getWeight() * connection.getSourceNeuron().getValue());
+			sum += (connection.getWeight() * connection.getSourceNeuron().getActivationValue());
 		}
 		
 		return sum;

@@ -1,15 +1,16 @@
-package application.utilities;
+package application.image;
 
 import java.io.File;
 
 import application.network.Digit;
+import application.utilities.FileManager;
 
-public class MNISTImageDecoder {
-	private static MNISTImageDecoder instance;
+public class ImageDecoder {
+	private static ImageDecoder instance;
 
-	public static MNISTImageDecoder getInstance() {
+	public static ImageDecoder getInstance() {
 		if (instance == null) {
-			instance = new MNISTImageDecoder();
+			instance = new ImageDecoder();
 		}
 
 		return instance;

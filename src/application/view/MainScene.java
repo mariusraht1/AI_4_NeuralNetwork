@@ -4,9 +4,10 @@ import java.io.File;
 
 import application.History;
 import application.Log;
+import application.image.ImageDecoder;
 import application.network.Digit;
+import application.network.Network;
 import application.utilities.FileManager;
-import application.utilities.MNISTImageDecoder;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -30,8 +31,8 @@ public class MainScene {
 	@FXML
 	private void initialize() {
 		Log.getInstance().setOutputControl(lv_console);
-		
-		
+
+		Network.getInstance().init();
 	}
 
 	@FXML
@@ -60,9 +61,9 @@ public class MainScene {
 		} else if (!labelFile.exists()) {
 			tf_labelFile.setText("");
 		} else {
-			MNISTImageDecoder.getInstance().readFiles(imageFile, labelFile);
-			
-			Digit digit = MNISTImageDecoder.getInstance().readNextDigit();
+			ImageDecoder.getInstance().readFiles(imageFile, labelFile);
+
+			Digit digit = ImageDecoder.getInstance().readNextDigit();
 			iv_digit.setImage(digit.toWritableImage());
 			lbl_digit.setText("N.A.");
 			lbl_label.setText("(Label: " + digit.getLabel() + ")");
@@ -71,13 +72,15 @@ public class MainScene {
 
 	@FXML
 	private void onAction_btnPlay() {
-		if (MNISTImageDecoder.getInstance().getImageFileContent() != null
-				&& MNISTImageDecoder.getInstance().getLabelFileContent() != null) {
-			Digit digit = MNISTImageDecoder.getInstance().readNextDigit();
+		if (ImageDecoder.getInstance().getImageFileContent() != null
+				&& ImageDecoder.getInstance().getLabelFileContent() != null) {
+			Digit digit = ImageDecoder.getInstance().readNextDigit();
 			iv_digit.setImage(digit.toWritableImage());
 
 			// NEW Determine digit
-
+			Network.getInstance().play(digit);
+			
+			
 			lbl_digit.setText("N.A."); // NEW Set determined digit
 			lbl_label.setText("(Label: " + digit.getLabel() + ")");
 		}
