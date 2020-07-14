@@ -77,11 +77,15 @@ public class MainScene {
 			Digit digit = ImageDecoder.getInstance().readNextDigit();
 			iv_digit.setImage(digit.toWritableImage());
 
-			// NEW Determine digit
 			Network.getInstance().play(digit);
-			
-			
-			lbl_digit.setText("N.A."); // NEW Set determined digit
+			int prediction = Network.getInstance().getPrediction();
+
+			if (prediction < 0) {
+				lbl_digit.setText("N.A.");
+			} else {
+				lbl_digit.setText(Integer.toString(prediction));
+			}
+
 			lbl_label.setText("(Label: " + digit.getLabel() + ")");
 		}
 	}

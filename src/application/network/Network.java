@@ -128,4 +128,9 @@ public class Network {
 		// If slope is negative, reduce weight/bias; if it's positive, increase weight/bias
 		
 	}
+
+	public int getPrediction() {
+		Neuron neuron = this.outputLayer.getMostActiveNeuron();
+		return this.outputLayer.getNeuronList().indexOf(neuron);
+	}
 }

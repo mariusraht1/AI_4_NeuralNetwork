@@ -1,6 +1,5 @@
 package application.layer;
 
-import application.network.Connection;
 import application.network.Digit;
 import application.network.Neuron;
 
@@ -12,7 +11,7 @@ public class OutputLayer extends Layer {
 	public Neuron getMostActiveNeuron() {
 		Neuron mostActiveNeuron = this.neuronList.get(0);
 		for (int i = 1; i < this.neuronList.size(); i++) {
-			if (this.neuronList.get(0).getActivationValue() > mostActiveNeuron.getActivationValue()) {
+			if (this.neuronList.get(i).getActivationValue() > mostActiveNeuron.getActivationValue()) {
 				mostActiveNeuron = this.neuronList.get(i);
 			}
 		}
