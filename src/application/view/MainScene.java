@@ -83,6 +83,7 @@ public class MainScene {
 		} else {
 			ImageDecoder.getInstance().readFiles(imageFile, labelFile);
 			initialize();
+			
 			Log.getInstance().add("Set options and read files successfully.");
 		}
 	}
