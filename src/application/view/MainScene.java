@@ -9,7 +9,6 @@ import application.network.Digit;
 import application.network.Network;
 import application.utilities.FileManager;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -21,12 +20,6 @@ public class MainScene {
 	@FXML
 	private TextField tf_labelFile;
 	@FXML
-	private ImageView iv_digit;
-	@FXML
-	private Label lbl_digit;
-	@FXML
-	private Label lbl_label;
-	@FXML
 	private ListView<Digit> lv_results;
 	@FXML
 	private ListView<String> lv_console;
@@ -35,6 +28,8 @@ public class MainScene {
 	private void initialize() {
 		Log.getInstance().setOutputControl(lv_console);
 
+		lv_results.getItems().clear();
+		
 		Network.getInstance().init();
 	}
 
@@ -87,11 +82,8 @@ public class MainScene {
 			tf_labelFile.setText("");
 		} else {
 			ImageDecoder.getInstance().readFiles(imageFile, labelFile);
-
-			Digit digit = ImageDecoder.getInstance().readNextDigit();
-			iv_digit.setImage(digit.toWritableImage());
-			lbl_digit.setText("N.A.");
-			lbl_label.setText("(Label: " + digit.getLabel() + ")");
+			initialize();
+			Log.getInstance().add("Set options and read files successfully.");
 		}
 	}
 
@@ -100,12 +92,9 @@ public class MainScene {
 		if (ImageDecoder.getInstance().getImageFileContent() != null
 				&& ImageDecoder.getInstance().getLabelFileContent() != null) {
 			Digit digit = ImageDecoder.getInstance().readNextDigit();
-			iv_digit.setImage(digit.toWritableImage());
 
 			Network.getInstance().play(digit);
 			addResult(digit);
-
-			lbl_label.setText("(Label: " + digit.getLabel() + ")");
 		}
 	}
 
