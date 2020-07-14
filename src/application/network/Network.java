@@ -19,16 +19,6 @@ public class Network {
 		this.numOfNeurons = numOfNeurons;
 	}
 
-	private ArrayList<Layer> layerList = new ArrayList<Layer>();
-
-	public ArrayList<Layer> getLayerList() {
-		return layerList;
-	}
-
-	public void setLayerList(ArrayList<Layer> layerList) {
-		this.layerList = layerList;
-	}
-
 	private InputLayer inputLayer;
 
 	public InputLayer getInputLayer() {
@@ -37,6 +27,16 @@ public class Network {
 
 	public void setInputLayer(InputLayer inputLayer) {
 		this.inputLayer = inputLayer;
+	}
+	
+	private ArrayList<HiddenLayer> hiddenLayerList = new ArrayList<HiddenLayer>();
+
+	public ArrayList<HiddenLayer> getHiddenLayerList() {
+		return hiddenLayerList;
+	}
+
+	public void setHiddenLayerList(ArrayList<HiddenLayer> hiddenLayerList) {
+		this.hiddenLayerList = hiddenLayerList;
 	}
 
 	private OutputLayer outputLayer;
@@ -81,14 +81,14 @@ public class Network {
 			hiddenLayer1.getNeuronList().add(new Neuron(i));
 		}
 		hiddenLayer1.connectWith(inputLayer);
-		this.layerList.add(hiddenLayer1);
+		this.hiddenLayerList.add(hiddenLayer1);
 
 		HiddenLayer hiddenLayer2 = new HiddenLayer(3);
 		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
 			hiddenLayer2.getNeuronList().add(new Neuron(i));
 		}
 		hiddenLayer2.connectWith(hiddenLayer1);
-		this.layerList.add(hiddenLayer2);
+		this.hiddenLayerList.add(hiddenLayer2);
 
 		OutputLayer outputLayer = new OutputLayer(4);
 		for (int i = 0; i < 10; i++) {
@@ -99,7 +99,7 @@ public class Network {
 	}
 
 	public void setInputValues(double[] values) {
-		Layer inputLayer = this.layerList.get(0);
+		Layer inputLayer = this.hiddenLayerList.get(0);
 
 		for (int i = 0; i < inputLayer.getNeuronList().size(); i++) {
 			Neuron neuron = inputLayer.getNeuronList().get(i);
@@ -114,8 +114,10 @@ public class Network {
 	public void play(Digit digit) {
 		double[] grayTones = digit.toGrayDoubleArray();
 		setInputValues(grayTones);
-		// NEW Calculate digit
 		
+		for(HiddenLayer hiddenLayer : hiddenLayerList) {
+			hiddenLayer.calcActivationValues();
+		}
 		
 		// NEW Add rate of certainty to history by round
 		// Larger if the network is uncertain of the prediction

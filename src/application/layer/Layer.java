@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import application.network.Connection;
 import application.network.Neuron;
+import application.utilities.MathManager;
 
 public class Layer {
 	protected int id = 0;
@@ -35,6 +36,21 @@ public class Layer {
 			for (Neuron sourceNeuron : layer.getNeuronList()) {
 				targetNeuron.getInboundConnectionList().add(new Connection(sourceNeuron));
 			}
+		}
+	}
+
+	public void calcActivationValues() {
+		for(Neuron neuron : neuronList) {
+			double activationValue = 0.0;
+			
+			// NEW Add bias
+			for(Connection inboundConnection : neuron.getInboundConnectionList()) {
+				// FIX Source neuron can't be activated if activation value hasn't been reached
+				activationValue += inboundConnection.getWeight() * inboundConnection.getSourceNeuron().getActivationValue();
+			}
+			
+			MathManager.getInstance().sigmoid(activationValue);
+			neuron.setActivationValue(activationValue);
 		}
 	}
 }
