@@ -29,7 +29,7 @@ public class MainScene {
 		Log.getInstance().setOutputControl(lv_console);
 
 		lv_results.getItems().clear();
-		
+
 		Network.getInstance().init();
 	}
 
@@ -38,20 +38,20 @@ public class MainScene {
 
 		lv_results.setCellFactory(listview -> new ListCell<Digit>() {
 			private ImageView imageView = new ImageView();
-			
-		    @Override
-		    protected void updateItem(final Digit item, final boolean empty) {
-		    	super.updateItem(item, empty);
-		    	
-		        if (empty) {
-		            setText("");
-		            setGraphic(null);
-		        } else {
-		            setText(item.getLabel() + " => " + item.getPrediction());
-		            imageView.setImage(item.toWritableImage());
-		            setGraphic(imageView);
-		        }
-		    }
+
+			@Override
+			protected void updateItem(final Digit item, final boolean empty) {
+				super.updateItem(item, empty);
+
+				if (empty) {
+					setText("");
+					setGraphic(null);
+				} else {
+					setText(item.getLabel() + " => " + item.getPrediction());
+					imageView.setImage(item.toWritableImage());
+					setGraphic(imageView);
+				}
+			}
 		});
 	}
 
@@ -83,7 +83,7 @@ public class MainScene {
 		} else {
 			ImageDecoder.getInstance().readFiles(imageFile, labelFile);
 			initialize();
-			
+
 			Log.getInstance().add("Set options and read files successfully.");
 		}
 	}

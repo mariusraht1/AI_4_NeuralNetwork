@@ -28,7 +28,7 @@ public class Network {
 	public void setInputLayer(InputLayer inputLayer) {
 		this.inputLayer = inputLayer;
 	}
-	
+
 	private ArrayList<HiddenLayer> hiddenLayerList = new ArrayList<HiddenLayer>();
 
 	public ArrayList<HiddenLayer> getHiddenLayerList() {
@@ -50,7 +50,7 @@ public class Network {
 	}
 
 	private final int numOfNeuronsHiddenLayer = 32;
-	
+
 	private static Network instance;
 
 	public static Network getInstance() {
@@ -114,19 +114,20 @@ public class Network {
 	public void play(Digit digit) {
 		double[] grayTones = digit.toGrayDoubleArray();
 		setInputValues(grayTones);
-		
-		for(HiddenLayer hiddenLayer : hiddenLayerList) {
+
+		for (HiddenLayer hiddenLayer : hiddenLayerList) {
 			hiddenLayer.calcActivationValues();
 		}
-		
+
 		// NEW Add rate of certainty to history by round
 		// Larger if the network is uncertain of the prediction
 		double cost = this.outputLayer.getCost(digit);
-		
+
 		// NEW Backpropagation
 		// Minimize cost over all ran predictions: Calculate slope to reduce cost
-		// If slope is negative, reduce weight/bias; if it's positive, increase weight/bias
-		
+		// If slope is negative, reduce weight/bias; if it's positive, increase
+		// weight/bias
+
 	}
 
 	public int getPrediction() {

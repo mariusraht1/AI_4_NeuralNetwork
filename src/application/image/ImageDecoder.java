@@ -15,13 +15,13 @@ public class ImageDecoder {
 
 		return instance;
 	}
-	
+
 	private final int labelOffset = 8;
 
 	public int getLabelOffset() {
 		return labelOffset;
 	}
-	
+
 	private int labelIndex = 0;
 
 	public int getLabelIndex() {
@@ -43,7 +43,7 @@ public class ImageDecoder {
 	public int getImageHeight() {
 		return imageHeight;
 	}
-	
+
 	private final int imageOffset = 16;
 
 	public int getImageOffset() {
@@ -100,7 +100,7 @@ public class ImageDecoder {
 			image[index] = imageFileContent[i];
 			index++;
 		}
-		
+
 		labelIndex++;
 		imageIndex += (imageWidth * imageHeight);
 

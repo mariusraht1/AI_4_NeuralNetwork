@@ -2,7 +2,7 @@ package application.network;
 
 public class Connection {
 	private int id = 0;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -20,9 +20,9 @@ public class Connection {
 	public void setSourceNeuron(Neuron sourceNeuron) {
 		this.sourceNeuron = sourceNeuron;
 	}
-	
-	private double weight = 0.0;	
-	
+
+	private double weight = 0.0;
+
 	public double getWeight() {
 		return weight;
 	}

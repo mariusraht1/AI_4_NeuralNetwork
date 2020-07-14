@@ -21,12 +21,11 @@ public class FileManager {
 
 		return instance;
 	}
-	
+
 	public File chooseFile() {
-	    FileChooser fileChooser = new FileChooser();
-	    return fileChooser.showOpenDialog(Main.getPrimaryStage());
+		FileChooser fileChooser = new FileChooser();
+		return fileChooser.showOpenDialog(Main.getPrimaryStage());
 	}
-	
 
 	public byte[] read(File file) {
 		byte[] fileContent = null;

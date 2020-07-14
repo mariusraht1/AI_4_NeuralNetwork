@@ -40,15 +40,16 @@ public class Layer {
 	}
 
 	public void calcActivationValues() {
-		for(Neuron neuron : neuronList) {
+		for (Neuron neuron : neuronList) {
 			double activationValue = 0.0;
-			
+
 			// NEW Add bias
-			for(Connection inboundConnection : neuron.getInboundConnectionList()) {
+			for (Connection inboundConnection : neuron.getInboundConnectionList()) {
 				// FIX Source neuron can't be activated if activation value hasn't been reached
-				activationValue += inboundConnection.getWeight() * inboundConnection.getSourceNeuron().getActivationValue();
+				activationValue += inboundConnection.getWeight()
+						* inboundConnection.getSourceNeuron().getActivationValue();
 			}
-			
+
 			MathManager.getInstance().sigmoid(activationValue);
 			neuron.setActivationValue(activationValue);
 		}
