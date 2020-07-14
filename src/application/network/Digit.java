@@ -25,6 +25,16 @@ public class Digit {
 		this.image = image;
 	}
 
+	private int prediction;
+
+	public int getPrediction() {
+		return prediction;
+	}
+
+	public void setPrediction(int prediction) {
+		this.prediction = prediction;
+	}
+
 	public Digit(int label, byte[] image) {
 		this.label = label;
 		this.image = image;

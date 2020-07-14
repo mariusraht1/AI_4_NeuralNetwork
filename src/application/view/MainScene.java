@@ -10,6 +10,7 @@ import application.network.Network;
 import application.utilities.FileManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -26,6 +27,8 @@ public class MainScene {
 	@FXML
 	private Label lbl_label;
 	@FXML
+	private ListView<Digit> lv_results;
+	@FXML
 	private ListView<String> lv_console;
 
 	@FXML
@@ -33,6 +36,28 @@ public class MainScene {
 		Log.getInstance().setOutputControl(lv_console);
 
 		Network.getInstance().init();
+	}
+
+	private void addResult(Digit digit) {
+		lv_results.getItems().add(digit);
+
+		lv_results.setCellFactory(listview -> new ListCell<Digit>() {
+			private ImageView imageView = new ImageView();
+			
+		    @Override
+		    protected void updateItem(final Digit item, final boolean empty) {
+		    	super.updateItem(item, empty);
+		    	
+		        if (empty) {
+		            setText("");
+		            setGraphic(null);
+		        } else {
+		            setText(item.getLabel() + " => " + item.getPrediction());
+		            imageView.setImage(item.toWritableImage());
+		            setGraphic(imageView);
+		        }
+		    }
+		});
 	}
 
 	@FXML
@@ -78,13 +103,7 @@ public class MainScene {
 			iv_digit.setImage(digit.toWritableImage());
 
 			Network.getInstance().play(digit);
-			int prediction = Network.getInstance().getPrediction();
-
-			if (prediction < 0) {
-				lbl_digit.setText("N.A.");
-			} else {
-				lbl_digit.setText(Integer.toString(prediction));
-			}
+			addResult(digit);
 
 			lbl_label.setText("(Label: " + digit.getLabel() + ")");
 		}
