@@ -2,6 +2,8 @@ package application.network;
 
 import java.util.ArrayList;
 
+import application.activation.ActivationFunction;
+import application.activation.Distribution;
 import application.image.ImageDecoder;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
@@ -18,7 +20,27 @@ public class Network {
 	public void setNumOfNeurons(int numOfNeurons) {
 		this.numOfNeurons = numOfNeurons;
 	}
+	
+	private ActivationFunction activationFunction = ActivationFunction.ReLu;
+	
+	public ActivationFunction getActivationFunction() {
+		return activationFunction;
+	}
 
+	public void setActivationFunction(ActivationFunction activationFunction) {
+		this.activationFunction = activationFunction;
+	}
+
+	private Distribution distribution = Distribution.NORMAL;
+	
+	public Distribution getDistribution() {
+		return distribution;
+	}
+
+	public void setDistribution(Distribution distribution) {
+		this.distribution = distribution;
+	}
+	
 	private InputLayer inputLayer;
 
 	public InputLayer getInputLayer() {
@@ -115,6 +137,7 @@ public class Network {
 		double[] grayTones = digit.toGrayDoubleArray();
 		setInputValues(grayTones);
 
+		// NEW Set random weight at the very beginning
 		for (HiddenLayer hiddenLayer : hiddenLayerList) {
 			hiddenLayer.calcActivationValues();
 		}

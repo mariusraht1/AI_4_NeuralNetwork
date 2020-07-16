@@ -70,33 +70,4 @@ public class MathManager {
 
 		return number;
 	}
-
-	public double sigmoid(double value) {
-		return 1 / (1 + Math.exp(-value));
-	}
-
-	public double tanh(double value) {
-		return Math.tanh(value);
-	}
-
-	public double relu(double value) {
-		double result = value;
-
-		if (result < 0) {
-			result = 0.0;
-		}
-
-		return result;
-	}
-
-	public double leaky_relu(double value) {
-		double a = 0.01;
-		double result = value;
-
-		if (result < 0) {
-			result *= a;
-		}
-
-		return result;
-	}
 }

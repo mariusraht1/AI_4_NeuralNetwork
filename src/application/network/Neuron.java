@@ -2,8 +2,6 @@ package application.network;
 
 import java.util.ArrayList;
 
-import application.utilities.MathManager;
-
 public class Neuron {
 	private int id = 0;
 
@@ -52,11 +50,6 @@ public class Neuron {
 	public Neuron(int id, double activationValue) {
 		this.id = id;
 		this.activationValue = activationValue;
-	}
-
-	public void activate() {
-		double activationValue = sumInboundValues() + bias;
-		this.activationValue = MathManager.getInstance().sigmoid(activationValue);
 	}
 
 	public double sumInboundValues() {

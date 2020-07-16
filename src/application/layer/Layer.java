@@ -3,8 +3,8 @@ package application.layer;
 import java.util.ArrayList;
 
 import application.network.Connection;
+import application.network.Network;
 import application.network.Neuron;
-import application.utilities.MathManager;
 
 public class Layer {
 	protected int id = 0;
@@ -40,18 +40,20 @@ public class Layer {
 	}
 
 	public void calcActivationValues() {
-		for (Neuron neuron : neuronList) {
-			double activationValue = 0.0;
+		Network.getInstance().getActivationFunction().execute(this);
+	}
 
-			// NEW Add bias
-			for (Connection inboundConnection : neuron.getInboundConnectionList()) {
-				// FIX Source neuron can't be activated if activation value hasn't been reached
-				activationValue += inboundConnection.getWeight()
-						* inboundConnection.getSourceNeuron().getActivationValue();
-			}
+	public void initializeWeight() {
+		Network.getInstance().getActivationFunction().initWeight(this);
+	}
 
-			MathManager.getInstance().sigmoid(activationValue);
-			neuron.setActivationValue(activationValue);
+	public int getNumOfInboundConnections() {
+		int result = 0;
+
+		for (Neuron neuron : this.neuronList) {
+			result += neuron.getInboundConnectionList().size();
 		}
+
+		return result;
 	}
 }
