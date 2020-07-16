@@ -103,6 +103,7 @@ public class Network {
 			hiddenLayer1.getNeuronList().add(new Neuron(i));
 		}
 		hiddenLayer1.connectWith(inputLayer);
+		hiddenLayer1.initializeWeights();
 		this.hiddenLayerList.add(hiddenLayer1);
 
 		HiddenLayer hiddenLayer2 = new HiddenLayer(3);
@@ -110,6 +111,7 @@ public class Network {
 			hiddenLayer2.getNeuronList().add(new Neuron(i));
 		}
 		hiddenLayer2.connectWith(hiddenLayer1);
+		hiddenLayer2.initializeWeights();
 		this.hiddenLayerList.add(hiddenLayer2);
 
 		OutputLayer outputLayer = new OutputLayer(4);
@@ -117,6 +119,7 @@ public class Network {
 			outputLayer.getNeuronList().add(new Neuron(i));
 		}
 		outputLayer.connectWith(hiddenLayer2);
+		outputLayer.initializeWeights();
 		this.outputLayer = outputLayer;
 	}
 

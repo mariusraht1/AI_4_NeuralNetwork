@@ -43,7 +43,7 @@ public class Layer {
 		Network.getInstance().getActivationFunction().execute(this);
 	}
 
-	public void initializeWeight() {
+	public void initializeWeights() {
 		Network.getInstance().getActivationFunction().initWeight(this);
 	}
 
