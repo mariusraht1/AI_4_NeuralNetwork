@@ -10,16 +10,6 @@ import application.layer.OutputLayer;
 import application.utilities.ImageDecoder;
 
 public class Network {
-	private int numOfNeurons = 0;
-
-	public int getNumOfNeurons() {
-		return numOfNeurons;
-	}
-
-	public void setNumOfNeurons(int numOfNeurons) {
-		this.numOfNeurons = numOfNeurons;
-	}
-
 	private Distribution distribution = Distribution.NORMAL;
 
 	public Distribution getDistribution() {
@@ -28,6 +18,16 @@ public class Network {
 
 	public void setDistribution(Distribution distribution) {
 		this.distribution = distribution;
+	}
+
+	private int numOfNeuronsInputLayer = 0;
+
+	public int getNumOfNeurons() {
+		return numOfNeuronsInputLayer;
+	}
+
+	public void setNumOfNeurons(int numOfNeurons) {
+		this.numOfNeuronsInputLayer = numOfNeurons;
 	}
 
 	private InputLayer inputLayer;
@@ -39,6 +39,8 @@ public class Network {
 	public void setInputLayer(InputLayer inputLayer) {
 		this.inputLayer = inputLayer;
 	}
+
+	private final int numOfNeuronsHiddenLayer = 32;
 
 	private ArrayList<HiddenLayer> hiddenLayerList = new ArrayList<HiddenLayer>();
 
@@ -60,8 +62,6 @@ public class Network {
 		this.outputLayer = outputLayer;
 	}
 
-	private final int numOfNeuronsHiddenLayer = 32;
-
 	private static Network instance;
 
 	public static Network getInstance() {
@@ -76,40 +76,47 @@ public class Network {
 	}
 
 	public void init() {
-		this.numOfNeurons = getNumOfInputNeurons();
+		this.numOfNeuronsInputLayer = getNumOfInputNeurons();
 		generateLayers();
 	}
 
 	public void generateLayers() {
-		InputLayer inputLayer = new InputLayer(1);
-		for (int i = 0; i < this.numOfNeurons; i++) {
-			inputLayer.getNeuronList().add(new Neuron(i));
-		}
-		this.inputLayer = inputLayer;
+		generateInputLayer();
+		generateHiddenLayer(this.numOfNeuronsHiddenLayer);
+		generateHiddenLayer(this.numOfNeuronsHiddenLayer);
+		generateOutputLayer();
+	}
 
-		HiddenLayer hiddenLayer1 = new HiddenLayer(2);
+	private void generateInputLayer() {
+		for (int i = 0; i < this.numOfNeuronsInputLayer; i++) {
+			this.inputLayer.getNeuronList().add(new InputNeuron(i));
+		}
+	}
+
+	private void generateHiddenLayer(int numOfNeurons) {
+		Layer prevLayer = null;
+		if (!this.hiddenLayerList.isEmpty()) {
+			prevLayer = this.hiddenLayerList.get(this.hiddenLayerList.size() - 1);
+		} else {
+			prevLayer = this.inputLayer;
+		}
+
+		HiddenLayer hiddenLayer = new HiddenLayer();
 		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
-			hiddenLayer1.getNeuronList().add(new Neuron(i));
+			hiddenLayer.getNeuronList().add(new HiddenNeuron(i));
 		}
-		hiddenLayer1.connectWith(inputLayer);
-		hiddenLayer1.initializeWeights();
-		this.hiddenLayerList.add(hiddenLayer1);
+		hiddenLayer.connectWith(prevLayer);
+		hiddenLayer.initializeWeights();
+		this.hiddenLayerList.add(hiddenLayer);
+	}
 
-		HiddenLayer hiddenLayer2 = new HiddenLayer(3);
-		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
-			hiddenLayer2.getNeuronList().add(new Neuron(i));
-		}
-		hiddenLayer2.connectWith(hiddenLayer1);
-		hiddenLayer2.initializeWeights();
-		this.hiddenLayerList.add(hiddenLayer2);
-
-		OutputLayer outputLayer = new OutputLayer(4);
+	private void generateOutputLayer() {
 		for (int i = 0; i < 10; i++) {
-			outputLayer.getNeuronList().add(new Neuron(i));
+			this.outputLayer.getNeuronList().add(new OutputNeuron(i));
 		}
-		outputLayer.connectWith(hiddenLayer2);
-		outputLayer.initializeWeights();
-		this.outputLayer = outputLayer;
+		HiddenLayer lastHiddenLayer = this.hiddenLayerList.get(this.hiddenLayerList.size() - 1);
+		this.outputLayer.connectWith(lastHiddenLayer);
+		this.outputLayer.initializeWeights();
 	}
 
 	public void setInputValues(double[] values) {

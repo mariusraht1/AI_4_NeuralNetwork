@@ -6,17 +6,7 @@ import application.activation.ActivationFunction;
 import application.network.Connection;
 import application.network.Neuron;
 
-public class Layer {
-	protected int id = 0;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+public abstract class Layer {	
 	protected ActivationFunction activationFunction = ActivationFunction.ReLu;
 	
 	public ActivationFunction getActivationFunction() {
@@ -36,11 +26,10 @@ public class Layer {
 	public void setNeuronList(ArrayList<Neuron> neuronList) {
 		this.neuronList = neuronList;
 	}
-
-	protected Layer(int id) {
-		this.id = id;
+	
+	protected Layer() {
 	}
-
+	
 	public void connectWith(Layer layer) {
 		for (Neuron targetNeuron : this.neuronList) {
 			for (Neuron sourceNeuron : layer.getNeuronList()) {
@@ -49,14 +38,6 @@ public class Layer {
 		}
 	}
 	
-	public void calculateActivationValues() {
-		this.activationFunction.execute(this);
-	}
-	
-	public void initializeWeights() {
-		this.activationFunction.initWeight(this);
-	}
-
 	public int getNumOfInboundConnections() {
 		int result = 0;
 
@@ -65,5 +46,13 @@ public class Layer {
 		}
 
 		return result;
+	}
+	
+	public void calculateActivationValues() {
+		this.activationFunction.execute(this);
+	}
+	
+	public void initializeWeights() {
+		this.activationFunction.initWeight(this);
 	}
 }

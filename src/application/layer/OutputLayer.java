@@ -2,17 +2,18 @@ package application.layer;
 
 import application.network.Digit;
 import application.network.Neuron;
+import application.network.OutputNeuron;
 
 public class OutputLayer extends Layer {
-	public OutputLayer(int id) {
-		super(id);
+	public OutputLayer() {
+		super();
 	}
 
-	public Neuron getMostActiveNeuron() {
-		Neuron mostActiveNeuron = this.neuronList.get(0);
+	public OutputNeuron getMostActiveNeuron() {
+		OutputNeuron mostActiveNeuron = (OutputNeuron) this.neuronList.get(0);
 		for (int i = 1; i < this.neuronList.size(); i++) {
 			if (this.neuronList.get(i).getActivationValue() > mostActiveNeuron.getActivationValue()) {
-				mostActiveNeuron = this.neuronList.get(i);
+				mostActiveNeuron = (OutputNeuron) this.neuronList.get(i);
 			}
 		}
 
@@ -23,12 +24,16 @@ public class OutputLayer extends Layer {
 		double cost = 0.0;
 
 		for (Neuron neuron : this.neuronList) {
-			double resultBias = 0.0;
-			if (neuron.getId() == digit.getLabel()) {
-				resultBias = 1.0;
-			}
+			if (neuron instanceof OutputNeuron) {
+				OutputNeuron outputNeuron = (OutputNeuron) neuron;
+				double resultBias = 0.0;
+				
+				if (outputNeuron.getRepresentationValue() == digit.getLabel()) {
+					resultBias = 1.0;
+				}
 
-			cost += Math.pow((neuron.getActivationValue() - resultBias), 2);
+				cost += Math.pow((neuron.getActivationValue() - resultBias), 2);
+			}
 		}
 
 		return cost;
@@ -42,7 +47,10 @@ public class OutputLayer extends Layer {
 		}
 
 		for (Neuron neuron : this.neuronList) {
-			neuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
+			if (neuron instanceof OutputNeuron) {
+				OutputNeuron outputNeuron = (OutputNeuron) neuron;
+				outputNeuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
+			}
 		}
 	}
 }

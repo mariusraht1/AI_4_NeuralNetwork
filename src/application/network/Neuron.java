@@ -2,17 +2,7 @@ package application.network;
 
 import java.util.ArrayList;
 
-public class Neuron {
-	private int id = 0;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+public abstract class Neuron {
 	private double activationValue = 0.0;
 
 	public double getActivationValue() {
@@ -22,27 +12,7 @@ public class Neuron {
 	public void setActivationValue(double activationValue) {
 		this.activationValue = activationValue;
 	}
-
-	private double bias = 0.0;
-
-	public double getBias() {
-		return bias;
-	}
-
-	public void setBias(double bias) {
-		this.bias = bias;
-	}
-
-	private double probability = 0.0;
 	
-	public double getProbability() {
-		return probability;
-	}
-
-	public void setProbability(double probability) {
-		this.probability = probability;
-	}
-
 	private ArrayList<Connection> inboundConnectionList = new ArrayList<Connection>();
 
 	public ArrayList<Connection> getInboundConnectionList() {
@@ -53,16 +23,14 @@ public class Neuron {
 		this.inboundConnectionList = inboundConnectionList;
 	}
 
-	public Neuron(int id) {
-		this.id = id;
+	protected Neuron() {
 	}
 
-	public Neuron(int id, double activationValue) {
-		this.id = id;
+	protected Neuron(double activationValue) {
 		this.activationValue = activationValue;
 	}
 
-	public double sumInboundValues() {
+	public double sumInboundValues(ArrayList<Connection> inboundConnectionList) {
 		double sum = 0.0;
 
 		for (Connection connection : inboundConnectionList) {
