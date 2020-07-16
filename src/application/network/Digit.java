@@ -1,6 +1,6 @@
 package application.network;
 
-import application.image.ImageDecoder;
+import application.utilities.ImageDecoder;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 

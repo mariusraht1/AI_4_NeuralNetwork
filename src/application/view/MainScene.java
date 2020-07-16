@@ -4,11 +4,15 @@ import java.io.File;
 
 import application.History;
 import application.Log;
-import application.image.ImageDecoder;
+import application.Main;
 import application.network.Digit;
 import application.network.Network;
 import application.utilities.FileManager;
+import application.utilities.ImageDecoder;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -18,15 +22,26 @@ public class MainScene {
 	@FXML
 	private TextField tf_imageFile;
 	@FXML
+	private Button btn_imageFile;
+	@FXML
 	private TextField tf_labelFile;
+	@FXML
+	private Button btn_labelFile;
+	@FXML
+	private TextField tf_numOfSteps;
 	@FXML
 	private ListView<Digit> lv_results;
 	@FXML
 	private ListView<String> lv_console;
 
+	private boolean useInternalFiles = true;
+
 	@FXML
 	private void initialize() {
 		Log.getInstance().setOutputControl(lv_console);
+
+		tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
+		tf_numOfSteps.setPromptText(String.valueOf(Main.MinNumOfSteps) + "-" + String.valueOf(Main.MaxNumOfSteps));
 
 		lv_results.getItems().clear();
 
@@ -72,15 +87,45 @@ public class MainScene {
 	}
 
 	@FXML
+	private void onAction_chkInternalFiles(ActionEvent event) {
+		CheckBox chkInternalFiles = (CheckBox) event.getSource();
+		if (chkInternalFiles.isSelected()) {
+			useInternalFiles = true;
+			tf_imageFile.setDisable(true);
+			btn_imageFile.setDisable(true);
+			tf_labelFile.setDisable(true);
+			btn_labelFile.setDisable(true);
+		} else {
+			useInternalFiles = false;
+			tf_imageFile.setDisable(false);
+			btn_imageFile.setDisable(false);
+			tf_labelFile.setDisable(false);
+			btn_labelFile.setDisable(false);
+		}
+	}
+
+	@FXML
 	private void onAction_setOptions() {
+		boolean setOptions = true;
 		File imageFile = new File(tf_imageFile.getText());
 		File labelFile = new File(tf_labelFile.getText());
 
-		if (!imageFile.exists()) {
-			tf_imageFile.setText("");
-		} else if (!labelFile.exists()) {
-			tf_labelFile.setText("");
+		if (!useInternalFiles) {
+			if (!imageFile.exists()) {
+				setOptions = false;
+				tf_imageFile.setText("");
+			}
+
+			if (!labelFile.exists()) {
+				setOptions = false;
+				tf_labelFile.setText("");
+			}
 		} else {
+			imageFile = Main.DefaultImageFile;
+			labelFile = Main.DefaultLabelFile;
+		}
+
+		if (setOptions) {
 			ImageDecoder.getInstance().readFiles(imageFile, labelFile);
 			initialize();
 

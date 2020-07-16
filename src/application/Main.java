@@ -1,6 +1,8 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,13 @@ public class Main extends Application {
 		return primaryStage;
 	}
 
+	public final static int MinNumOfSteps = 1;
+	public final static int MaxNumOfSteps = 500;
+	public final static int DefaultNumOfSteps = 1;
+
+	public final static File DefaultImageFile = new File(Main.getDataDirectory().getPath() + "t10k-images-idx3-ubyte");
+	public final static File DefaultLabelFile = new File(Main.getDataDirectory().getPath() + "t10k-labels-idx1-ubyte");
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -38,5 +47,9 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public static URL getDataDirectory() {
+		return Main.class.getResource("/data/");
 	}
 }

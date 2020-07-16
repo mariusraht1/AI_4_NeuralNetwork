@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import application.activation.ActivationFunction;
 import application.activation.Distribution;
-import application.image.ImageDecoder;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
 import application.layer.Layer;
 import application.layer.OutputLayer;
+import application.utilities.ImageDecoder;
 
 public class Network {
 	private int numOfNeurons = 0;
@@ -140,7 +140,6 @@ public class Network {
 		double[] grayTones = digit.toGrayDoubleArray();
 		setInputValues(grayTones);
 
-		// NEW Set random weight at the very beginning
 		for (HiddenLayer hiddenLayer : hiddenLayerList) {
 			hiddenLayer.calcActivationValues();
 		}

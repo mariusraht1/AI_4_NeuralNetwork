@@ -24,6 +24,12 @@ public class FileManager {
 
 	public File chooseFile() {
 		FileChooser fileChooser = new FileChooser();
+
+		File resource = new File(Main.getDataDirectory().getPath());
+		if (resource.exists()) {
+			fileChooser.setInitialDirectory(resource);
+		}
+
 		return fileChooser.showOpenDialog(Main.getPrimaryStage());
 	}
 
