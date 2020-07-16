@@ -2,8 +2,8 @@ package application.layer;
 
 import java.util.ArrayList;
 
+import application.activation.ActivationFunction;
 import application.network.Connection;
-import application.network.Network;
 import application.network.Neuron;
 
 public class Layer {
@@ -15,6 +15,16 @@ public class Layer {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	protected ActivationFunction activationFunction = ActivationFunction.ReLu;
+	
+	public ActivationFunction getActivationFunction() {
+		return activationFunction;
+	}
+
+	public void setActivationFunction(ActivationFunction activationFunction) {
+		this.activationFunction = activationFunction;
 	}
 
 	protected ArrayList<Neuron> neuronList = new ArrayList<Neuron>();
@@ -38,13 +48,13 @@ public class Layer {
 			}
 		}
 	}
-
-	public void calcActivationValues() {
-		Network.getInstance().getActivationFunction().execute(this);
+	
+	public void calculateActivationValues() {
+		this.activationFunction.execute(this);
 	}
-
+	
 	public void initializeWeights() {
-		Network.getInstance().getActivationFunction().initWeight(this);
+		this.activationFunction.initWeight(this);
 	}
 
 	public int getNumOfInboundConnections() {

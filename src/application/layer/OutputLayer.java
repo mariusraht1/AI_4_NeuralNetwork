@@ -33,4 +33,16 @@ public class OutputLayer extends Layer {
 
 		return cost;
 	}
+
+	public void calculateProbability() {
+		double total = 0.0;
+
+		for (Neuron neuron : this.neuronList) {
+			total += Math.exp(neuron.getActivationValue());
+		}
+
+		for (Neuron neuron : this.neuronList) {
+			neuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
+		}
+	}
 }

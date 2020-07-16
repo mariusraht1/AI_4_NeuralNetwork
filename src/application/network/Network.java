@@ -2,7 +2,6 @@ package application.network;
 
 import java.util.ArrayList;
 
-import application.activation.ActivationFunction;
 import application.activation.Distribution;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
@@ -20,19 +19,9 @@ public class Network {
 	public void setNumOfNeurons(int numOfNeurons) {
 		this.numOfNeurons = numOfNeurons;
 	}
-	
-	private ActivationFunction activationFunction = ActivationFunction.ReLu;
-	
-	public ActivationFunction getActivationFunction() {
-		return activationFunction;
-	}
-
-	public void setActivationFunction(ActivationFunction activationFunction) {
-		this.activationFunction = activationFunction;
-	}
 
 	private Distribution distribution = Distribution.NORMAL;
-	
+
 	public Distribution getDistribution() {
 		return distribution;
 	}
@@ -40,7 +29,7 @@ public class Network {
 	public void setDistribution(Distribution distribution) {
 		this.distribution = distribution;
 	}
-	
+
 	private InputLayer inputLayer;
 
 	public InputLayer getInputLayer() {

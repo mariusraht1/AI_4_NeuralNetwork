@@ -33,6 +33,16 @@ public class Neuron {
 		this.bias = bias;
 	}
 
+	private double probability = 0.0;
+	
+	public double getProbability() {
+		return probability;
+	}
+
+	public void setProbability(double probability) {
+		this.probability = probability;
+	}
+
 	private ArrayList<Connection> inboundConnectionList = new ArrayList<Connection>();
 
 	public ArrayList<Connection> getInboundConnectionList() {

@@ -9,70 +9,53 @@ public enum WeightInitialisation {
 
 	public double execute(Layer layer) {
 		double weight = 0.0;
+		double min = 0.0;
+		double max = 0.0;
 		int numOfInboundNeurons = layer.getNumOfInboundConnections();
 		int numOfOutboundNeurons = layer.getNeuronList().size();
 
+		switch(Network.getInstance().getDistribution()) {
+		case NORMAL:
+			max = Math.sqrt(2 / (numOfInboundNeurons + numOfOutboundNeurons));
+			min = 0.0;
+			break;
+		case UNIFORM:
+			max = Math.sqrt(6 / (numOfInboundNeurons + numOfOutboundNeurons));
+			min -= max;
+			break;
+		}
+		
 		switch (this) {
 		case Leaky_ReLu:
 		case ReLu:
-			weight = relu(numOfInboundNeurons, numOfOutboundNeurons);
+			weight = relu(min, max);
 			break;
 		case Sigmoid:
-			weight = sigmoid(numOfInboundNeurons, numOfOutboundNeurons);
+			weight = sigmoid(min, max);
 			break;
 		case Tanh:
-			weight = tanh(numOfInboundNeurons, numOfOutboundNeurons);
+			weight = tanh(min, max);
 			break;
 		}
 
 		return weight;
 	}
 
-	private double relu(int numOfInboundNeurons, int numOfOutboundNeurons) {
-		final double min = 0.0;
-		double max = 0.0;
-
-		switch (Network.getInstance().getDistribution()) {
-		case NORMAL:
-			max = Math.sqrt(2) * Math.sqrt(2 / (numOfInboundNeurons + numOfOutboundNeurons));
-			break;
-		case UNIFORM:
-			max = Math.sqrt(2) * Math.sqrt(6 / (numOfInboundNeurons + numOfOutboundNeurons));
-			break;
-		}
+	private double relu(double min, double max) {
+		min *= Math.sqrt(2);
+		max *= Math.sqrt(2);
 
 		return MathManager.getInstance().getRandom(min, max);
 	}
 
-	private double sigmoid(int numOfInboundNeurons, int numOfOutboundNeurons) {
-		final double min = 0.0;
-		double max = 0.0;
-
-		switch (Network.getInstance().getDistribution()) {
-		case NORMAL:
-			max = 4 * Math.sqrt(2 / (numOfInboundNeurons + numOfOutboundNeurons));
-			break;
-		case UNIFORM:
-			max = 4 * Math.sqrt(6 / (numOfInboundNeurons + numOfOutboundNeurons));
-			break;
-		}
+	private double sigmoid(double min, double max) {
+		min *= 4;
+		max *= 4;
 
 		return MathManager.getInstance().getRandom(min, max);
 	}
 
-	private double tanh(int numOfInboundNeurons, int numOfOutboundNeurons) {
-		final double min = -1.0;
-		double max = 0.0;
-
-		switch (Network.getInstance().getDistribution()) {
-		case NORMAL:
-			max = Math.sqrt(2 / (numOfInboundNeurons + numOfOutboundNeurons));
-			break;
-		case UNIFORM:
-			max = Math.sqrt(6 / (numOfInboundNeurons + numOfOutboundNeurons));
-			break;
-		}
-
+	private double tanh(double min, double max) {	
 		return MathManager.getInstance().getRandom(min, max);
 	}
 }
