@@ -114,7 +114,7 @@ public class Network {
 
 	private void generateInputLayer() {
 		for (int i = 0; i < this.numOfNeuronsInputLayer; i++) {
-			this.inputLayer.getNeuronList().add(new InputNeuron(i));
+			this.inputLayer.getNeuronList().add(new InputNeuron());
 		}
 	}
 
@@ -128,10 +128,9 @@ public class Network {
 
 		HiddenLayer hiddenLayer = new HiddenLayer();
 		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
-			hiddenLayer.getNeuronList().add(new HiddenNeuron(i));
+			hiddenLayer.getNeuronList().add(new HiddenNeuron());
 		}
 		hiddenLayer.connectWith(prevLayer);
-		hiddenLayer.initializeWeights();
 		this.hiddenLayerList.add(hiddenLayer);
 	}
 
@@ -141,7 +140,6 @@ public class Network {
 		}
 		HiddenLayer lastHiddenLayer = this.hiddenLayerList.get(this.hiddenLayerList.size() - 1);
 		this.outputLayer.connectWith(lastHiddenLayer);
-		this.outputLayer.initializeWeights();
 	}
 
 	public int getNumOfInputNeurons() {
@@ -149,15 +147,19 @@ public class Network {
 	}
 
 	public void play(MainScene mainScene) {
+		// TST Test forward-feed propagation
 		Digit digit = ImageDecoder.getInstance().readNextDigit();
 		double[] grayTones = digit.toGrayDoubleArray();
 		this.inputLayer.setActivationValues(grayTones);
 
 		for (HiddenLayer hiddenLayer : this.hiddenLayerList) {
+			hiddenLayer.initializeWeights();
 			hiddenLayer.setActivationValues();
 		}
 		
+		this.outputLayer.initializeWeights();
 		this.outputLayer.setActivationValues();
+		
 
 		// NEW Add rate of certainty to history by round
 		// Larger if the network is uncertain of the prediction

@@ -31,8 +31,9 @@ public class OutputNeuron extends Neuron {
 		this.probability = probability;
 	}
 	
-	public OutputNeuron(int id) {
-		super(id);
+	public OutputNeuron(int representationValue) {
+		super();
+		this.representationValue = representationValue;
 	}
 
 }

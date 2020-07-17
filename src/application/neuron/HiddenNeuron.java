@@ -25,7 +25,7 @@ public class HiddenNeuron extends Neuron{
 		this.inboundConnectionList = inboundConnectionList;
 	}
 	
-	public HiddenNeuron(int id) {
-		super(id);
+	public HiddenNeuron() {
+		super();
 	}
 }
