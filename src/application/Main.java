@@ -10,10 +10,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Evolutionary System for Traveling Salesman Problem
+ * Neural Network for handwritten digit recognition
  * 
  * @author Marius Raht
- * @version 25.06.2020-001
+ * @version 17.07.2020-001
  */
 public class Main extends Application {
 	private static Stage primaryStage;
