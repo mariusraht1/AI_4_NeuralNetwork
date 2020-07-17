@@ -64,13 +64,11 @@ public enum ActivationFunction {
 	}
 
 	private double relu(double value) {
-		double result = value;
-
-		if (result < 0) {
-			result = 0.0;
+		if (value < 0) {
+			value = 0.0;
 		}
 
-		return result;
+		return value;
 	}
 
 	private double sigmoid(double value) {
@@ -83,12 +81,11 @@ public enum ActivationFunction {
 
 	public double leaky_relu(double value) {
 		double a = 0.01;
-		double result = value;
 
-		if (result < 0) {
-			result *= a;
+		if (value < 0) {
+			value *= a;
 		}
 
-		return result;
+		return value;
 	}
 }

@@ -16,11 +16,11 @@ public enum WeightInitialisation {
 
 		switch(Network.getInstance().getDistribution()) {
 		case NORMAL:
-			max = Math.sqrt(2 / (numOfInboundNeurons + numOfOutboundNeurons));
+			max = Math.sqrt(2.0 / (numOfInboundNeurons + numOfOutboundNeurons));
 			min = 0.0;
 			break;
 		case UNIFORM:
-			max = Math.sqrt(6 / (numOfInboundNeurons + numOfOutboundNeurons));
+			max = Math.sqrt(6.0 / (numOfInboundNeurons + numOfOutboundNeurons));
 			min -= max;
 			break;
 		}
