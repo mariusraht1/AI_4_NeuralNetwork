@@ -80,6 +80,9 @@ public class ImageDecoder {
 	}
 
 	public void readFiles(File imageFile, File labelFile) {
+		this.imageIndex = 0;
+		this.labelIndex = 0;
+		
 		byte[] imageFileContent = FileManager.getInstance().read(imageFile);
 		this.imageFileContent = FileManager.getInstance().unzip(imageFile, imageFileContent);
 

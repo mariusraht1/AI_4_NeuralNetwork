@@ -14,6 +14,8 @@ import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 import application.utilities.ImageDecoder;
 import application.view.MainScene;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 public class Network {
 	private Distribution distribution = Distribution.NORMAL;
@@ -36,7 +38,7 @@ public class Network {
 		this.numOfNeuronsInputLayer = numOfNeurons;
 	}
 
-	private InputLayer inputLayer = new InputLayer();
+	private InputLayer inputLayer;
 
 	public InputLayer getInputLayer() {
 		return inputLayer;
@@ -48,7 +50,7 @@ public class Network {
 
 	private final int numOfNeuronsHiddenLayer = 32;
 
-	private ArrayList<HiddenLayer> hiddenLayerList = new ArrayList<HiddenLayer>();
+	private ArrayList<HiddenLayer> hiddenLayerList;
 
 	public ArrayList<HiddenLayer> getHiddenLayerList() {
 		return hiddenLayerList;
@@ -58,7 +60,7 @@ public class Network {
 		this.hiddenLayerList = hiddenLayerList;
 	}
 
-	private OutputLayer outputLayer = new OutputLayer();
+	private OutputLayer outputLayer;
 
 	public OutputLayer getOutputLayer() {
 		return outputLayer;
@@ -88,6 +90,16 @@ public class Network {
 		this.numOfErrors = numOfErrors;
 	}
 
+	private Task<Void> playTask;
+
+	public Task<Void> getPlayTask() {
+		return playTask;
+	}
+
+	public void setPlayTask(Task<Void> playTask) {
+		this.playTask = playTask;
+	}
+
 	private static Network instance;
 
 	public static Network getInstance() {
@@ -102,7 +114,14 @@ public class Network {
 	}
 
 	public void init() {
+		this.numOfPredictions = 0;
+		this.numOfErrors = 0;
 		this.numOfNeuronsInputLayer = getNumOfInputNeurons();
+		
+		this.inputLayer = new InputLayer();
+		this.hiddenLayerList = new ArrayList<HiddenLayer>();
+		this.outputLayer = new OutputLayer();
+		
 		generateLayers();
 	}
 
@@ -147,9 +166,59 @@ public class Network {
 		return ImageDecoder.getInstance().getImageWidth() * ImageDecoder.getInstance().getImageHeight();
 	}
 
-	public void play(MainScene mainScene) {
-		// TST Test forward-feed propagation
-		Digit digit = ImageDecoder.getInstance().readNextDigit();
+	public void runPlay(int numOfSteps, MainScene mainScene) {
+		this.playTask = new Task<Void>() {
+			@Override
+			public Void call() throws Exception {
+				int step = 1;
+				boolean play = true;
+
+				while (play) {
+					if (this.isCancelled()) {
+						break;
+					} else {
+						Digit digit = ImageDecoder.getInstance().readNextDigit();
+						play = play(step, numOfSteps, mainScene, digit);
+						step++;
+					}
+				}
+				return null;
+			}
+		};
+		Thread thread = new Thread(this.playTask);
+		thread.setDaemon(true);
+		thread.start();
+	}
+
+	private boolean play(int step, int numOfSteps, MainScene mainScene, Digit digit) throws Exception {
+		if (step <= numOfSteps) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					step(digit);
+					updateUI(mainScene, digit);
+				}
+			});
+			Thread.sleep(200);
+
+			step++;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void updateUI(MainScene mainScene, Digit digit) {
+		mainScene.showResult(digit);
+		// NEW Add results to history
+		// History.getInstance().add();
+	}
+
+	public void step(Digit digit) {
+		Log.getInstance().add("******************************************");
+		Log.getInstance().add("* Label " + digit.getLabel());
+		Log.getInstance().add("******************************************");
+
 		double[] grayTones = digit.toGrayDoubleArray();
 		this.inputLayer.setActivationValues(grayTones);
 
@@ -160,14 +229,16 @@ public class Network {
 
 		this.outputLayer.initializeWeights();
 		this.outputLayer.setActivationValues();
+		this.outputLayer.calculateProbability();
+		digit.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
 
-		// FIX Probability is 0 but should be 1 in total
 		Log.getInstance().add("Predictions for Label " + digit.getLabel() + ":");
 		StringBuilder probabilities = new StringBuilder("[");
 		for (Neuron neuron : this.outputLayer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				probabilities.append(outputNeuron.getRepresentationValue() + ": " + outputNeuron.getProbability());
+				probabilities.append(outputNeuron.getRepresentationValue() + ": "
+						+ String.format("%.2f", outputNeuron.getProbability()));
 
 				if (this.outputLayer.getNeuronList().indexOf(outputNeuron) < this.outputLayer.getNeuronList().size()
 						- 1) {
@@ -194,8 +265,13 @@ public class Network {
 		// If slope is negative, reduce weight/bias; if it's positive, increase
 		// weight/bias
 
-		mainScene.showResult(digit);
+//		mainScene.showResult(digit);
+	}
 
+	public void cancelPlayTask() {
+		if (this.playTask != null && this.playTask.isRunning()) {
+			this.playTask.cancel();
+		}
 	}
 
 	public int getPrediction() {
@@ -204,6 +280,11 @@ public class Network {
 	}
 
 	public double getSuccessRate() {
-		return ((this.numOfPredictions - this.numOfErrors) / this.numOfPredictions) * 100;
+		double rightPredictions = this.numOfPredictions - this.numOfErrors;
+		double totalPredictions = this.numOfPredictions;
+		double successRate = rightPredictions / totalPredictions * 100.0;
+		Log.getInstance().add("Erfolgsrate: " + String.format("%.2f", successRate) + " % (" + (int) rightPredictions
+				+ "/" + (int) totalPredictions + ")");
+		return successRate;
 	}
 }

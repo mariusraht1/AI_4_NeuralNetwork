@@ -52,8 +52,9 @@ public class MainScene {
 	public void showResult(Digit digit) {
 		double successRate = Network.getInstance().getSuccessRate();
 		lbl_results.setText("Ergebnisse (" + String.format("%.2f", successRate) + " %)");
-		
+
 		lv_results.getItems().add(digit);
+		lv_results.scrollTo(digit);
 		lv_results.setCellFactory(listview -> new ListCell<Digit>() {
 			private ImageView imageView = new ImageView();
 
@@ -139,14 +140,29 @@ public class MainScene {
 
 	@FXML
 	private void onAction_btnPlay() {
-		if (ImageDecoder.getInstance().getImageFileContent() != null
-				&& ImageDecoder.getInstance().getLabelFileContent() != null) {
-			Network.getInstance().play(this);
+		try {
+			int numOfSteps = Integer.parseInt(tf_numOfSteps.getText());
+
+			if (numOfSteps <= 0) {
+				tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
+			} else if (numOfSteps > Main.MaxNumOfSteps) {
+				tf_numOfSteps.setText(String.valueOf(Main.MaxNumOfSteps));
+			} else {
+				if (ImageDecoder.getInstance().getImageFileContent() != null
+						&& ImageDecoder.getInstance().getLabelFileContent() != null) {
+					Network.getInstance().runPlay(numOfSteps, this);
+				} else {
+					Log.getInstance().add("Optionen bitte setzen und bestätigen.");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	@FXML
 	private void onAction_btnReset() {
+		Network.getInstance().init();
 		initialize();
 	}
 
