@@ -2,6 +2,7 @@ package application.network;
 
 import java.util.ArrayList;
 
+import application.Log;
 import application.activation.Distribution;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
@@ -66,9 +67,9 @@ public class Network {
 	public void setOutputLayer(OutputLayer outputLayer) {
 		this.outputLayer = outputLayer;
 	}
-	
+
 	private int numOfPredictions = 0;
-	
+
 	public int getNumOfPredictions() {
 		return numOfPredictions;
 	}
@@ -76,9 +77,9 @@ public class Network {
 	public void setNumOfPredictions(int numOfPredictions) {
 		this.numOfPredictions = numOfPredictions;
 	}
-	
+
 	private int numOfErrors = 0;
-	
+
 	public int getNumOfErrors() {
 		return numOfErrors;
 	}
@@ -156,29 +157,45 @@ public class Network {
 			hiddenLayer.initializeWeights();
 			hiddenLayer.setActivationValues();
 		}
-		
+
 		this.outputLayer.initializeWeights();
 		this.outputLayer.setActivationValues();
-		
+
+		// FIX Probability is 0 but should be 1 in total
+		Log.getInstance().add("Predictions for Label " + digit.getLabel() + ":");
+		StringBuilder probabilities = new StringBuilder("[");
+		for (Neuron neuron : this.outputLayer.getNeuronList()) {
+			if (neuron instanceof OutputNeuron) {
+				OutputNeuron outputNeuron = (OutputNeuron) neuron;
+				probabilities.append(outputNeuron.getRepresentationValue() + ": " + outputNeuron.getProbability());
+
+				if (this.outputLayer.getNeuronList().indexOf(outputNeuron) < this.outputLayer.getNeuronList().size()
+						- 1) {
+					probabilities.append(", ");
+				} else {
+					probabilities.append("]");
+				}
+			}
+		}
+		Log.getInstance().add(probabilities.toString());
 
 		// NEW Add rate of certainty to history by round
 		// Larger if the network is uncertain of the prediction
 		double cost = this.outputLayer.getCost(digit);
-		
+		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", cost));
+
 		this.numOfPredictions++;
-		if(digit.getPrediction() != digit.getLabel()) {
+		if (digit.getPrediction() != digit.getLabel()) {
 			this.numOfErrors++;
 		}
-		
-		
-		
+
 		// NEW Backpropagation
 		// Minimize cost over all ran predictions: Calculate slope to reduce cost
 		// If slope is negative, reduce weight/bias; if it's positive, increase
 		// weight/bias
 
 		mainScene.showResult(digit);
-		
+
 	}
 
 	public int getPrediction() {
