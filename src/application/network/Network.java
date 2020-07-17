@@ -12,6 +12,7 @@ import application.neuron.InputNeuron;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 import application.utilities.ImageDecoder;
+import application.view.MainScene;
 
 public class Network {
 	private Distribution distribution = Distribution.NORMAL;
@@ -34,7 +35,7 @@ public class Network {
 		this.numOfNeuronsInputLayer = numOfNeurons;
 	}
 
-	private InputLayer inputLayer;
+	private InputLayer inputLayer = new InputLayer();
 
 	public InputLayer getInputLayer() {
 		return inputLayer;
@@ -56,7 +57,7 @@ public class Network {
 		this.hiddenLayerList = hiddenLayerList;
 	}
 
-	private OutputLayer outputLayer;
+	private OutputLayer outputLayer = new OutputLayer();
 
 	public OutputLayer getOutputLayer() {
 		return outputLayer;
@@ -64,6 +65,26 @@ public class Network {
 
 	public void setOutputLayer(OutputLayer outputLayer) {
 		this.outputLayer = outputLayer;
+	}
+	
+	private int numOfPredictions = 0;
+	
+	public int getNumOfPredictions() {
+		return numOfPredictions;
+	}
+
+	public void setNumOfPredictions(int numOfPredictions) {
+		this.numOfPredictions = numOfPredictions;
+	}
+	
+	private int numOfErrors = 0;
+	
+	public int getNumOfErrors() {
+		return numOfErrors;
+	}
+
+	public void setNumOfErrors(int numOfErrors) {
+		this.numOfErrors = numOfErrors;
 	}
 
 	private static Network instance;
@@ -123,40 +144,47 @@ public class Network {
 		this.outputLayer.initializeWeights();
 	}
 
-	public void setInputValues(double[] values) {
-		Layer inputLayer = this.hiddenLayerList.get(0);
-
-		for (int i = 0; i < inputLayer.getNeuronList().size(); i++) {
-			Neuron neuron = inputLayer.getNeuronList().get(i);
-			neuron.setActivationValue(values[i]);
-		}
-	}
-
 	public int getNumOfInputNeurons() {
 		return ImageDecoder.getInstance().getImageWidth() * ImageDecoder.getInstance().getImageHeight();
 	}
 
-	public void play(Digit digit) {
+	public void play(MainScene mainScene) {
+		Digit digit = ImageDecoder.getInstance().readNextDigit();
 		double[] grayTones = digit.toGrayDoubleArray();
-		setInputValues(grayTones);
+		this.inputLayer.setActivationValues(grayTones);
 
-		for (HiddenLayer hiddenLayer : hiddenLayerList) {
-			hiddenLayer.calcActivationValues();
+		for (HiddenLayer hiddenLayer : this.hiddenLayerList) {
+			hiddenLayer.setActivationValues();
 		}
+		
+		this.outputLayer.setActivationValues();
 
 		// NEW Add rate of certainty to history by round
 		// Larger if the network is uncertain of the prediction
 		double cost = this.outputLayer.getCost(digit);
-
+		
+		this.numOfPredictions++;
+		if(digit.getPrediction() != digit.getLabel()) {
+			this.numOfErrors++;
+		}
+		
+		
+		
 		// NEW Backpropagation
 		// Minimize cost over all ran predictions: Calculate slope to reduce cost
 		// If slope is negative, reduce weight/bias; if it's positive, increase
 		// weight/bias
 
+		mainScene.showResult(digit);
+		
 	}
 
 	public int getPrediction() {
 		Neuron neuron = this.outputLayer.getMostActiveNeuron();
 		return this.outputLayer.getNeuronList().indexOf(neuron);
+	}
+
+	public double getSuccessRate() {
+		return ((this.numOfPredictions - this.numOfErrors) / this.numOfPredictions) * 100;
 	}
 }

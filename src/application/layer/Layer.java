@@ -48,7 +48,7 @@ public abstract class Layer {
 		return result;
 	}
 	
-	public void calculateActivationValues() {
+	public void setActivationValues() {
 		this.activationFunction.execute(this);
 	}
 	

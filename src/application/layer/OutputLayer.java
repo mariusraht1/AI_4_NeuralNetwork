@@ -1,5 +1,7 @@
 package application.layer;
 
+import java.util.ArrayList;
+
 import application.network.Digit;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
@@ -7,6 +9,7 @@ import application.neuron.OutputNeuron;
 public class OutputLayer extends Layer {
 	public OutputLayer() {
 		super();
+		this.neuronList = new ArrayList<Neuron>();
 	}
 
 	public OutputNeuron getMostActiveNeuron() {

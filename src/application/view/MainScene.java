@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -30,6 +31,8 @@ public class MainScene {
 	@FXML
 	private TextField tf_numOfSteps;
 	@FXML
+	private Label lbl_results;
+	@FXML
 	private ListView<Digit> lv_results;
 	@FXML
 	private ListView<String> lv_console;
@@ -44,13 +47,13 @@ public class MainScene {
 		tf_numOfSteps.setPromptText(String.valueOf(Main.MinNumOfSteps) + "-" + String.valueOf(Main.MaxNumOfSteps));
 
 		lv_results.getItems().clear();
-
-		Network.getInstance().init();
 	}
 
-	private void addResult(Digit digit) {
+	public void showResult(Digit digit) {
+		double successRate = Network.getInstance().getSuccessRate();
+		lbl_results.setText("Ergebnisse (" + String.format("%.2f", successRate) + " %)");
+		
 		lv_results.getItems().add(digit);
-
 		lv_results.setCellFactory(listview -> new ListCell<Digit>() {
 			private ImageView imageView = new ImageView();
 
@@ -127,6 +130,7 @@ public class MainScene {
 
 		if (setOptions) {
 			ImageDecoder.getInstance().readFiles(imageFile, labelFile);
+			Network.getInstance().init();
 			initialize();
 
 			Log.getInstance().add("Set options and read files successfully.");
@@ -137,10 +141,7 @@ public class MainScene {
 	private void onAction_btnPlay() {
 		if (ImageDecoder.getInstance().getImageFileContent() != null
 				&& ImageDecoder.getInstance().getLabelFileContent() != null) {
-			Digit digit = ImageDecoder.getInstance().readNextDigit();
-
-			Network.getInstance().play(digit);
-			addResult(digit);
+			Network.getInstance().play(this);
 		}
 	}
 
