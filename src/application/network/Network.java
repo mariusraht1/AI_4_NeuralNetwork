@@ -18,6 +18,16 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 public class Network {
+	private OperationMode operationMode = OperationMode.Train;
+
+	public OperationMode getOperationMode() {
+		return operationMode;
+	}
+
+	public void setOperationMode(OperationMode operationMode) {
+		this.operationMode = operationMode;
+	}
+
 	private Distribution distribution = Distribution.NORMAL;
 
 	public Distribution getDistribution() {
@@ -117,11 +127,11 @@ public class Network {
 		this.numOfPredictions = 0;
 		this.numOfErrors = 0;
 		this.numOfNeuronsInputLayer = getNumOfInputNeurons();
-		
+
 		this.inputLayer = new InputLayer();
 		this.hiddenLayerList = new ArrayList<HiddenLayer>();
 		this.outputLayer = new OutputLayer();
-		
+
 		generateLayers();
 	}
 
@@ -261,11 +271,12 @@ public class Network {
 		}
 
 		// NEW Backpropagation
-		// Minimize cost over all ran predictions: Calculate slope to reduce cost
-		// If slope is negative, reduce weight/bias; if it's positive, increase
-		// weight/bias
-
-//		mainScene.showResult(digit);
+		if (this.operationMode.equals(OperationMode.Train)) {
+			Log.getInstance().add("Backpropagation is enabled.");
+			// Minimize cost over all ran predictions: Calculate slope to reduce cost
+			// If slope is negative, reduce weight/bias; if it's positive, increase
+			// weight/bias
+		}
 	}
 
 	public void cancelPlayTask() {

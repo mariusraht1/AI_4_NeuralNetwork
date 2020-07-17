@@ -7,12 +7,14 @@ import application.Log;
 import application.Main;
 import application.network.Digit;
 import application.network.Network;
+import application.network.OperationMode;
 import application.utilities.FileManager;
 import application.utilities.ImageDecoder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -28,6 +30,8 @@ public class MainScene {
 	private TextField tf_labelFile;
 	@FXML
 	private Button btn_labelFile;
+	@FXML
+	private ComboBox<OperationMode> cb_operationMode;
 	@FXML
 	private TextField tf_numOfSteps;
 	@FXML
@@ -45,6 +49,11 @@ public class MainScene {
 
 		tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
 		tf_numOfSteps.setPromptText(String.valueOf(Main.MinNumOfSteps) + "-" + String.valueOf(Main.MaxNumOfSteps));
+
+		if (cb_operationMode.getItems().isEmpty()) {
+			cb_operationMode.getItems().addAll(OperationMode.values());
+			cb_operationMode.getSelectionModel().select(Network.getInstance().getOperationMode());
+		}
 
 		lv_results.getItems().clear();
 	}
@@ -125,8 +134,8 @@ public class MainScene {
 				tf_labelFile.setText("");
 			}
 		} else {
-			imageFile = Main.DefaultImageFile;
-			labelFile = Main.DefaultLabelFile;
+			imageFile = Main.DefaultTrainImageFile;
+			labelFile = Main.DefaultTrainLabelFile;
 		}
 
 		if (setOptions) {
@@ -136,6 +145,11 @@ public class MainScene {
 
 			Log.getInstance().add("Set options and read files successfully.");
 		}
+	}
+
+	@FXML
+	private void onAction_cbOperationMode(ActionEvent e) {
+		Network.getInstance().setOperationMode(cb_operationMode.getSelectionModel().getSelectedItem());
 	}
 
 	@FXML
