@@ -1,6 +1,8 @@
-package application.network;
+package application.neuron;
 
 import java.util.ArrayList;
+
+import application.network.Connection;
 
 public abstract class Neuron {
 	private double activationValue = 0.0;

@@ -1,8 +1,8 @@
 package application.layer;
 
 import application.network.Digit;
-import application.network.Neuron;
-import application.network.OutputNeuron;
+import application.neuron.Neuron;
+import application.neuron.OutputNeuron;
 
 public class OutputLayer extends Layer {
 	public OutputLayer() {

@@ -1,4 +1,4 @@
-package application.network;
+package application.neuron;
 
 public class InputNeuron extends Neuron{
 

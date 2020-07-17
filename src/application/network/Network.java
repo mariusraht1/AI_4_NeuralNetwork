@@ -7,6 +7,10 @@ import application.layer.HiddenLayer;
 import application.layer.InputLayer;
 import application.layer.Layer;
 import application.layer.OutputLayer;
+import application.neuron.HiddenNeuron;
+import application.neuron.InputNeuron;
+import application.neuron.Neuron;
+import application.neuron.OutputNeuron;
 import application.utilities.ImageDecoder;
 
 public class Network {

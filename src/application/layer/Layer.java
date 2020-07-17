@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import application.activation.ActivationFunction;
 import application.network.Connection;
-import application.network.Neuron;
+import application.neuron.Neuron;
 
 public abstract class Layer {	
 	protected ActivationFunction activationFunction = ActivationFunction.ReLu;

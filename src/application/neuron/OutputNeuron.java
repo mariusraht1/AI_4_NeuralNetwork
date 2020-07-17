@@ -1,4 +1,4 @@
-package application.network;
+package application.neuron;
 
 public class OutputNeuron extends Neuron {
 	private int representationValue = 0;

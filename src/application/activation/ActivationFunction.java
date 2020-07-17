@@ -2,7 +2,7 @@ package application.activation;
 
 import application.layer.Layer;
 import application.network.Connection;
-import application.network.Neuron;
+import application.neuron.Neuron;
 
 public enum ActivationFunction {
 	Leaky_ReLu, ReLu, Sigmoid, Tanh;

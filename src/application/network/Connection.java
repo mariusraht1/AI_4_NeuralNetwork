@@ -1,5 +1,7 @@
 package application.network;
 
+import application.neuron.Neuron;
+
 public class Connection {
 	private int id = 0;
 

@@ -1,6 +1,8 @@
-package application.network;
+package application.neuron;
 
 import java.util.ArrayList;
+
+import application.network.Connection;
 
 public class HiddenNeuron extends Neuron{
 	private double bias = 0.0;
