@@ -1,9 +1,11 @@
 package application.layer;
 
+import application.functions.ActivationFunction;
 import application.network.Connection;
+import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
-import functions.ActivationFunction;
+import application.utilities.MathManager;
 
 public class ConnectableLayer extends Layer {
 	protected ActivationFunction activationFunction = ActivationFunction.ReLu;
@@ -70,5 +72,17 @@ public class ConnectableLayer extends Layer {
 
 	public void calcActivationValues() {
 		this.activationFunction.execute(this);
+	}
+
+	// Gradient: (activationValue * (1 - activationValue)) * error * learningRate 
+	public void calcGradientActivationValues() {
+		for (Neuron neuron : this.neuronList) {
+			if (neuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
+				double gradient = MathManager.getInstance().getGradient(connectableNeuron.getActivationValue());
+				neuron.setActivationValue(
+						gradient * connectableNeuron.getError() * Network.getInstance().getLearningRate());
+			}
+		}
 	}
 }

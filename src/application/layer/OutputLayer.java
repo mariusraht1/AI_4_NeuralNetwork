@@ -22,7 +22,7 @@ public class OutputLayer extends ConnectableLayer {
 		return mostActiveNeuron;
 	}
 
-	public void calculateProbability() {
+	public void calculateProbabilities() {
 		double total = 0.0;
 
 		for (Neuron neuron : this.neuronList) {

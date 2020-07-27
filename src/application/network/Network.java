@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import application.Log;
 import application.Main;
+import application.functions.Backpropagation;
+import application.functions.Distribution;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
 import application.layer.Layer;
@@ -14,8 +16,6 @@ import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 import application.utilities.ImageDecoder;
 import application.view.MainScene;
-import functions.Backpropagation;
-import functions.Distribution;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
@@ -253,6 +253,7 @@ public class Network {
 		// History.getInstance().add();
 	}
 
+	// NEW Add biases: Init with random -1 to +1
 	public void step(Digit digit) {
 		Log.getInstance().add("******************************************");
 		Log.getInstance().add("* Label " + digit.getLabel());
@@ -268,7 +269,8 @@ public class Network {
 
 		this.outputLayer.initWeights();
 		this.outputLayer.calcActivationValues();
-		this.outputLayer.calculateProbability();
+		this.outputLayer.calculateProbabilities();
+		
 		digit.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
 		Log.getInstance().logPredictions(digit);
 

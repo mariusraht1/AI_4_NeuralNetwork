@@ -1,4 +1,4 @@
-package functions;
+package application.functions;
 
 import application.Log;
 import application.layer.ConnectableLayer;
@@ -27,13 +27,15 @@ public class Backpropagation {
 			// If slope is negative, reduce weight/bias; if it's positive, increase
 			// weight/bias
 			Network.getInstance().getOutputLayer().calcErrors();
-
+			Network.getInstance().getOutputLayer().calcGradientActivationValues();
+			
 			for (int i = Network.getInstance().getHiddenLayerList().size() - 1; i > 0; i--) {
 				ConnectableLayer hiddenLayer = Network.getInstance().getHiddenLayerList().get(i);
 				hiddenLayer.calcErrors();
+				hiddenLayer.calcGradientActivationValues();
 			}
 
-			// Gradient: activationValue = activationValue * (1 - activationValue)
+			
 			
 			
 			// activationValue * error * learningRate
