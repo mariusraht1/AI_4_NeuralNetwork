@@ -1,4 +1,4 @@
-package application.activation;
+package functions;
 
 public enum Distribution {
 	UNIFORM, NORMAL;

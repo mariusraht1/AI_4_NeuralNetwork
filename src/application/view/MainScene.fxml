@@ -34,6 +34,7 @@
             <RowConstraints />
             <RowConstraints />
             <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints />
         </rowConstraints>
          <children>
             <Label text="Bilddatei:" GridPane.rowIndex="1" />
@@ -81,6 +82,7 @@
                   <Button minWidth="50.0" mnemonicParsing="false" onAction="#onAction_btnReset" text="Reset" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <ComboBox fx:id="cb_operationMode" maxWidth="1.7976931348623157E308" onAction="#onAction_cbOperationMode" GridPane.columnIndex="1" GridPane.columnSpan="3" />
                   <Label text="Modus:" />
+                  <CheckBox fx:id="chk_animate" mnemonicParsing="false" text="Ausführung animieren" GridPane.columnSpan="3" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <VBox spacing="5.0" GridPane.columnIndex="4" GridPane.rowSpan="9">

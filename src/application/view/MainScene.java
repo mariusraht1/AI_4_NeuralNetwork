@@ -37,6 +37,8 @@ public class MainScene {
 	@FXML
 	private Label lbl_results;
 	@FXML
+	private CheckBox chk_animate;
+	@FXML
 	private ListView<Digit> lv_results;
 	@FXML
 	private ListView<String> lv_console;
@@ -48,7 +50,7 @@ public class MainScene {
 		Log.getInstance().setOutputControl(lv_console);
 
 		tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
-		tf_numOfSteps.setPromptText(String.valueOf(Main.MinNumOfSteps) + "-" + String.valueOf(Main.MaxNumOfSteps));
+		tf_numOfSteps.setPromptText("Mind. " + String.valueOf(Main.MinNumOfSteps));
 
 		if (cb_operationMode.getItems().isEmpty()) {
 			cb_operationMode.getItems().addAll(OperationMode.values());
@@ -159,12 +161,17 @@ public class MainScene {
 
 			if (numOfSteps <= 0) {
 				tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
-			} else if (numOfSteps > Main.MaxNumOfSteps) {
-				tf_numOfSteps.setText(String.valueOf(Main.MaxNumOfSteps));
 			} else {
+				boolean animate = chk_animate.isSelected();
+				if (animate) {
+					Log.getInstance().setIsActive(true);
+				} else {
+					Log.getInstance().setIsActive(false);
+				}
+				
 				if (ImageDecoder.getInstance().getImageFileContent() != null
 						&& ImageDecoder.getInstance().getLabelFileContent() != null) {
-					Network.getInstance().runPlay(numOfSteps, this);
+					Network.getInstance().runPlay(animate, numOfSteps, this);
 				} else {
 					Log.getInstance().add("Optionen bitte setzen und bestätigen.");
 				}

@@ -3,7 +3,7 @@ package application.network;
 import java.util.ArrayList;
 
 import application.Log;
-import application.activation.Distribution;
+import application.Main;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
 import application.layer.Layer;
@@ -14,6 +14,8 @@ import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 import application.utilities.ImageDecoder;
 import application.view.MainScene;
+import functions.Backpropagation;
+import functions.Distribution;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
@@ -80,6 +82,16 @@ public class Network {
 		this.outputLayer = outputLayer;
 	}
 
+	private double learningRate;
+
+	public double getLearningRate() {
+		return learningRate;
+	}
+
+	public void setLearningRate(double learningRate) {
+		this.learningRate = learningRate;
+	}
+
 	private int numOfPredictions = 0;
 
 	public int getNumOfPredictions() {
@@ -127,6 +139,7 @@ public class Network {
 		this.numOfPredictions = 0;
 		this.numOfErrors = 0;
 		this.numOfNeuronsInputLayer = getNumOfInputNeurons();
+		this.learningRate = Main.DefaultLearningRate;
 
 		this.inputLayer = new InputLayer();
 		this.hiddenLayerList = new ArrayList<HiddenLayer>();
@@ -176,40 +189,56 @@ public class Network {
 		return ImageDecoder.getInstance().getImageWidth() * ImageDecoder.getInstance().getImageHeight();
 	}
 
-	public void runPlay(int numOfSteps, MainScene mainScene) {
-		this.playTask = new Task<Void>() {
-			@Override
-			public Void call() throws Exception {
-				int step = 1;
-				boolean play = true;
+	public void runPlay(boolean animate, int numOfSteps, MainScene mainScene) throws Exception {
+		if (animate) {
+			this.playTask = new Task<Void>() {
+				@Override
+				public Void call() throws Exception {
+					int step = 1;
+					boolean play = true;
 
-				while (play) {
-					if (this.isCancelled()) {
-						break;
-					} else {
-						Digit digit = ImageDecoder.getInstance().readNextDigit();
-						play = play(step, numOfSteps, mainScene, digit);
-						step++;
+					while (play) {
+						if (this.isCancelled()) {
+							break;
+						} else {
+							Digit digit = ImageDecoder.getInstance().readNextDigit();
+							play = play(animate, step, numOfSteps, mainScene, digit);
+							step++;
+						}
 					}
+					return null;
 				}
-				return null;
+			};
+			Thread thread = new Thread(this.playTask);
+			thread.setDaemon(true);
+			thread.start();
+		} else {
+			int step = 1;
+			boolean play = true;
+
+			while (play) {
+				Digit digit = ImageDecoder.getInstance().readNextDigit();
+				play = play(animate, step, numOfSteps, mainScene, digit);
+				step++;
 			}
-		};
-		Thread thread = new Thread(this.playTask);
-		thread.setDaemon(true);
-		thread.start();
+		}
 	}
 
-	private boolean play(int step, int numOfSteps, MainScene mainScene, Digit digit) throws Exception {
+	private boolean play(boolean animate, int step, int numOfSteps, MainScene mainScene, Digit digit) throws Exception {
 		if (step <= numOfSteps) {
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					step(digit);
-					updateUI(mainScene, digit);
-				}
-			});
-			Thread.sleep(200);
+			if (animate) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						step(digit);
+						updateUI(mainScene, digit);
+					}
+				});
+				Thread.sleep(200);
+			} else {
+				step(digit);
+				updateUI(mainScene, digit);
+			}
 
 			step++;
 			return true;
@@ -241,26 +270,9 @@ public class Network {
 		this.outputLayer.calcActivationValues();
 		this.outputLayer.calculateProbability();
 		digit.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
+		Log.getInstance().logPredictions(digit);
 
-		Log.getInstance().add("Predictions for Label " + digit.getLabel() + ":");
-		StringBuilder probabilities = new StringBuilder("[");
-		for (Neuron neuron : this.outputLayer.getNeuronList()) {
-			if (neuron instanceof OutputNeuron) {
-				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				probabilities.append(outputNeuron.getRepresentationValue() + ": "
-						+ String.format("%.2f", outputNeuron.getProbability()));
-
-				if (this.outputLayer.getNeuronList().indexOf(outputNeuron) < this.outputLayer.getNeuronList().size()
-						- 1) {
-					probabilities.append(", ");
-				} else {
-					probabilities.append("]");
-				}
-			}
-		}
-		Log.getInstance().add(probabilities.toString());
-
-		// Certainty of predictions is larger if the network is uncertain of the prediction
+		// Larger if the network is uncertain of the prediction
 		double totalError = this.outputLayer.getTotalError();
 		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 
@@ -269,13 +281,7 @@ public class Network {
 			this.numOfErrors++;
 		}
 
-		// NEW Backpropagation
-		if (this.operationMode.equals(OperationMode.Train)) {
-			Log.getInstance().add("Backpropagation is enabled.");
-			// Minimize cost over all ran predictions: Calculate slope to reduce cost
-			// If slope is negative, reduce weight/bias; if it's positive, increase
-			// weight/bias
-		}
+		Backpropagation.getInstance().execute();
 	}
 
 	public void cancelPlayTask() {

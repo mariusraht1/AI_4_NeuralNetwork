@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  * Neural Network for handwritten digit recognition
  * 
  * @author Marius Raht
- * @version 17.07.2020-001
+ * @version 27.07.2020-001
  */
 public class Main extends Application {
 	private static Stage primaryStage;
@@ -23,8 +23,8 @@ public class Main extends Application {
 	}
 
 	public final static int MinNumOfSteps = 1;
-	public final static int MaxNumOfSteps = 500;
 	public final static int DefaultNumOfSteps = 1;
+	public final static double DefaultLearningRate = 0.1;
 
 	public final static File DefaultTrainImageFile = new File(Main.getDataDirectory().getPath() + "train-images.idx3-ubyte");
 	public final static File DefaultTrainLabelFile = new File(Main.getDataDirectory().getPath() + "train-labels.idx1-ubyte");

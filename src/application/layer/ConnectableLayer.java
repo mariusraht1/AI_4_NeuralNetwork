@@ -1,9 +1,9 @@
 package application.layer;
 
-import application.activation.ActivationFunction;
 import application.network.Connection;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
+import functions.ActivationFunction;
 
 public class ConnectableLayer extends Layer {
 	protected ActivationFunction activationFunction = ActivationFunction.ReLu;
@@ -29,7 +29,7 @@ public class ConnectableLayer extends Layer {
 		return totalError;
 	}
 
-	public void setError() {
+	public void calcErrors() {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
