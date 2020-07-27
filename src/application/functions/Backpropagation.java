@@ -20,14 +20,15 @@ public class Backpropagation {
 	}
 
 	// NEW Implement backpropagation
-	public void execute() {	
+	public void execute() {
 		if (Network.getInstance().getOperationMode().equals(OperationMode.Train)) {
 			Log.getInstance().add("Backpropagation is enabled.");
-			
+
 			Network.getInstance().getOutputLayer().calcErrors();
 			Network.getInstance().getOutputLayer().calcNewWeights();
-			
-			for(HiddenLayer hiddenLayer : Network.getInstance().getHiddenLayerList()) {
+
+			for (int i = Network.getInstance().getHiddenLayerList().size() - 1; i > 0; i--) {
+				HiddenLayer hiddenLayer = Network.getInstance().getHiddenLayerList().get(i);
 				hiddenLayer.calcErrors();
 			}
 		}

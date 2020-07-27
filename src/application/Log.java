@@ -28,7 +28,7 @@ public class Log {
 	private ListView<String> control;
 
 	private boolean isActive;
-	
+
 	public boolean getIsActive() {
 		return isActive;
 	}

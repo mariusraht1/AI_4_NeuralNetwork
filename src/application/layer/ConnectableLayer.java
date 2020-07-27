@@ -1,7 +1,6 @@
 package application.layer;
 
 import application.functions.ActivationFunction;
-import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
@@ -46,9 +45,7 @@ public class ConnectableLayer extends Layer {
 		for (Neuron targetNeuron : this.neuronList) {
 			if (targetNeuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableTargetNeuron = (ConnectableNeuron) targetNeuron;
-				for (Neuron sourceNeuron : layer.getNeuronList()) {
-					connectableTargetNeuron.getInboundConnectionList().add(new Connection(sourceNeuron));
-				}
+				connectableTargetNeuron.setPreviousLayer(layer);
 			}
 		}
 	}
@@ -59,7 +56,7 @@ public class ConnectableLayer extends Layer {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				result += connectableNeuron.getInboundConnectionList().size();
+				result += connectableNeuron.getPreviousLayer().getNeuronList().size();
 			}
 		}
 
@@ -108,11 +105,10 @@ public class ConnectableLayer extends Layer {
 				connectableNeuron.setBias(newBias);
 
 				// Calculate weight deltas and new weight
-				for (Connection inboundConnection : connectableNeuron.getInboundConnectionList()) {
-					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
+				for (Neuron sourceNeuron : connectableNeuron.getPreviousLayer().getNeuronList()) {
 					double weightDelta = sourceNeuron.getActivationValue() * gradient;
-					double newWeight = inboundConnection.getWeight() + weightDelta;
-					inboundConnection.setWeight(newWeight);
+					double newWeight = sourceNeuron.getWeight() + weightDelta;
+					sourceNeuron.setWeight(newWeight);
 				}
 			}
 		}

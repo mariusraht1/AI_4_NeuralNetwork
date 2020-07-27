@@ -168,7 +168,7 @@ public class MainScene {
 				} else {
 					Log.getInstance().setIsActive(false);
 				}
-				
+
 				if (ImageDecoder.getInstance().getImageFileContent() != null
 						&& ImageDecoder.getInstance().getLabelFileContent() != null) {
 					Network.getInstance().runPlay(animate, numOfSteps, this);

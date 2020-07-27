@@ -1,9 +1,5 @@
 package application.neuron;
 
-import java.util.ArrayList;
-
-import application.network.Connection;
-
 public abstract class Neuron {
 	private double activationValue = 0.0;
 
@@ -15,22 +11,20 @@ public abstract class Neuron {
 		this.activationValue = activationValue;
 	}
 
+	private double weight = 0.0;
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
+
 	protected Neuron() {
 	}
 
 	protected Neuron(double activationValue) {
 		this.activationValue = activationValue;
 	}
-
-	public double sumInboundValues(ArrayList<Connection> inboundConnectionList) {
-		double sum = 0.0;
-
-		for (Connection connection : inboundConnectionList) {
-			sum += (connection.getWeight() * connection.getSourceNeuron().getActivationValue());
-		}
-
-		return sum;
-	}
-
-
 }

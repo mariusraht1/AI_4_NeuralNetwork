@@ -14,7 +14,7 @@ public enum WeightInitialisation {
 		int numOfInboundNeurons = layer.getNumOfInboundNeurons();
 		int numOfOutboundNeurons = layer.getNeuronList().size();
 
-		switch(Network.getInstance().getDistribution()) {
+		switch (Network.getInstance().getDistribution()) {
 		case NORMAL:
 			max = Math.sqrt(2.0 / (numOfInboundNeurons + numOfOutboundNeurons));
 			min = 0.0;
@@ -24,7 +24,7 @@ public enum WeightInitialisation {
 			min -= max;
 			break;
 		}
-		
+
 		switch (this) {
 		case Leaky_ReLu:
 		case ReLu:
@@ -55,7 +55,7 @@ public enum WeightInitialisation {
 		return MathManager.getInstance().getRandom(min, max);
 	}
 
-	private double tanh(double min, double max) {	
+	private double tanh(double min, double max) {
 		return MathManager.getInstance().getRandom(min, max);
 	}
 }

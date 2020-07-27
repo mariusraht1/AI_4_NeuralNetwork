@@ -2,7 +2,6 @@ package application.functions;
 
 import application.layer.ConnectableLayer;
 import application.layer.Layer;
-import application.network.Connection;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
 
@@ -15,8 +14,8 @@ public enum ActivationFunction {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 				double activationValue = 0.0;
 
-				for (Connection inboundConnection : connectableNeuron.getInboundConnectionList()) {
-					double value = inboundConnection.getSourceNeuron().getActivationValue();
+				for (Neuron sourceNeuron : connectableNeuron.getPreviousLayer().getNeuronList()) {
+					double value = sourceNeuron.getActivationValue();
 
 					switch (this) {
 					case Leaky_ReLu:
@@ -33,8 +32,7 @@ public enum ActivationFunction {
 						break;
 					}
 
-					activationValue += inboundConnection.getWeight()
-							* inboundConnection.getSourceNeuron().getActivationValue();
+					activationValue += sourceNeuron.getWeight() * sourceNeuron.getActivationValue();
 				}
 
 				neuron.setActivationValue(activationValue);
@@ -48,7 +46,7 @@ public enum ActivationFunction {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 				double weight = 0.0;
 
-				for (Connection inboundConnection : connectableNeuron.getInboundConnectionList()) {
+				for (Neuron sourceNeuron : connectableNeuron.getPreviousLayer().getNeuronList()) {
 					switch (this) {
 					case Leaky_ReLu:
 						weight = WeightInitialisation.Leaky_ReLu.execute(layer);
@@ -64,7 +62,7 @@ public enum ActivationFunction {
 						break;
 					}
 
-					inboundConnection.setWeight(weight);
+					sourceNeuron.setWeight(weight);
 				}
 			}
 		}

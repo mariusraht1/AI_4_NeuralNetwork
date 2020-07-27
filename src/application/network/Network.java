@@ -271,7 +271,7 @@ public class Network {
 		this.outputLayer.initBiases();
 		this.outputLayer.calcActivationValues();
 		this.outputLayer.calculateProbabilities();
-		
+
 		digit.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
 		Log.getInstance().logPredictions(digit);
 
