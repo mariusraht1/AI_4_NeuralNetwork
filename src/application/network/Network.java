@@ -253,7 +253,6 @@ public class Network {
 		// History.getInstance().add();
 	}
 
-	// NEW Add biases: Init with random -1 to +1
 	public void step(Digit digit) {
 		Log.getInstance().add("******************************************");
 		Log.getInstance().add("* Label " + digit.getLabel());
@@ -264,10 +263,12 @@ public class Network {
 
 		for (HiddenLayer hiddenLayer : this.hiddenLayerList) {
 			hiddenLayer.initWeights();
+			hiddenLayer.initBiases();
 			hiddenLayer.calcActivationValues();
 		}
 
 		this.outputLayer.initWeights();
+		this.outputLayer.initBiases();
 		this.outputLayer.calcActivationValues();
 		this.outputLayer.calculateProbabilities();
 		

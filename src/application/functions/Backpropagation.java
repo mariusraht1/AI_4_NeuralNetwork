@@ -1,7 +1,7 @@
 package application.functions;
 
 import application.Log;
-import application.layer.ConnectableLayer;
+import application.layer.HiddenLayer;
 import application.network.Network;
 import application.network.OperationMode;
 
@@ -20,26 +20,18 @@ public class Backpropagation {
 	}
 
 	// NEW Implement backpropagation
-	public void execute() {
+	public void execute() {	
 		if (Network.getInstance().getOperationMode().equals(OperationMode.Train)) {
 			Log.getInstance().add("Backpropagation is enabled.");
 			// Minimize cost over all ran predictions: Calculate slope to reduce cost
 			// If slope is negative, reduce weight/bias; if it's positive, increase
 			// weight/bias
 			Network.getInstance().getOutputLayer().calcErrors();
-			Network.getInstance().getOutputLayer().calcGradientActivationValues();
+			Network.getInstance().getOutputLayer().calcNewWeights();
 			
-			for (int i = Network.getInstance().getHiddenLayerList().size() - 1; i > 0; i--) {
-				ConnectableLayer hiddenLayer = Network.getInstance().getHiddenLayerList().get(i);
+			for(HiddenLayer hiddenLayer : Network.getInstance().getHiddenLayerList()) {
 				hiddenLayer.calcErrors();
-				hiddenLayer.calcGradientActivationValues();
 			}
-
-			
-			
-			
-			// activationValue * error * learningRate
-			
 		}
 	}
 }

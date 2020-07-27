@@ -70,11 +70,20 @@ public class ConnectableLayer extends Layer {
 		this.activationFunction.initWeight(this);
 	}
 
+	public void initBiases() {
+		for (Neuron neuron : this.neuronList) {
+			if (neuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
+				connectableNeuron.setBias(MathManager.getInstance().getRandom(-1.0, 1.0));
+			}
+		}
+	}
+
 	public void calcActivationValues() {
 		this.activationFunction.execute(this);
 	}
 
-	// Gradient: (activationValue * (1 - activationValue)) * error * learningRate 
+	// Gradient: (activationValue * (1 - activationValue)) * error * learningRate
 	public void calcGradientActivationValues() {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
@@ -82,6 +91,29 @@ public class ConnectableLayer extends Layer {
 				double gradient = MathManager.getInstance().getGradient(connectableNeuron.getActivationValue());
 				neuron.setActivationValue(
 						gradient * connectableNeuron.getError() * Network.getInstance().getLearningRate());
+			}
+		}
+	}
+
+	public void calcNewWeights() {
+		for (Neuron neuron : this.neuronList) {
+			if (neuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
+
+				// Calculate gradient: activationValue * (1 - actionValue) * error *
+				// learningRate
+				double gradient = MathManager.getInstance().getGradient(connectableNeuron.getActivationValue())
+						* connectableNeuron.getError() * Network.getInstance().getLearningRate();
+				double newBias = connectableNeuron.getBias() + gradient;
+				connectableNeuron.setBias(newBias);
+				
+				// Calculate weight deltas and new weight
+				for (Connection inboundConnection : connectableNeuron.getInboundConnectionList()) {
+					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
+					double weightDelta = sourceNeuron.getActivationValue() * gradient;
+					double newWeight = inboundConnection.getWeight() + weightDelta;
+					inboundConnection.setWeight(newWeight);
+				}
 			}
 		}
 	}

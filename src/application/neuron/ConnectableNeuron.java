@@ -2,9 +2,10 @@ package application.neuron;
 
 import java.util.ArrayList;
 
+import application.layer.Layer;
 import application.network.Connection;
 
-public class ConnectableNeuron extends Neuron {
+public class ConnectableNeuron extends Neuron {	
 	private double bias = 0.0;
 
 	public double getBias() {
@@ -33,6 +34,17 @@ public class ConnectableNeuron extends Neuron {
 
 	public void setError(double error) {
 		this.error = error;
+	}
+
+	// OPT Replace inboundConnectionList by previousLayer.getNeuronList();
+	private Layer previousLayer;
+	
+	public Layer getPreviousLayer() {
+		return previousLayer;
+	}
+
+	public void setPreviousLayer(Layer previousLayer) {
+		this.previousLayer = previousLayer;
 	}
 	
 	private ArrayList<Connection> inboundConnectionList = new ArrayList<Connection>();
