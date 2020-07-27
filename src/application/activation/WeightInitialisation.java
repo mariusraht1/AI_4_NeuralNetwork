@@ -1,17 +1,17 @@
 package application.activation;
 
-import application.layer.Layer;
+import application.layer.ConnectableLayer;
 import application.network.Network;
 import application.utilities.MathManager;
 
 public enum WeightInitialisation {
 	Leaky_ReLu, ReLu, Sigmoid, Tanh;
 
-	public double execute(Layer layer) {
+	public double execute(ConnectableLayer layer) {
 		double weight = 0.0;
 		double min = 0.0;
 		double max = 0.0;
-		int numOfInboundNeurons = layer.getNumOfInboundConnections();
+		int numOfInboundNeurons = layer.getNumOfInboundNeurons();
 		int numOfOutboundNeurons = layer.getNeuronList().size();
 
 		switch(Network.getInstance().getDistribution()) {

@@ -1,30 +1,6 @@
 package application.neuron;
 
-import java.util.ArrayList;
-
-import application.network.Connection;
-
-public class HiddenNeuron extends Neuron{
-	private double bias = 0.0;
-
-	public double getBias() {
-		return bias;
-	}
-
-	public void setBias(double bias) {
-		this.bias = bias;
-	}
-	
-	private ArrayList<Connection> inboundConnectionList = new ArrayList<Connection>();
-
-	public ArrayList<Connection> getInboundConnectionList() {
-		return inboundConnectionList;
-	}
-
-	public void setInboundConnectionList(ArrayList<Connection> inboundConnectionList) {
-		this.inboundConnectionList = inboundConnectionList;
-	}
-	
+public class HiddenNeuron extends ConnectableNeuron{	
 	public HiddenNeuron() {
 		super();
 	}

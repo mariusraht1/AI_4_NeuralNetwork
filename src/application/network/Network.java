@@ -233,12 +233,12 @@ public class Network {
 		this.inputLayer.setActivationValues(grayTones);
 
 		for (HiddenLayer hiddenLayer : this.hiddenLayerList) {
-			hiddenLayer.initializeWeights();
-			hiddenLayer.setActivationValues();
+			hiddenLayer.initWeights();
+			hiddenLayer.calcActivationValues();
 		}
 
-		this.outputLayer.initializeWeights();
-		this.outputLayer.setActivationValues();
+		this.outputLayer.initWeights();
+		this.outputLayer.calcActivationValues();
 		this.outputLayer.calculateProbability();
 		digit.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
 
@@ -260,10 +260,9 @@ public class Network {
 		}
 		Log.getInstance().add(probabilities.toString());
 
-		// NEW Add rate of certainty to history by round
-		// Larger if the network is uncertain of the prediction
-		double cost = this.outputLayer.getCost(digit);
-		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", cost));
+		// Certainty of predictions is larger if the network is uncertain of the prediction
+		double totalError = this.outputLayer.getTotalError();
+		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 
 		this.numOfPredictions++;
 		if (digit.getPrediction() != digit.getLabel()) {

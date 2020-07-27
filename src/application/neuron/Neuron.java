@@ -14,16 +14,6 @@ public abstract class Neuron {
 	public void setActivationValue(double activationValue) {
 		this.activationValue = activationValue;
 	}
-	
-	private ArrayList<Connection> inboundConnectionList = new ArrayList<Connection>();
-
-	public ArrayList<Connection> getInboundConnectionList() {
-		return inboundConnectionList;
-	}
-
-	public void setInboundConnectionList(ArrayList<Connection> inboundConnectionList) {
-		this.inboundConnectionList = inboundConnectionList;
-	}
 
 	protected Neuron() {
 	}
@@ -41,4 +31,6 @@ public abstract class Neuron {
 
 		return sum;
 	}
+
+
 }

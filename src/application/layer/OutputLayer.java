@@ -2,11 +2,10 @@ package application.layer;
 
 import java.util.ArrayList;
 
-import application.network.Digit;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 
-public class OutputLayer extends Layer {
+public class OutputLayer extends ConnectableLayer {
 	public OutputLayer() {
 		super();
 		this.neuronList = new ArrayList<Neuron>();
@@ -21,25 +20,6 @@ public class OutputLayer extends Layer {
 		}
 
 		return mostActiveNeuron;
-	}
-
-	public double getCost(Digit digit) {
-		double cost = 0.0;
-
-		for (Neuron neuron : this.neuronList) {
-			if (neuron instanceof OutputNeuron) {
-				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				double resultBias = 0.0;
-				
-				if (outputNeuron.getRepresentationValue() == digit.getLabel()) {
-					resultBias = 1.0;
-				}
-
-				cost += Math.pow((neuron.getActivationValue() - resultBias), 2);
-			}
-		}
-
-		return cost;
 	}
 
 	public void calculateProbability() {

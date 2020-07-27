@@ -1,6 +1,6 @@
 package application.neuron;
 
-public class OutputNeuron extends Neuron {
+public class OutputNeuron extends ConnectableNeuron {
 	private int representationValue = 0;
 
 	public int getRepresentationValue() {
@@ -9,16 +9,6 @@ public class OutputNeuron extends Neuron {
 
 	public void setRepresentationValue(int representationValue) {
 		this.representationValue = representationValue;
-	}
-	
-	private double bias = 0.0;
-
-	public double getBias() {
-		return bias;
-	}
-
-	public void setBias(double bias) {
-		this.bias = bias;
 	}
 
 	private double probability = 0.0;
