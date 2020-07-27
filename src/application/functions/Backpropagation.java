@@ -23,9 +23,7 @@ public class Backpropagation {
 	public void execute() {	
 		if (Network.getInstance().getOperationMode().equals(OperationMode.Train)) {
 			Log.getInstance().add("Backpropagation is enabled.");
-			// Minimize cost over all ran predictions: Calculate slope to reduce cost
-			// If slope is negative, reduce weight/bias; if it's positive, increase
-			// weight/bias
+			
 			Network.getInstance().getOutputLayer().calcErrors();
 			Network.getInstance().getOutputLayer().calcNewWeights();
 			
