@@ -11,7 +11,7 @@ public enum WeightInitialisation {
 		double weight = 0.0;
 		double min = 0.0;
 		double max = 0.0;
-		int numOfInboundNeurons = layer.getNumOfInboundNeurons();
+		int numOfInboundNeurons = layer.getPreviousLayer().getNeuronList().size();
 		int numOfOutboundNeurons = layer.getNeuronList().size();
 
 		switch (Network.getInstance().getDistribution()) {

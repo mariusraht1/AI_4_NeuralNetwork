@@ -1,72 +1,61 @@
 package application.functions;
 
 import application.layer.ConnectableLayer;
-import application.layer.Layer;
-import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
 
 public enum ActivationFunction {
 	Leaky_ReLu, ReLu, Sigmoid, Tanh;
 
-	public void execute(Layer layer) {
+	public void execute(ConnectableLayer layer) {
 		for (Neuron neuron : layer.getNeuronList()) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double activationValue = 0.0;
+			double activationValue = 0.0;
 
-				for (Neuron sourceNeuron : connectableNeuron.getPreviousLayer().getNeuronList()) {
-					double value = sourceNeuron.getActivationValue();
+			for (Neuron sourceNeuron : layer.getPreviousLayer().getNeuronList()) {
+				double value = sourceNeuron.getActivationValue();
 
-					switch (this) {
-					case Leaky_ReLu:
-						leaky_relu(value);
-						break;
-					case ReLu:
-						relu(value);
-						break;
-					case Sigmoid:
-						sigmoid(value);
-						break;
-					case Tanh:
-						tanh(value);
-						break;
-					}
-
-					activationValue += sourceNeuron.getWeight() * sourceNeuron.getActivationValue();
+				switch (this) {
+				case Leaky_ReLu:
+					leaky_relu(value);
+					break;
+				case ReLu:
+					relu(value);
+					break;
+				case Sigmoid:
+					sigmoid(value);
+					break;
+				case Tanh:
+					tanh(value);
+					break;
 				}
 
-				neuron.setActivationValue(activationValue);
+				activationValue += sourceNeuron.getWeight() * sourceNeuron.getActivationValue();
 			}
+
+			neuron.setActivationValue(activationValue);
 		}
 	}
 
 	public void initWeight(ConnectableLayer layer) {
-		for (Neuron neuron : layer.getNeuronList()) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double weight = 0.0;
+		double weight = 0.0;
 
-				for (Neuron sourceNeuron : connectableNeuron.getPreviousLayer().getNeuronList()) {
-					switch (this) {
-					case Leaky_ReLu:
-						weight = WeightInitialisation.Leaky_ReLu.execute(layer);
-						break;
-					case ReLu:
-						weight = WeightInitialisation.ReLu.execute(layer);
-						break;
-					case Sigmoid:
-						weight = WeightInitialisation.Sigmoid.execute(layer);
-						break;
-					case Tanh:
-						weight = WeightInitialisation.Tanh.execute(layer);
-						break;
-					}
-
-					sourceNeuron.setWeight(weight);
-				}
+		for (Neuron sourceNeuron : layer.getPreviousLayer().getNeuronList()) {
+			switch (this) {
+			case Leaky_ReLu:
+				weight = WeightInitialisation.Leaky_ReLu.execute(layer);
+				break;
+			case ReLu:
+				weight = WeightInitialisation.ReLu.execute(layer);
+				break;
+			case Sigmoid:
+				weight = WeightInitialisation.Sigmoid.execute(layer);
+				break;
+			case Tanh:
+				weight = WeightInitialisation.Tanh.execute(layer);
+				break;
 			}
-		}
 
+			sourceNeuron.setWeight(weight);
+		}
 	}
 
 	private double relu(double value) {

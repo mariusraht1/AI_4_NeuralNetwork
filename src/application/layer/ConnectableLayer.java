@@ -16,6 +16,16 @@ public class ConnectableLayer extends Layer {
 	public void setActivationFunction(ActivationFunction activationFunction) {
 		this.activationFunction = activationFunction;
 	}
+	
+	private Layer previousLayer;
+
+	public Layer getPreviousLayer() {
+		return previousLayer;
+	}
+
+	public void setPreviousLayer(Layer previousLayer) {
+		this.previousLayer = previousLayer;
+	}
 
 	public double getTotalError() {
 		double totalError = 0.0;
@@ -39,28 +49,6 @@ public class ConnectableLayer extends Layer {
 				connectableNeuron.setError(error);
 			}
 		}
-	}
-
-	public void connectWith(Layer layer) {
-		for (Neuron targetNeuron : this.neuronList) {
-			if (targetNeuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableTargetNeuron = (ConnectableNeuron) targetNeuron;
-				connectableTargetNeuron.setPreviousLayer(layer);
-			}
-		}
-	}
-
-	public int getNumOfInboundNeurons() {
-		int result = 0;
-
-		for (Neuron neuron : this.neuronList) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				result += connectableNeuron.getPreviousLayer().getNeuronList().size();
-			}
-		}
-
-		return result;
 	}
 
 	public void initWeights() {
@@ -105,7 +93,7 @@ public class ConnectableLayer extends Layer {
 				connectableNeuron.setBias(newBias);
 
 				// Calculate weight deltas and new weight
-				for (Neuron sourceNeuron : connectableNeuron.getPreviousLayer().getNeuronList()) {
+				for (Neuron sourceNeuron : this.previousLayer.getNeuronList()) {
 					double weightDelta = sourceNeuron.getActivationValue() * gradient;
 					double newWeight = sourceNeuron.getWeight() + weightDelta;
 					sourceNeuron.setWeight(newWeight);

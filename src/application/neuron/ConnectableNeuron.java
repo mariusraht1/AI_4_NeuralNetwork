@@ -1,7 +1,5 @@
 package application.neuron;
 
-import application.layer.Layer;
-
 public class ConnectableNeuron extends Neuron {
 	private double bias = 0.0;
 
@@ -32,24 +30,4 @@ public class ConnectableNeuron extends Neuron {
 	public void setError(double error) {
 		this.error = error;
 	}
-
-	private Layer previousLayer;
-
-	public Layer getPreviousLayer() {
-		return previousLayer;
-	}
-
-	public void setPreviousLayer(Layer previousLayer) {
-		this.previousLayer = previousLayer;
-	}
-
-//	private ArrayList<Connection> inboundConnectionList = new ArrayList<Connection>();
-//
-//	public ArrayList<Connection> getInboundConnectionList() {
-//		return inboundConnectionList;
-//	}
-//
-//	public void setInboundConnectionList(ArrayList<Connection> inboundConnectionList) {
-//		this.inboundConnectionList = inboundConnectionList;
-//	}
 }

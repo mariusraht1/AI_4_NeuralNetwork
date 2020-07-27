@@ -173,7 +173,7 @@ public class Network {
 		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
 			hiddenLayer.getNeuronList().add(new HiddenNeuron());
 		}
-		hiddenLayer.connectWith(prevLayer);
+		hiddenLayer.setPreviousLayer(prevLayer);
 		this.hiddenLayerList.add(hiddenLayer);
 	}
 
@@ -182,7 +182,7 @@ public class Network {
 			this.outputLayer.getNeuronList().add(new OutputNeuron(i));
 		}
 		HiddenLayer lastHiddenLayer = this.hiddenLayerList.get(this.hiddenLayerList.size() - 1);
-		this.outputLayer.connectWith(lastHiddenLayer);
+		this.outputLayer.setPreviousLayer(lastHiddenLayer);
 	}
 
 	public int getNumOfInputNeurons() {
