@@ -45,29 +45,17 @@ public class ConnectableLayer extends Layer {
 		this.activationFunction.initWeight(this);
 	}
 
-	// Gradient: (activationValue * (1 - activationValue)) * error * learningRate
-	public void calcGradientActivationValues() {
-		for (Neuron neuron : this.neuronList) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double gradient = this.activationFunction.gradient(connectableNeuron.getActivationValue());
-				neuron.setActivationValue(
-						gradient * connectableNeuron.getError() * Network.getInstance().getLearningRate());
-			}
-		}
-	}
-
 	public void calcNewWeights() {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 
 				// Calculate gradient:
-				// activationValue * (1 - actionValue) * error * learningRate
+				// activationValue * (1 - activationValue) * error * learningRate
 				double gradient = this.activationFunction.gradient(connectableNeuron.getActivationValue())
 						* connectableNeuron.getError() * Network.getInstance().getLearningRate();
-				double newBias = connectableNeuron.getBias() + gradient;
-				connectableNeuron.setBias(newBias);
+				//double newBias = connectableNeuron.getBias() + gradient;
+				//connectableNeuron.setBias(newBias);
 
 				// Calculate weight deltas and new weight
 				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {

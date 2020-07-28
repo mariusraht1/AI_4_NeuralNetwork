@@ -18,7 +18,7 @@ public enum ActivationFunction {
 					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
 					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
 				}
-				activationValue += connectableNeuron.getBias();
+				//activationValue += connectableNeuron.getBias();
 
 				switch (this) {
 				case Leaky_ReLu:

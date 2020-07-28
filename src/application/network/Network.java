@@ -141,8 +141,8 @@ public class Network {
 
 	public void generateLayers() {
 		InputLayer.generate();
-		HiddenLayer.generate(36);
-		HiddenLayer.generate(14);
+		HiddenLayer.generate(128);
+		HiddenLayer.generate(64);
 		OutputLayer.generate();
 	}
 
