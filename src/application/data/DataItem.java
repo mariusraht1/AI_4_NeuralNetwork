@@ -9,7 +9,7 @@ public class DataItem {
 		return PossibleTargetValues;
 	}
 
-	protected void setPossibleTargetValues(ArrayList<Integer> possibleTargetValues) {
+	protected static void setPossibleTargetValues(ArrayList<Integer> possibleTargetValues) {
 		PossibleTargetValues = possibleTargetValues;
 	}
 

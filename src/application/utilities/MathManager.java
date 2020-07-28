@@ -70,8 +70,4 @@ public class MathManager {
 
 		return number;
 	}
-
-	public double getGradient(double value) {
-		return value * (1 - value);
-	}
 }

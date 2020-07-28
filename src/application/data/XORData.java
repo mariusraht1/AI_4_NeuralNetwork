@@ -12,7 +12,6 @@ public class XORData extends DataItem {
 
 	public XORData(int label, double[] initialValues) {
 		super(label, initialValues);
-		super.setPossibleTargetValues(new ArrayList<Integer>(Arrays.asList(0, 1)));
 	}
 
 	public static ArrayList<DataItem> getList(int size) {
@@ -28,5 +27,9 @@ public class XORData extends DataItem {
 
 	public static int getNumOfInputNeurons() {
 		return 2;
+	}
+
+	public static ArrayList<Integer> getPossibleTargetValues() {
+		return new ArrayList<Integer>(Arrays.asList(0, 1));
 	}
 }

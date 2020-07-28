@@ -1,6 +1,5 @@
 package application.functions;
 
-import application.Log;
 import application.layer.HiddenLayer;
 import application.network.Network;
 import application.network.OperationMode;
@@ -21,8 +20,6 @@ public class Backpropagation {
 
 	public void execute() {
 		if (Network.getInstance().getOperationMode().equals(OperationMode.TRAIN)) {
-			Log.getInstance().add("Execute Backpropagation.");
-
 			Network.getInstance().getOutputLayer().calcErrors();
 			Network.getInstance().getOutputLayer().calcNewWeights();
 

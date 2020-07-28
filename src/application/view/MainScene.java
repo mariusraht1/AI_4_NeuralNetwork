@@ -149,7 +149,7 @@ public class MainScene {
 			Network.getInstance().init();
 			initialize();
 
-			Log.getInstance().add("Set options and read files successfully.");
+			Log.getInstance().add("Optionen erfolgreich gespeichert und Dateien geladen.");
 		}
 	}
 
@@ -177,7 +177,7 @@ public class MainScene {
 						&& ImageDecoder.getInstance().getLabelFileContent() != null) {
 					Network.getInstance().runPlay(animate, numOfSteps, this);
 				} else {
-					Log.getInstance().add("Optionen bitte setzen und bestätigen.");
+					Log.getInstance().add("Zuerst bitte Optionen setzen und bestätigen.");
 				}
 			}
 		} catch (Exception e) {

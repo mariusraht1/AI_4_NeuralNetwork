@@ -2,6 +2,8 @@ package application.layer;
 
 import java.util.ArrayList;
 
+import application.data.DataInputType;
+import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
@@ -10,6 +12,18 @@ public class OutputLayer extends ConnectableLayer {
 	public OutputLayer() {
 		super();
 		this.neuronList = new ArrayList<Neuron>();
+	}
+
+	public static void generate() {
+		OutputLayer outputLayer = new OutputLayer();
+		DataInputType dataInputType = Network.getInstance().getDataInputType();
+
+		for (int i = 0; i < dataInputType.getPossibleTargetValues().size(); i++) {
+			outputLayer.getNeuronList().add(new OutputNeuron(dataInputType.getPossibleTargetValues().get(i)));
+		}
+		Network.getInstance().setOutputLayer(outputLayer);
+		Layer prevLayer = outputLayer.getPreviousLayer();
+		outputLayer.connectWith(prevLayer);
 	}
 
 	public OutputNeuron getMostActiveNeuron() {

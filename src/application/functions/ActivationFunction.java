@@ -68,6 +68,23 @@ public enum ActivationFunction {
 		}
 	}
 
+	public double gradient(double value) {
+		double result = 0.0;
+
+		switch (this) {
+		case Leaky_ReLu:
+		case ReLu:
+		case Tanh:
+			result = ((value <= 0) ? 0.0 : 1.0);
+			break;
+		default:
+			result = value * (1 - value);
+			break;
+		}
+
+		return result;
+	}
+
 	private double relu(double value) {
 		if (value < 0) {
 			value = 0.0;

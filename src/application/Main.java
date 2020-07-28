@@ -24,7 +24,7 @@ public class Main extends Application {
 
 	public final static int MinNumOfSteps = 1;
 	public final static int DefaultNumOfSteps = 1;
-	public final static double DefaultLearningRate = 0.1;
+	public final static double DefaultLearningRate = 0.5;
 
 	public final static File DefaultTrainImageFile = new File(
 			Main.getDataDirectory().getPath() + "train-images.idx3-ubyte");

@@ -5,10 +5,9 @@ import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
-import application.utilities.MathManager;
 
 public class ConnectableLayer extends Layer {
-	protected ActivationFunction activationFunction = ActivationFunction.ReLu;
+	protected ActivationFunction activationFunction = ActivationFunction.Sigmoid;
 
 	public ActivationFunction getActivationFunction() {
 		return activationFunction;
@@ -55,7 +54,7 @@ public class ConnectableLayer extends Layer {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double gradient = MathManager.getInstance().getGradient(connectableNeuron.getActivationValue());
+				double gradient = this.activationFunction.gradient(connectableNeuron.getActivationValue());
 				neuron.setActivationValue(
 						gradient * connectableNeuron.getError() * Network.getInstance().getLearningRate());
 			}
@@ -69,7 +68,7 @@ public class ConnectableLayer extends Layer {
 
 				// Calculate gradient:
 				// activationValue * (1 - actionValue) * error * learningRate
-				double gradient = MathManager.getInstance().getGradient(connectableNeuron.getActivationValue())
+				double gradient = this.activationFunction.gradient(connectableNeuron.getActivationValue())
 						* connectableNeuron.getError() * Network.getInstance().getLearningRate();
 				double newBias = connectableNeuron.getBias() + gradient;
 				connectableNeuron.setBias(newBias);

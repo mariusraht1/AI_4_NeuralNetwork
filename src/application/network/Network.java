@@ -10,19 +10,14 @@ import application.functions.Backpropagation;
 import application.functions.Distribution;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
-import application.layer.Layer;
 import application.layer.OutputLayer;
-import application.neuron.HiddenNeuron;
-import application.neuron.InputNeuron;
-import application.neuron.Neuron;
-import application.neuron.OutputNeuron;
 import application.view.MainScene;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.Cursor;
 
 public class Network {
-	private DataInputType dataInputType = DataInputType.XOR;
+	private DataInputType dataInputType = DataInputType.DIGIT;
 
 	public DataInputType getDataInputType() {
 		return dataInputType;
@@ -52,16 +47,6 @@ public class Network {
 		this.distribution = distribution;
 	}
 
-	private int numOfNeuronsInputLayer = 0;
-
-	public int getNumOfNeurons() {
-		return numOfNeuronsInputLayer;
-	}
-
-	public void setNumOfNeurons(int numOfNeurons) {
-		this.numOfNeuronsInputLayer = numOfNeurons;
-	}
-
 	private InputLayer inputLayer;
 
 	public InputLayer getInputLayer() {
@@ -71,8 +56,6 @@ public class Network {
 	public void setInputLayer(InputLayer inputLayer) {
 		this.inputLayer = inputLayer;
 	}
-
-	private final int numOfNeuronsHiddenLayer = 16;
 
 	private ArrayList<HiddenLayer> hiddenLayerList;
 
@@ -150,45 +133,17 @@ public class Network {
 	public void init() {
 		this.numOfPredictions = 0;
 		this.numOfErrors = 0;
-		this.numOfNeuronsInputLayer = dataInputType.getNumOfInputNeurons();
 		this.learningRate = Main.DefaultLearningRate;
-
-		this.inputLayer = new InputLayer();
 		this.hiddenLayerList = new ArrayList<HiddenLayer>();
-		this.outputLayer = new OutputLayer();
 
 		generateLayers();
 	}
 
 	public void generateLayers() {
-		generateInputLayer();
-		generateHiddenLayer(this.numOfNeuronsHiddenLayer);
-		generateHiddenLayer(this.numOfNeuronsHiddenLayer);
-		generateOutputLayer();
-	}
-
-	private void generateInputLayer() {
-		for (int i = 0; i < this.numOfNeuronsInputLayer; i++) {
-			this.inputLayer.getNeuronList().add(new InputNeuron());
-		}
-	}
-
-	private void generateHiddenLayer(int numOfNeurons) {
-		HiddenLayer hiddenLayer = new HiddenLayer();
-		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
-			hiddenLayer.getNeuronList().add(new HiddenNeuron());
-		}
-		this.hiddenLayerList.add(hiddenLayer);
-		Layer prevLayer = hiddenLayer.getPreviousLayer();
-		hiddenLayer.connectWith(prevLayer);
-	}
-
-	private void generateOutputLayer() {
-		for (int i = 0; i < dataInputType.getPossibleTargetValues().size(); i++) {
-			this.outputLayer.getNeuronList().add(new OutputNeuron(dataInputType.getPossibleTargetValues().get(i)));
-		}
-		Layer prevLayer = this.outputLayer.getPreviousLayer();
-		this.outputLayer.connectWith(prevLayer);
+		InputLayer.generate();
+		HiddenLayer.generate(36);
+		HiddenLayer.generate(14);
+		OutputLayer.generate();
 	}
 
 	public void runPlay(boolean animate, int numOfSteps, MainScene mainScene) throws Exception {
@@ -261,10 +216,6 @@ public class Network {
 
 	// FIX Model doesn't get better after even 50.000 rounds
 	public void step(DataItem dataItem) {
-		Log.getInstance().add("******************************************");
-		Log.getInstance().add("* Label " + dataItem.getLabel());
-		Log.getInstance().add("******************************************");
-
 		this.inputLayer.setActivationValues(dataItem.getInitialValues());
 		this.outputLayer.setTargetValues(dataItem.getLabel());
 
@@ -295,11 +246,6 @@ public class Network {
 			this.playTask.cancel();
 			Main.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
 		}
-	}
-
-	public int getPrediction() {
-		Neuron neuron = this.outputLayer.getMostActiveNeuron();
-		return this.outputLayer.getNeuronList().indexOf(neuron);
 	}
 
 	public double getSuccessRate() {

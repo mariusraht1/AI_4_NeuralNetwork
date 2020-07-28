@@ -23,7 +23,6 @@ public class DigitImage extends DataItem {
 		this.image = image;
 
 		super.setInitialValues(toGrayDoubleArray());
-		super.setPossibleTargetValues(new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)));
 	}
 
 	public WritableImage toWritableImage() {
@@ -75,5 +74,9 @@ public class DigitImage extends DataItem {
 
 	public static int getNumOfInputNeurons() {
 		return ImageDecoder.getInstance().getImageWidth() * ImageDecoder.getInstance().getImageHeight();
+	}
+
+	public static ArrayList<Integer> getPossibleTargetValues() {
+		return new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
 	}
 }
