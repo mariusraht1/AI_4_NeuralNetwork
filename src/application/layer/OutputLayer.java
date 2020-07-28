@@ -37,7 +37,8 @@ public class OutputLayer extends ConnectableLayer {
 		return mostActiveNeuron;
 	}
 
-	public void calcProbabilities() {
+	// Softmax
+	public void calcActivationValues() {
 		double total = 0.0;
 
 		for (Neuron neuron : this.neuronList) {
@@ -56,7 +57,7 @@ public class OutputLayer extends ConnectableLayer {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double error = connectableNeuron.getTargetValue() - connectableNeuron.getActivationValue();
+				double error = connectableNeuron.getActivationValue() - connectableNeuron.getTargetValue();
 				connectableNeuron.setError(error);
 			}
 		}

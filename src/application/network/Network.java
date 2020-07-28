@@ -214,7 +214,7 @@ public class Network {
 		// History.getInstance().add();
 	}
 
-	// FIX Model doesn't get better after even 50.000 rounds
+	// FIX Output probabilities don't change
 	public void step(DataItem dataItem) {
 		this.inputLayer.setActivationValues(dataItem.getInitialValues());
 		this.outputLayer.setTargetValues(dataItem.getLabel());
@@ -224,7 +224,6 @@ public class Network {
 		}
 
 		this.outputLayer.calcActivationValues();
-		this.outputLayer.calcProbabilities();
 
 		dataItem.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
 		Log.getInstance().logPredictions(dataItem);
@@ -235,6 +234,7 @@ public class Network {
 		}
 
 		// Larger if the network is uncertain of the prediction
+		Network.getInstance().getOutputLayer().calcErrors();
 		double totalError = this.outputLayer.getTotalError();
 		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 

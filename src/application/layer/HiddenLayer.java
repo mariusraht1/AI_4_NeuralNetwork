@@ -13,7 +13,11 @@ public class HiddenLayer extends ConnectableLayer {
 		super();
 		this.neuronList = new ArrayList<Neuron>();
 	}
-
+	
+	public void calcActivationValues() {
+		this.activationFunction.execute(this);
+	}
+	
 	public void calcErrors() {
 		Layer nextLayer = this.getNextLayer();
 

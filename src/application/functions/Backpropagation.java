@@ -18,9 +18,9 @@ public class Backpropagation {
 	private Backpropagation() {
 	}
 
+	// FIX Error is getting greater
 	public void execute() {
 		if (Network.getInstance().getOperationMode().equals(OperationMode.TRAIN)) {
-			Network.getInstance().getOutputLayer().calcErrors();
 			Network.getInstance().getOutputLayer().calcNewWeights();
 
 			for (int i = Network.getInstance().getHiddenLayerList().size() - 1; i > 0; i--) {

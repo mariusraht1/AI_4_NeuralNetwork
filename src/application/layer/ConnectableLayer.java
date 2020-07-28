@@ -45,10 +45,6 @@ public class ConnectableLayer extends Layer {
 		this.activationFunction.initWeight(this);
 	}
 
-	public void calcActivationValues() {
-		this.activationFunction.execute(this);
-	}
-
 	// Gradient: (activationValue * (1 - activationValue)) * error * learningRate
 	public void calcGradientActivationValues() {
 		for (Neuron neuron : this.neuronList) {
