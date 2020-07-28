@@ -1,6 +1,6 @@
 package application.neuron;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import application.network.Connection;
 import application.utilities.MathManager;
@@ -36,13 +36,13 @@ public class ConnectableNeuron extends Neuron {
 		this.error = error;
 	}
 
-	private List<Connection> inboundConnections = null;
+	private ArrayList<Connection> inboundConnections = new ArrayList<Connection>();
 
-	public List<Connection> getInboundConnections() {
+	public ArrayList<Connection> getInboundConnections() {
 		return inboundConnections;
 	}
 
-	public void setInboundConnections(List<Connection> inboundConnections) {
+	public void setInboundConnections(ArrayList<Connection> inboundConnections) {
 		this.inboundConnections = inboundConnections;
 	}
 

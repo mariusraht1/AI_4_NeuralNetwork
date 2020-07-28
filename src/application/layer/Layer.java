@@ -30,7 +30,7 @@ public abstract class Layer {
 			}
 		} else if (this instanceof HiddenLayer) {
 			int indexOfHiddenLayer = Network.getInstance().getHiddenLayerList().indexOf(this);
-			if (Network.getInstance().getHiddenLayerList().size() > indexOfHiddenLayer) {
+			if (Network.getInstance().getHiddenLayerList().size() - 1 > indexOfHiddenLayer) {
 				result = Network.getInstance().getHiddenLayerList().get(indexOfHiddenLayer + 1);
 			} else {
 				result = Network.getInstance().getOutputLayer();

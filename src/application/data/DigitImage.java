@@ -1,20 +1,12 @@
-package application.network;
+package application.data;
+
+import java.util.ArrayList;
 
 import application.utilities.ImageDecoder;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-public class Digit {
-	private int label;
-
-	public int getLabel() {
-		return label;
-	}
-
-	public void setLabel(int label) {
-		this.label = label;
-	}
-
+public class DigitImage extends DataItem {
 	private byte[] image;
 
 	public byte[] getImage() {
@@ -25,19 +17,11 @@ public class Digit {
 		this.image = image;
 	}
 
-	private int prediction;
-
-	public int getPrediction() {
-		return prediction;
-	}
-
-	public void setPrediction(int prediction) {
-		this.prediction = prediction;
-	}
-
-	public Digit(int label, byte[] image) {
-		this.label = label;
+	public DigitImage(int label, byte[] image) {
+		super(label);
 		this.image = image;
+
+		super.setInitialValues(toGrayDoubleArray());
 	}
 
 	public WritableImage toWritableImage() {
@@ -75,5 +59,15 @@ public class Digit {
 		}
 
 		return gray;
+	}
+
+	public static ArrayList<DataItem> getList(int size) {
+		ArrayList<DataItem> dataItems = new ArrayList<DataItem>();
+
+		for (int i = 0; i < size; i++) {
+			dataItems.add(ImageDecoder.getInstance().readRandomDigit());
+		}
+
+		return dataItems;
 	}
 }

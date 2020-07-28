@@ -19,9 +19,8 @@ public class Backpropagation {
 	private Backpropagation() {
 	}
 
-	// NEW Implement backpropagation
 	public void execute() {
-		if (Network.getInstance().getOperationMode().equals(OperationMode.Train)) {
+		if (Network.getInstance().getOperationMode().equals(OperationMode.TRAIN)) {
 			Log.getInstance().add("Execute Backpropagation.");
 
 			Network.getInstance().getOutputLayer().calcErrors();

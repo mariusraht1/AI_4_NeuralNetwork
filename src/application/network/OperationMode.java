@@ -1,7 +1,7 @@
 package application.network;
 
 public enum OperationMode {
-	Train("Netzwerk trainieren"), Test("Netzwerk testen");
+	TRAIN("Netzwerk trainieren"), TEST("Netzwerk testen");
 
 	private String description = "";
 

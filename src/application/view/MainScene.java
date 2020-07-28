@@ -5,7 +5,8 @@ import java.io.File;
 import application.History;
 import application.Log;
 import application.Main;
-import application.network.Digit;
+import application.data.DataItem;
+import application.data.DigitImage;
 import application.network.Network;
 import application.network.OperationMode;
 import application.utilities.FileManager;
@@ -39,7 +40,7 @@ public class MainScene {
 	@FXML
 	private CheckBox chk_animate;
 	@FXML
-	private ListView<Digit> lv_results;
+	private ListView<DigitImage> lv_results;
 	@FXML
 	private ListView<String> lv_console;
 
@@ -60,29 +61,32 @@ public class MainScene {
 		lv_results.getItems().clear();
 	}
 
-	public void showResult(Digit digit) {
+	public void showResult(boolean animate, DataItem dataItem) {
 		double successRate = Network.getInstance().getSuccessRate();
 		lbl_results.setText("Ergebnisse (" + String.format("%.2f", successRate) + " %)");
 
-		lv_results.getItems().add(digit);
-		lv_results.scrollTo(digit);
-		lv_results.setCellFactory(listview -> new ListCell<Digit>() {
-			private ImageView imageView = new ImageView();
+		if (animate && dataItem instanceof DigitImage) {
+			DigitImage digit = (DigitImage) dataItem;
+			lv_results.getItems().add(digit);
+			lv_results.scrollTo(digit);
+			lv_results.setCellFactory(listview -> new ListCell<DigitImage>() {
+				private ImageView imageView = new ImageView();
 
-			@Override
-			protected void updateItem(final Digit item, final boolean empty) {
-				super.updateItem(item, empty);
+				@Override
+				protected void updateItem(final DigitImage item, final boolean empty) {
+					super.updateItem(item, empty);
 
-				if (empty) {
-					setText("");
-					setGraphic(null);
-				} else {
-					setText(item.getLabel() + " => " + item.getPrediction());
-					imageView.setImage(item.toWritableImage());
-					setGraphic(imageView);
+					if (empty) {
+						setText("");
+						setGraphic(null);
+					} else {
+						setText(item.getLabel() + " => " + item.getPrediction());
+						imageView.setImage(item.toWritableImage());
+						setGraphic(imageView);
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	@FXML

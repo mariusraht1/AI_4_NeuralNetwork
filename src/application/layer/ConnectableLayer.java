@@ -101,7 +101,7 @@ public class ConnectableLayer extends Layer {
 			}
 		} else if (this.equals(Network.getInstance().getOutputLayer())) {
 			int maxIndex = Network.getInstance().getHiddenLayerList().size() - 1;
-			Network.getInstance().getHiddenLayerList().get(maxIndex);
+			result = Network.getInstance().getHiddenLayerList().get(maxIndex);
 		}
 
 		return result;

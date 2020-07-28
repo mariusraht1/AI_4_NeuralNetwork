@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import application.Log;
 import application.Main;
+import application.data.DataInputType;
+import application.data.DataItem;
+import application.data.DigitImage;
+import application.data.XORData;
 import application.functions.Backpropagation;
 import application.functions.Distribution;
 import application.layer.HiddenLayer;
@@ -18,9 +22,20 @@ import application.utilities.ImageDecoder;
 import application.view.MainScene;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.Cursor;
 
 public class Network {
-	private OperationMode operationMode = OperationMode.Train;
+	private DataInputType dataInputType = DataInputType.XOR;
+
+	public DataInputType getDataInputType() {
+		return dataInputType;
+	}
+
+	public void setDataInputType(DataInputType dataInputType) {
+		this.dataInputType = dataInputType;
+	}
+
+	private OperationMode operationMode = OperationMode.TRAIN;
 
 	public OperationMode getOperationMode() {
 		return operationMode;
@@ -60,7 +75,7 @@ public class Network {
 		this.inputLayer = inputLayer;
 	}
 
-	private final int numOfNeuronsHiddenLayer = 32;
+	private final int numOfNeuronsHiddenLayer = 16;
 
 	private ArrayList<HiddenLayer> hiddenLayerList;
 
@@ -173,8 +188,8 @@ public class Network {
 		for (int i = 0; i < this.numOfNeuronsHiddenLayer; i++) {
 			hiddenLayer.getNeuronList().add(new HiddenNeuron());
 		}
-		hiddenLayer.connectWith(prevLayer);
 		this.hiddenLayerList.add(hiddenLayer);
+		hiddenLayer.connectWith(prevLayer);
 	}
 
 	private void generateOutputLayer() {
@@ -190,6 +205,18 @@ public class Network {
 	}
 
 	public void runPlay(boolean animate, int numOfSteps, MainScene mainScene) throws Exception {
+		Main.getPrimaryStage().getScene().setCursor(Cursor.WAIT);
+
+		ArrayList<DataItem> dataItems = new ArrayList<DataItem>();
+		for (int i = 0; i < numOfSteps; i++) {
+			DigitImage digit = ImageDecoder.getInstance().readRandomDigit();
+			dataItems.add(digit);
+
+			XORData xorData = new XORData(1, new double[] { 1, 1 });
+			dataItems.add(xorData);
+
+		}
+
 		if (animate) {
 			this.playTask = new Task<Void>() {
 				@Override
@@ -201,8 +228,7 @@ public class Network {
 						if (this.isCancelled()) {
 							break;
 						} else {
-							Digit digit = ImageDecoder.getInstance().readNextDigit();
-							play = play(animate, step, numOfSteps, mainScene, digit);
+							play = play(animate, step, numOfSteps, mainScene);
 							step++;
 						}
 					}
@@ -217,27 +243,29 @@ public class Network {
 			boolean play = true;
 
 			while (play) {
-				Digit digit = ImageDecoder.getInstance().readNextDigit();
-				play = play(animate, step, numOfSteps, mainScene, digit);
+				play = play(animate, step, numOfSteps, mainScene);
 				step++;
 			}
 		}
+		Main.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
 	}
 
-	private boolean play(boolean animate, int step, int numOfSteps, MainScene mainScene, Digit digit) throws Exception {
+	private boolean play(boolean animate, int step, int numOfSteps, MainScene mainScene) throws Exception {
 		if (step <= numOfSteps) {
 			if (animate) {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
+						DigitImage digit = ImageDecoder.getInstance().readRandomDigit();
 						step(digit);
-						updateUI(mainScene, digit);
+						updateUI(animate, mainScene, digit);
 					}
 				});
 				Thread.sleep(200);
 			} else {
+				DigitImage digit = ImageDecoder.getInstance().readRandomDigit();
 				step(digit);
-				updateUI(mainScene, digit);
+				updateUI(animate, mainScene, digit);
 			}
 
 			step++;
@@ -247,19 +275,20 @@ public class Network {
 		}
 	}
 
-	private void updateUI(MainScene mainScene, Digit digit) {
-		mainScene.showResult(digit);
+	private void updateUI(boolean animate, MainScene mainScene, DataItem dataItem) {
+		mainScene.showResult(animate, dataItem);
 		// NEW Add results to history
 		// History.getInstance().add();
 	}
 
-	public void step(Digit digit) {
+	public void step(DataItem dataItem) {
 		Log.getInstance().add("******************************************");
-		Log.getInstance().add("* Label " + digit.getLabel());
+		Log.getInstance().add("* Label " + dataItem.getLabel());
 		Log.getInstance().add("******************************************");
 
-		double[] grayTones = digit.toGrayDoubleArray();
-		this.inputLayer.setActivationValues(grayTones);
+		// dataItem.setInitialValues(digit.toGrayDoubleArray());
+		dataItem.setInitialValues(new double[] { 1.0, 1.0 });
+		this.inputLayer.setActivationValues(dataItem.getInitialValues());
 
 		for (HiddenLayer hiddenLayer : this.hiddenLayerList) {
 			hiddenLayer.calcActivationValues();
@@ -268,15 +297,15 @@ public class Network {
 		this.outputLayer.calcActivationValues();
 		this.outputLayer.calculateProbabilities();
 
-		digit.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
-		Log.getInstance().logPredictions(digit);
+		dataItem.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
+		Log.getInstance().logPredictions(dataItem);
 
 		// Larger if the network is uncertain of the prediction
 		double totalError = this.outputLayer.getTotalError();
 		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 
 		this.numOfPredictions++;
-		if (digit.getPrediction() != digit.getLabel()) {
+		if (dataItem.getPrediction() != dataItem.getLabel()) {
 			this.numOfErrors++;
 		}
 
@@ -286,6 +315,7 @@ public class Network {
 	public void cancelPlayTask() {
 		if (this.playTask != null && this.playTask.isRunning()) {
 			this.playTask.cancel();
+			Main.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
 		}
 	}
 

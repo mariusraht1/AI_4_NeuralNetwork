@@ -2,8 +2,8 @@ package application;
 
 import java.util.ArrayList;
 
+import application.data.DataItem;
 import application.layer.OutputLayer;
-import application.network.Digit;
 import application.network.Network;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
@@ -73,9 +73,9 @@ public class Log {
 		Log.getInstance().add("=== " + processName + " ===============================================");
 	}
 
-	public void logPredictions(Digit digit) {
+	public void logPredictions(DataItem dataItem) {
 		OutputLayer outputLayer = Network.getInstance().getOutputLayer();
-		Log.getInstance().add("Predictions for Label " + digit.getLabel() + ":");
+		Log.getInstance().add("Predictions for Label " + dataItem.getLabel() + ":");
 		StringBuilder probabilities = new StringBuilder("[");
 		for (Neuron neuron : outputLayer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
