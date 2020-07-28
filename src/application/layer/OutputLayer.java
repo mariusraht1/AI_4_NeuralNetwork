@@ -23,7 +23,7 @@ public class OutputLayer extends ConnectableLayer {
 		return mostActiveNeuron;
 	}
 
-	public void calculateProbabilities() {
+	public void calcProbabilities() {
 		double total = 0.0;
 
 		for (Neuron neuron : this.neuronList) {
@@ -44,6 +44,19 @@ public class OutputLayer extends ConnectableLayer {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 				double error = connectableNeuron.getTargetValue() - connectableNeuron.getActivationValue();
 				connectableNeuron.setError(error);
+			}
+		}
+	}
+
+	public void setTargetValues(int target) {
+		for (Neuron neuron : this.neuronList) {
+			if (neuron instanceof OutputNeuron) {
+				OutputNeuron outputNeuron = (OutputNeuron) neuron;
+				if (outputNeuron.getRepresentationValue() == target) {
+					outputNeuron.setTargetValue(1.0);
+				} else {
+					outputNeuron.setTargetValue(0.0);
+				}
 			}
 		}
 	}

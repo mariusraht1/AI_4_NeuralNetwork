@@ -22,16 +22,16 @@ public enum ActivationFunction {
 
 				switch (this) {
 				case Leaky_ReLu:
-					leaky_relu(activationValue);
+					activationValue = leaky_relu(activationValue);
 					break;
 				case ReLu:
-					relu(activationValue);
+					activationValue = relu(activationValue);
 					break;
 				case Sigmoid:
-					sigmoid(activationValue);
+					activationValue = sigmoid(activationValue);
 					break;
 				case Tanh:
-					tanh(activationValue);
+					activationValue = tanh(activationValue);
 					break;
 				}
 

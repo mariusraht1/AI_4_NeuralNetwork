@@ -19,7 +19,7 @@ public class XORData extends DataItem {
 		ArrayList<DataItem> dataItems = new ArrayList<DataItem>();
 
 		for (int i = 0; i < size; i++) {
-			int randomIndex = MathManager.getInstance().getRandom(0, PossibleCombinations.size());
+			int randomIndex = MathManager.getInstance().getRandom(0, PossibleCombinations.size() - 1);
 			dataItems.add(PossibleCombinations.get(randomIndex));
 		}
 

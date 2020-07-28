@@ -217,35 +217,36 @@ public class Network {
 			thread.setDaemon(true);
 			thread.start();
 		} else {
-			int step = 1;
+			int step = 0;
 			boolean play = true;
 
 			while (play) {
+				step++;
 				DataItem dataItem = dataItems.get(step - 1);
 				play = play(animate, step, numOfSteps, mainScene, dataItem);
-				step++;
 			}
 		}
 	}
 
 	private boolean play(boolean animate, int step, int numOfSteps, MainScene mainScene, DataItem dataItem)
 			throws Exception {
-		if (step <= numOfSteps) {
-			if (animate) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						step(dataItem);
-						updateUI(animate, mainScene, dataItem);
-					}
-				});
-				Thread.sleep(200);
-			} else {
-				step(dataItem);
-				updateUI(animate, mainScene, dataItem);
-			}
+		if (animate) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					step(dataItem);
+					updateUI(animate, mainScene, dataItem);
+				}
+			});
+			Thread.sleep(200);
+		} else {
+			step(dataItem);
+			updateUI(animate, mainScene, dataItem);
+		}
 
-			step++;
+		step++;
+
+		if (step <= numOfSteps) {
 			return true;
 		} else {
 			return false;
@@ -258,32 +259,33 @@ public class Network {
 		// History.getInstance().add();
 	}
 
+	// FIX Model doesn't get better after even 50.000 rounds
 	public void step(DataItem dataItem) {
 		Log.getInstance().add("******************************************");
 		Log.getInstance().add("* Label " + dataItem.getLabel());
 		Log.getInstance().add("******************************************");
 
-		// dataItem.setInitialValues(digit.toGrayDoubleArray());
 		this.inputLayer.setActivationValues(dataItem.getInitialValues());
+		this.outputLayer.setTargetValues(dataItem.getLabel());
 
 		for (HiddenLayer hiddenLayer : this.hiddenLayerList) {
 			hiddenLayer.calcActivationValues();
 		}
 
 		this.outputLayer.calcActivationValues();
-		this.outputLayer.calculateProbabilities();
+		this.outputLayer.calcProbabilities();
 
 		dataItem.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
 		Log.getInstance().logPredictions(dataItem);
-
-		// Larger if the network is uncertain of the prediction
-		double totalError = this.outputLayer.getTotalError();
-		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 
 		this.numOfPredictions++;
 		if (dataItem.getPrediction() != dataItem.getLabel()) {
 			this.numOfErrors++;
 		}
+
+		// Larger if the network is uncertain of the prediction
+		double totalError = this.outputLayer.getTotalError();
+		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 
 		Backpropagation.getInstance().execute();
 	}
