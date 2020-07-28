@@ -2,6 +2,7 @@ package application.layer;
 
 import java.util.ArrayList;
 
+import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 
@@ -33,6 +34,16 @@ public class OutputLayer extends ConnectableLayer {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
 				outputNeuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
+			}
+		}
+	}
+
+	public void calcErrors() {
+		for (Neuron neuron : this.neuronList) {
+			if (neuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
+				double error = connectableNeuron.getTargetValue() - connectableNeuron.getActivationValue();
+				connectableNeuron.setError(error);
 			}
 		}
 	}

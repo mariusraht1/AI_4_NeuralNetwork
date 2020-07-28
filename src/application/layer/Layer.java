@@ -2,6 +2,7 @@ package application.layer;
 
 import java.util.ArrayList;
 
+import application.network.Network;
 import application.neuron.Neuron;
 
 public abstract class Layer {
@@ -16,5 +17,26 @@ public abstract class Layer {
 	}
 
 	protected Layer() {
+	}
+
+	public Layer getNextLayer() {
+		Layer result = null;
+
+		if (this.equals(Network.getInstance().getInputLayer())) {
+			if (Network.getInstance().getHiddenLayerList().isEmpty()) {
+				result = Network.getInstance().getOutputLayer();
+			} else {
+				result = Network.getInstance().getHiddenLayerList().get(0);
+			}
+		} else if (this instanceof HiddenLayer) {
+			int indexOfHiddenLayer = Network.getInstance().getHiddenLayerList().indexOf(this);
+			if (Network.getInstance().getHiddenLayerList().size() > indexOfHiddenLayer) {
+				result = Network.getInstance().getHiddenLayerList().get(indexOfHiddenLayer + 1);
+			} else {
+				result = Network.getInstance().getOutputLayer();
+			}
+		}
+
+		return result;
 	}
 }

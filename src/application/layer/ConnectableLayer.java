@@ -1,6 +1,7 @@
 package application.layer;
 
 import application.functions.ActivationFunction;
+import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
@@ -16,15 +17,8 @@ public class ConnectableLayer extends Layer {
 	public void setActivationFunction(ActivationFunction activationFunction) {
 		this.activationFunction = activationFunction;
 	}
-	
-	private Layer previousLayer;
 
-	public Layer getPreviousLayer() {
-		return previousLayer;
-	}
-
-	public void setPreviousLayer(Layer previousLayer) {
-		this.previousLayer = previousLayer;
+	public ConnectableLayer() {
 	}
 
 	public double getTotalError() {
@@ -40,28 +34,16 @@ public class ConnectableLayer extends Layer {
 		return totalError;
 	}
 
-	public void calcErrors() {
+	public void connectWith(Layer prevLayer) {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double error = connectableNeuron.getTargetValue() - connectableNeuron.getActivationValue();
-				error = Math.sqrt(Math.pow(error, 2));
-				connectableNeuron.setError(error);
+				for (Neuron sourceNeuron : prevLayer.getNeuronList()) {
+					connectableNeuron.getInboundConnections().add(new Connection(sourceNeuron));
+				}
 			}
 		}
-	}
-
-	public void initWeights() {
 		this.activationFunction.initWeight(this);
-	}
-
-	public void initBiases() {
-		for (Neuron neuron : this.neuronList) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				connectableNeuron.setBias(MathManager.getInstance().getRandom(-1.0, 1.0));
-			}
-		}
 	}
 
 	public void calcActivationValues() {
@@ -93,12 +75,35 @@ public class ConnectableLayer extends Layer {
 				connectableNeuron.setBias(newBias);
 
 				// Calculate weight deltas and new weight
-				for (Neuron sourceNeuron : this.previousLayer.getNeuronList()) {
+				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
+					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
 					double weightDelta = sourceNeuron.getActivationValue() * gradient;
-					double newWeight = sourceNeuron.getWeight() + weightDelta;
-					sourceNeuron.setWeight(newWeight);
+					double newWeight = inboundConnection.getWeight() + weightDelta;
+					inboundConnection.setWeight(newWeight);
 				}
 			}
 		}
+	}
+
+	public int getNumOfInboundConnections() {
+		return getPreviousLayer().getNeuronList().size() * this.neuronList.size();
+	}
+
+	protected Layer getPreviousLayer() {
+		Layer result = null;
+
+		if (this instanceof HiddenLayer) {
+			int indexOfHiddenLayer = Network.getInstance().getHiddenLayerList().indexOf(this);
+			if (indexOfHiddenLayer == 0) {
+				result = Network.getInstance().getInputLayer();
+			} else {
+				result = Network.getInstance().getHiddenLayerList().get(indexOfHiddenLayer - 1);
+			}
+		} else if (this.equals(Network.getInstance().getOutputLayer())) {
+			int maxIndex = Network.getInstance().getHiddenLayerList().size() - 1;
+			Network.getInstance().getHiddenLayerList().get(maxIndex);
+		}
+
+		return result;
 	}
 }

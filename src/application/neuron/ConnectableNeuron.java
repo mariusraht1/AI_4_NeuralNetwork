@@ -1,5 +1,10 @@
 package application.neuron;
 
+import java.util.List;
+
+import application.network.Connection;
+import application.utilities.MathManager;
+
 public class ConnectableNeuron extends Neuron {
 	private double bias = 0.0;
 
@@ -29,5 +34,33 @@ public class ConnectableNeuron extends Neuron {
 
 	public void setError(double error) {
 		this.error = error;
+	}
+
+	private List<Connection> inboundConnections = null;
+
+	public List<Connection> getInboundConnections() {
+		return inboundConnections;
+	}
+
+	public void setInboundConnections(List<Connection> inboundConnections) {
+		this.inboundConnections = inboundConnections;
+	}
+
+	public ConnectableNeuron() {
+		super();
+		this.bias = MathManager.getInstance().getRandom(-1.0, 1.0);
+	}
+
+	public Connection getInboundConnectionBySourceNeuron(Neuron sourceNeuron) {
+		Connection result = null;
+
+		for (Connection inboundConnection : this.inboundConnections) {
+			if (inboundConnection.getSourceNeuron().equals(sourceNeuron)) {
+				result = inboundConnection;
+				break;
+			}
+		}
+
+		return result;
 	}
 }
