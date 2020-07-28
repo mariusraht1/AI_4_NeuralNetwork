@@ -89,7 +89,7 @@ public class ConnectableLayer extends Layer {
 		return getPreviousLayer().getNeuronList().size() * this.neuronList.size();
 	}
 
-	protected Layer getPreviousLayer() {
+	public Layer getPreviousLayer() {
 		Layer result = null;
 
 		if (this instanceof HiddenLayer) {

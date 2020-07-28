@@ -12,28 +12,27 @@ public enum ActivationFunction {
 		for (Neuron neuron : layer.getNeuronList()) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double activationValue = 0.0;
 
+				double activationValue = 0.0;
 				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
 					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
-					double value = sourceNeuron.getActivationValue();
+					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
+				}
+				activationValue += connectableNeuron.getBias();
 
-					switch (this) {
-					case Leaky_ReLu:
-						leaky_relu(value);
-						break;
-					case ReLu:
-						relu(value);
-						break;
-					case Sigmoid:
-						sigmoid(value);
-						break;
-					case Tanh:
-						tanh(value);
-						break;
-					}
-
-					activationValue += inboundConnection.getWeight() * sourceNeuron.getActivationValue();
+				switch (this) {
+				case Leaky_ReLu:
+					leaky_relu(activationValue);
+					break;
+				case ReLu:
+					relu(activationValue);
+					break;
+				case Sigmoid:
+					sigmoid(activationValue);
+					break;
+				case Tanh:
+					tanh(activationValue);
+					break;
 				}
 
 				neuron.setActivationValue(activationValue);

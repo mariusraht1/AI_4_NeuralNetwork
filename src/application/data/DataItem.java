@@ -1,6 +1,18 @@
 package application.data;
 
+import java.util.ArrayList;
+
 public class DataItem {
+	private static ArrayList<Integer> PossibleTargetValues = new ArrayList<Integer>();
+
+	public static ArrayList<Integer> getPossibleTargetValues() {
+		return PossibleTargetValues;
+	}
+
+	protected void setPossibleTargetValues(ArrayList<Integer> possibleTargetValues) {
+		PossibleTargetValues = possibleTargetValues;
+	}
+
 	private double[] initialValues;
 
 	public double[] getInitialValues() {
@@ -38,5 +50,9 @@ public class DataItem {
 	public DataItem(int label, double[] initialValues) {
 		this.label = label;
 		this.initialValues = initialValues;
+	}
+
+	public static int getNumOfInputNeurons() {
+		return 0;
 	}
 }
