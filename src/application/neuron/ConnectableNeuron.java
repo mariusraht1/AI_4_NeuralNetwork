@@ -6,16 +6,6 @@ import application.network.Connection;
 import application.utilities.MathManager;
 
 public class ConnectableNeuron extends Neuron {
-	private double bias = 0.0;
-
-	public double getBias() {
-		return bias;
-	}
-
-	public void setBias(double bias) {
-		this.bias = bias;
-	}
-
 	private double targetValue = 0.0;
 
 	public double getTargetValue() {
@@ -48,7 +38,6 @@ public class ConnectableNeuron extends Neuron {
 
 	public ConnectableNeuron() {
 		super();
-		this.bias = MathManager.getInstance().getRandom(-1.0, 1.0);
 	}
 
 	public Connection getInboundConnectionBySourceNeuron(Neuron sourceNeuron) {

@@ -15,7 +15,7 @@ public enum ActivationFunction {
 		if (this.equals(Softmax) && layer instanceof OutputLayer) {
 			softmax((OutputLayer) layer);
 		} else if (!this.equals(Softmax)) {
-			execute_by_loop(layer);
+			executeInLoop(layer);
 		}
 	}
 
@@ -87,7 +87,7 @@ public enum ActivationFunction {
 		for (Neuron neuron : layer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				outputNeuron.setActivationValue(Math.exp(neuron.getActivationValue()) / total);
+				outputNeuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
 			}
 		}
 	}
@@ -105,7 +105,7 @@ public enum ActivationFunction {
 		return value;
 	}
 
-	private void execute_by_loop(Layer layer) {
+	private void executeInLoop(Layer layer) {
 		for (Neuron neuron : layer.getNeuronList()) {
 			double activationValue = neuron.getActivationValue();
 

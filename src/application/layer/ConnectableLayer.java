@@ -6,8 +6,19 @@ import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
+import application.utilities.MathManager;
 
 public class ConnectableLayer extends Layer {
+	private double bias = 0.0;
+
+	public double getBias() {
+		return bias;
+	}
+
+	public void setBias(double bias) {
+		this.bias = bias;
+	}
+	
 	protected ActivationFunction activationFunction = ActivationFunction.Sigmoid;
 
 	public ActivationFunction getActivationFunction() {
@@ -20,6 +31,7 @@ public class ConnectableLayer extends Layer {
 
 	public ConnectableLayer(String name) {
 		super(name);
+		this.bias = MathManager.getInstance().getRandom(-1.0, 1.0);
 	}
 
 	public double getTotalError() {
@@ -57,7 +69,7 @@ public class ConnectableLayer extends Layer {
 					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
 					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
 				}
-				activationValue += connectableNeuron.getBias();
+				activationValue += this.bias;
 				neuron.setActivationValue(activationValue);
 			}
 		}

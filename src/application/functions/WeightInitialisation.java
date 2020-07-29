@@ -6,7 +6,8 @@ import application.utilities.MathManager;
 
 public enum WeightInitialisation {
 	Leaky_ReLu, ReLu, Sigmoid, Tanh;
-
+	
+	// Xavier initialization
 	public double execute(ConnectableLayer layer) {
 		double weight = 0.0;
 		double min = 0.0;

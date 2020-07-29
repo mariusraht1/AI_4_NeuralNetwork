@@ -92,7 +92,7 @@ public class Log {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
 				probabilities.append(outputNeuron.getRepresentationValue() + ": "
-						+ String.format("%.2f", outputNeuron.getActivationValue()));
+						+ String.format("%.2f", outputNeuron.getProbability()));
 
 				if (outputLayer.getNeuronList().indexOf(outputNeuron) < outputLayer.getNeuronList().size() - 1) {
 					probabilities.append(", ");

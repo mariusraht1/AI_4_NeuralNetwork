@@ -53,13 +53,10 @@ public class Backpropagation {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 
-				// Calculate gradient:
-				// activationValue * (1 - activationValue) * error * learningRate
+				// Gradient: activationValue * (1 - activationValue) * error * learningRate
 				double gradient = connectableLayer.getActivationFunction()
-						.gradient(connectableNeuron.getActivationValue()) * connectableNeuron.getError()
-						* Backpropagation.getInstance().getLearningRate();
-				double newBias = connectableNeuron.getBias() + gradient;
-				connectableNeuron.setBias(newBias);
+						.gradient(connectableNeuron.getActivationValue());
+				gradient *= connectableNeuron.getError() * -Backpropagation.getInstance().getLearningRate();
 
 				// Calculate weight deltas and new weight
 				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
@@ -70,5 +67,9 @@ public class Backpropagation {
 				}
 			}
 		}
+
+		// NEW Set new bias
+//		double newBias = connectableLayer.getBias() + gradient;
+//		connectableLayer.setBias(newBias);
 	}
 }
