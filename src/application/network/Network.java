@@ -2,11 +2,9 @@ package application.network;
 
 import java.util.ArrayList;
 
-import application.Log;
 import application.Main;
 import application.data.DataInputType;
 import application.data.DataItem;
-import application.functions.Backpropagation;
 import application.functions.Distribution;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
@@ -77,36 +75,6 @@ public class Network {
 		this.outputLayer = outputLayer;
 	}
 
-	private double learningRate;
-
-	public double getLearningRate() {
-		return learningRate;
-	}
-
-	public void setLearningRate(double learningRate) {
-		this.learningRate = learningRate;
-	}
-
-	private int numOfPredictions = 0;
-
-	public int getNumOfPredictions() {
-		return numOfPredictions;
-	}
-
-	public void setNumOfPredictions(int numOfPredictions) {
-		this.numOfPredictions = numOfPredictions;
-	}
-
-	private int numOfErrors = 0;
-
-	public int getNumOfErrors() {
-		return numOfErrors;
-	}
-
-	public void setNumOfErrors(int numOfErrors) {
-		this.numOfErrors = numOfErrors;
-	}
-
 	private Task<Void> playTask;
 
 	public Task<Void> getPlayTask() {
@@ -131,10 +99,10 @@ public class Network {
 	}
 
 	public void init() {
-		this.numOfPredictions = 0;
-		this.numOfErrors = 0;
-		this.learningRate = Main.DefaultLearningRate;
 		this.hiddenLayerList = new ArrayList<HiddenLayer>();
+
+		Feedforwarding.getInstance().init();
+		Backpropagation.getInstance().init();
 
 		generateLayers();
 	}
@@ -214,30 +182,8 @@ public class Network {
 		// History.getInstance().add();
 	}
 
-	// FIX Output probabilities don't change
 	public void step(DataItem dataItem) {
-		this.inputLayer.setActivationValues(dataItem.getInitialValues());
-		this.outputLayer.setTargetValues(dataItem.getLabel());
-
-		for (HiddenLayer hiddenLayer : this.hiddenLayerList) {
-			hiddenLayer.calcActivationValues();
-		}
-
-		this.outputLayer.calcActivationValues();
-
-		dataItem.setPrediction(this.outputLayer.getMostActiveNeuron().getRepresentationValue());
-		Log.getInstance().logPredictions(dataItem);
-
-		this.numOfPredictions++;
-		if (dataItem.getPrediction() != dataItem.getLabel()) {
-			this.numOfErrors++;
-		}
-
-		// Larger if the network is uncertain of the prediction
-		Network.getInstance().getOutputLayer().calcErrors();
-		double totalError = this.outputLayer.getTotalError();
-		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
-
+		Feedforwarding.getInstance().execute(dataItem);
 		Backpropagation.getInstance().execute();
 	}
 
@@ -246,14 +192,5 @@ public class Network {
 			this.playTask.cancel();
 			Main.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
 		}
-	}
-
-	public double getSuccessRate() {
-		double rightPredictions = this.numOfPredictions - this.numOfErrors;
-		double totalPredictions = this.numOfPredictions;
-		double successRate = rightPredictions / totalPredictions * 100.0;
-		Log.getInstance().add("Erfolgsrate: " + String.format("%.2f", successRate) + " % (" + (int) rightPredictions
-				+ "/" + (int) totalPredictions + ")");
-		return successRate;
 	}
 }

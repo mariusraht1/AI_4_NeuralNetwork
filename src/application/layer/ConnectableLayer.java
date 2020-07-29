@@ -1,6 +1,7 @@
 package application.layer;
 
 import application.functions.ActivationFunction;
+import application.network.Backpropagation;
 import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
@@ -46,26 +47,7 @@ public class ConnectableLayer extends Layer {
 	}
 
 	public void calcNewWeights() {
-		for (Neuron neuron : this.neuronList) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-
-				// Calculate gradient:
-				// activationValue * (1 - activationValue) * error * learningRate
-				double gradient = this.activationFunction.gradient(connectableNeuron.getActivationValue())
-						* connectableNeuron.getError() * Network.getInstance().getLearningRate();
-				double newBias = connectableNeuron.getBias() + gradient;
-				connectableNeuron.setBias(newBias);
-
-				// Calculate weight deltas and new weight
-				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
-					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
-					double weightDelta = sourceNeuron.getActivationValue() * gradient;
-					double newWeight = inboundConnection.getWeight() + weightDelta;
-					inboundConnection.setWeight(newWeight);
-				}
-			}
-		}
+		Backpropagation.getInstance().calcNewWeights(this);
 	}
 
 	public int getNumOfInboundConnections() {

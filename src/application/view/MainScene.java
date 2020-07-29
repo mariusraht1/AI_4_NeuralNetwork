@@ -7,6 +7,7 @@ import application.Log;
 import application.Main;
 import application.data.DataItem;
 import application.data.DigitImage;
+import application.network.Feedforwarding;
 import application.network.Network;
 import application.network.OperationMode;
 import application.utilities.FileManager;
@@ -62,7 +63,7 @@ public class MainScene {
 	}
 
 	public void showResult(boolean animate, DataItem dataItem) {
-		double successRate = Network.getInstance().getSuccessRate();
+		double successRate = Feedforwarding.getInstance().getSuccessRate();
 		lbl_results.setText("Ergebnisse (" + String.format("%.2f", successRate) + " %)");
 
 		if (animate && dataItem instanceof DigitImage) {
