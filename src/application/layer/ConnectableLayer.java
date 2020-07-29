@@ -28,7 +28,7 @@ public class ConnectableLayer extends Layer {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				totalError += connectableNeuron.getError();
+				totalError += Math.sqrt(Math.pow(connectableNeuron.getError(), 2));
 			}
 		}
 

@@ -9,11 +9,11 @@ import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 
-public class OutputLayer extends ConnectableLayer {	
+public class OutputLayer extends ConnectableLayer {
 	private final ActivationFunction toProbabilitiesFunction = ActivationFunction.Softmax;
-	
+
 	public OutputLayer() {
-		super("Output Layer");
+		super("OL");
 		this.neuronList = new ArrayList<Neuron>();
 	}
 
@@ -39,7 +39,7 @@ public class OutputLayer extends ConnectableLayer {
 
 		return mostActiveNeuron;
 	}
-	
+
 	public void calcActivationValues() {
 		super.calcActivationValues();
 		this.activationFunction.execute(this);

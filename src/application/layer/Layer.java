@@ -8,7 +8,7 @@ import application.neuron.Neuron;
 
 public abstract class Layer {
 	private String name;
-	
+
 	protected ArrayList<Neuron> neuronList = new ArrayList<Neuron>();
 
 	public ArrayList<Neuron> getNeuronList() {
@@ -43,7 +43,7 @@ public abstract class Layer {
 
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder logMessage = new StringBuilder(this.name + ": [");
@@ -55,7 +55,7 @@ public abstract class Layer {
 			}
 		}
 		logMessage.append("]");
-		
+
 		return logMessage.toString();
 	}
 }

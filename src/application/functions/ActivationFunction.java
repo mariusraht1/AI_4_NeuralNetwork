@@ -87,7 +87,7 @@ public enum ActivationFunction {
 		for (Neuron neuron : layer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				outputNeuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
+				outputNeuron.setActivationValue(Math.exp(neuron.getActivationValue()) / total);
 			}
 		}
 	}

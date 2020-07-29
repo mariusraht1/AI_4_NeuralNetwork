@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import application.network.Network;
 
 public enum DataInputType {
-	DIGIT, XOR;
+	DIGIT, SAME_DIGIT, XOR;
 
 	public ArrayList<DataItem> getList(int size) {
 		ArrayList<DataItem> dataItems = null;
@@ -13,6 +13,9 @@ public enum DataInputType {
 		switch (Network.getInstance().getDataInputType()) {
 		case DIGIT:
 			dataItems = DigitImage.getList(size);
+			break;
+		case SAME_DIGIT:
+			dataItems = DigitImage.getListSameDigit(size);
 			break;
 		case XOR:
 			dataItems = XORData.getList(size);
@@ -29,6 +32,7 @@ public enum DataInputType {
 
 		switch (Network.getInstance().getDataInputType()) {
 		case DIGIT:
+		case SAME_DIGIT:
 			numOfInputNeurons = DigitImage.getNumOfInputNeurons();
 			break;
 		case XOR:
@@ -46,6 +50,7 @@ public enum DataInputType {
 
 		switch (Network.getInstance().getDataInputType()) {
 		case DIGIT:
+		case SAME_DIGIT:
 			possibleTargetValues = DigitImage.getPossibleTargetValues();
 			break;
 		case XOR:

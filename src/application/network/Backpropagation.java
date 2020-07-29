@@ -47,7 +47,7 @@ public class Backpropagation {
 		}
 	}
 
-	// FIX Calculation seems wrong
+	// FIX Calculation seems wrong: Error is getting larger
 	public void calcNewWeights(ConnectableLayer connectableLayer) {
 		for (Neuron neuron : connectableLayer.getNeuronList()) {
 			if (neuron instanceof ConnectableNeuron) {

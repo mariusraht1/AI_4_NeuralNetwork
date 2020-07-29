@@ -72,6 +72,21 @@ public class DigitImage extends DataItem {
 		return dataItems;
 	}
 
+	private static DataItem RandomDigit = null;
+
+	public static ArrayList<DataItem> getListSameDigit(int size) {
+		ArrayList<DataItem> dataItems = new ArrayList<DataItem>();
+		if (RandomDigit == null) {
+			RandomDigit = ImageDecoder.getInstance().readRandomDigit();
+		}
+
+		for (int i = 0; i < size; i++) {
+			dataItems.add(RandomDigit);
+		}
+
+		return dataItems;
+	}
+
 	public static int getNumOfInputNeurons() {
 		return ImageDecoder.getInstance().getImageWidth() * ImageDecoder.getInstance().getImageHeight();
 	}

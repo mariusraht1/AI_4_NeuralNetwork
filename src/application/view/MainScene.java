@@ -41,6 +41,8 @@ public class MainScene {
 	@FXML
 	private CheckBox chk_animate;
 	@FXML
+	private CheckBox chk_disableLogging;
+	@FXML
 	private ListView<DigitImage> lv_results;
 	@FXML
 	private ListView<String> lv_console;
@@ -168,6 +170,8 @@ public class MainScene {
 				tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
 			} else {
 				boolean animate = chk_animate.isSelected();
+				boolean disableLogging = chk_disableLogging.isSelected();
+				Log.getInstance().setDisable(disableLogging);
 				if (animate) {
 					Log.getInstance().setIsActive(true);
 				} else {

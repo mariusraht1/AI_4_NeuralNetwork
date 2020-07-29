@@ -15,7 +15,7 @@ import javafx.concurrent.Task;
 import javafx.scene.Cursor;
 
 public class Network {
-	private DataInputType dataInputType = DataInputType.DIGIT;
+	private DataInputType dataInputType = DataInputType.SAME_DIGIT;
 
 	public DataInputType getDataInputType() {
 		return dataInputType;
@@ -35,7 +35,7 @@ public class Network {
 		this.operationMode = operationMode;
 	}
 
-	private Distribution distribution = Distribution.NORMAL;
+	private Distribution distribution = Distribution.UNIFORM;
 
 	public Distribution getDistribution() {
 		return distribution;

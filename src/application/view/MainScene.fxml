@@ -73,6 +73,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" />
                 <RowConstraints />
                 <RowConstraints />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
               </rowConstraints>
                <children>
                   <TextField fx:id="tf_numOfSteps" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -83,6 +84,7 @@
                   <ComboBox fx:id="cb_operationMode" maxWidth="1.7976931348623157E308" onAction="#onAction_cbOperationMode" GridPane.columnIndex="1" GridPane.columnSpan="3" />
                   <Label text="Modus:" />
                   <CheckBox fx:id="chk_animate" mnemonicParsing="false" text="Ausführung animieren" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="chk_disableLogging" mnemonicParsing="false" text="Logging ausschalten" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                </children>
             </GridPane>
             <VBox spacing="5.0" GridPane.columnIndex="4" GridPane.rowSpan="9">

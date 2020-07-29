@@ -10,7 +10,7 @@ import application.neuron.Neuron;
 
 public class HiddenLayer extends ConnectableLayer {
 	public HiddenLayer(int id) {
-		super("Hidden Layer " + id);
+		super("H" + id);
 		this.neuronList = new ArrayList<Neuron>();
 	}
 

@@ -21,6 +21,16 @@ public class Log {
 		return instance;
 	}
 
+	private boolean disable = false;
+
+	public boolean isDisable() {
+		return disable;
+	}
+
+	public void setDisable(boolean disable) {
+		this.disable = disable;
+	}
+
 	private Log() {
 	}
 
@@ -44,23 +54,25 @@ public class Log {
 	}
 
 	public void add(String message) {
-		System.out.println(message);
+		if (!disable) {
+			System.out.println(message);
 
-		if (control != null) {
-			if (buffer.size() > 0) {
-				for (String msg : buffer) {
-					control.getItems().add(msg + "\n");
+			if (control != null) {
+				if (buffer.size() > 0) {
+					for (String msg : buffer) {
+						control.getItems().add(msg + "\n");
+					}
+
+					buffer.clear();
 				}
 
-				buffer.clear();
+				control.getItems().add(message + "\n");
+			} else {
+				buffer.add(message);
 			}
 
-			control.getItems().add(message + "\n");
-		} else {
-			buffer.add(message);
+			control.scrollTo(control.getItems().size());
 		}
-
-		control.scrollTo(control.getItems().size());
 	}
 
 	public void clear() {
@@ -74,13 +86,13 @@ public class Log {
 
 	public void logPredictions(DataItem dataItem) {
 		OutputLayer outputLayer = Network.getInstance().getOutputLayer();
-		add("Vorhersage für Label " + dataItem.getLabel() + ":");
+		add("Vorhersage für Label " + dataItem.getLabel() + ": " + dataItem.getPrediction());
 		StringBuilder probabilities = new StringBuilder("[");
 		for (Neuron neuron : outputLayer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
 				probabilities.append(outputNeuron.getRepresentationValue() + ": "
-						+ String.format("%.2f", outputNeuron.getProbability()));
+						+ String.format("%.2f", outputNeuron.getActivationValue()));
 
 				if (outputLayer.getNeuronList().indexOf(outputNeuron) < outputLayer.getNeuronList().size() - 1) {
 					probabilities.append(", ");

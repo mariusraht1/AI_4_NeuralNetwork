@@ -62,7 +62,7 @@ public class Feedforwarding {
 
 		inputLayer.setActivationValues(dataItem.getInitialValues());
 		Log.getInstance().logActivationValues(inputLayer);
-		
+
 		outputLayer.setTargetValues(dataItem.getLabel());
 
 		for (HiddenLayer hiddenLayer : hiddenLayerList) {
