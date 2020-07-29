@@ -3,12 +3,15 @@ package application.layer;
 import java.util.ArrayList;
 
 import application.data.DataInputType;
+import application.functions.ActivationFunction;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 
-public class OutputLayer extends ConnectableLayer {
+public class OutputLayer extends ConnectableLayer {	
+	private final ActivationFunction toProbabilitiesFunction = ActivationFunction.Softmax;
+	
 	public OutputLayer() {
 		super();
 		this.neuronList = new ArrayList<Neuron>();
@@ -36,21 +39,10 @@ public class OutputLayer extends ConnectableLayer {
 
 		return mostActiveNeuron;
 	}
-
-	// Softmax
+	
 	public void calcActivationValues() {
-		double total = 0.0;
-
-		for (Neuron neuron : this.neuronList) {
-			total += Math.exp(neuron.getActivationValue());
-		}
-
-		for (Neuron neuron : this.neuronList) {
-			if (neuron instanceof OutputNeuron) {
-				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				outputNeuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
-			}
-		}
+		this.activationFunction.execute(this);
+		this.toProbabilitiesFunction.execute(this);
 	}
 
 	public void calcErrors() {

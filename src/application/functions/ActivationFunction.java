@@ -1,42 +1,20 @@
 package application.functions;
 
 import application.layer.ConnectableLayer;
+import application.layer.OutputLayer;
 import application.network.Connection;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
+import application.neuron.OutputNeuron;
 
 public enum ActivationFunction {
-	Leaky_ReLu, ReLu, Sigmoid, Tanh;
+	Leaky_ReLu, ReLu, Sigmoid, Softmax, Tanh;
 
 	public void execute(ConnectableLayer layer) {
-		for (Neuron neuron : layer.getNeuronList()) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-
-				double activationValue = 0.0;
-				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
-					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
-					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
-				}
-				activationValue += connectableNeuron.getBias();
-
-				switch (this) {
-				case Leaky_ReLu:
-					activationValue = leaky_relu(activationValue);
-					break;
-				case ReLu:
-					activationValue = relu(activationValue);
-					break;
-				case Sigmoid:
-					activationValue = sigmoid(activationValue);
-					break;
-				case Tanh:
-					activationValue = tanh(activationValue);
-					break;
-				}
-
-				neuron.setActivationValue(activationValue);
-			}
+		if (this.equals(Softmax) && layer instanceof OutputLayer) {
+			softmax((OutputLayer) layer);
+		} else if (!this.equals(Softmax)) {
+			execute_by_loop(layer);
 		}
 	}
 
@@ -59,6 +37,8 @@ public enum ActivationFunction {
 						break;
 					case Tanh:
 						weight = WeightInitialisation.Tanh.execute(layer);
+						break;
+					default:
 						break;
 					}
 
@@ -97,17 +77,64 @@ public enum ActivationFunction {
 		return 1 / (1 + Math.exp(-value));
 	}
 
+	private void softmax(OutputLayer layer) {
+		double total = 0.0;
+		for (Neuron neuron : layer.getNeuronList()) {
+			total += Math.exp(neuron.getActivationValue());
+		}
+
+		for (Neuron neuron : layer.getNeuronList()) {
+			if (neuron instanceof OutputNeuron) {
+				OutputNeuron outputNeuron = (OutputNeuron) neuron;
+				outputNeuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
+			}
+		}
+	}
+
 	private double tanh(double value) {
 		return Math.tanh(value);
 	}
 
 	public double leaky_relu(double value) {
 		double a = 0.01;
-
 		if (value < 0) {
 			value *= a;
 		}
 
 		return value;
+	}
+
+	private void execute_by_loop(ConnectableLayer layer) {
+		for (Neuron neuron : layer.getNeuronList()) {
+			if (neuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
+
+				double activationValue = 0.0;
+				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
+					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
+					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
+				}
+				activationValue += connectableNeuron.getBias();
+
+				switch (this) {
+				case Leaky_ReLu:
+					activationValue = leaky_relu(activationValue);
+					break;
+				case ReLu:
+					activationValue = relu(activationValue);
+					break;
+				case Sigmoid:
+					activationValue = sigmoid(activationValue);
+					break;
+				case Tanh:
+					activationValue = tanh(activationValue);
+					break;
+				default:
+					break;
+				}
+
+				neuron.setActivationValue(activationValue);
+			}
+		}
 	}
 }

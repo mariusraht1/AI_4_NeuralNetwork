@@ -34,7 +34,7 @@ public class Backpropagation {
 		this.learningRate = Main.DefaultLearningRate;
 	}
 
-	// FIX Error is getting greater
+	// FIX Error is not getting smaller
 	public void execute() {
 		if (Network.getInstance().getOperationMode().equals(OperationMode.TRAIN)) {
 			Network.getInstance().getOutputLayer().calcNewWeights();
