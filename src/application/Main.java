@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +40,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Main.primaryStage = primaryStage;
+			Locale.setDefault(new Locale ("en", "US"));
 
 			primaryStage.setTitle("Fuzzy System");
 			primaryStage.centerOnScreen();

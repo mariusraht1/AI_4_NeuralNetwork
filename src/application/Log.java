@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 
 import application.data.DataItem;
+import application.layer.Layer;
 import application.layer.OutputLayer;
 import application.network.Network;
 import application.neuron.Neuron;
@@ -68,12 +69,12 @@ public class Log {
 	}
 
 	public void logHeader(String processName) {
-		Log.getInstance().add("=== " + processName + " ===============================================");
+		add("=== " + processName + " ===============================================");
 	}
 
 	public void logPredictions(DataItem dataItem) {
 		OutputLayer outputLayer = Network.getInstance().getOutputLayer();
-		Log.getInstance().add("Predictions for Label " + dataItem.getLabel() + ":");
+		add("Vorhersage für Label " + dataItem.getLabel() + ":");
 		StringBuilder probabilities = new StringBuilder("[");
 		for (Neuron neuron : outputLayer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
@@ -88,6 +89,10 @@ public class Log {
 				}
 			}
 		}
-		Log.getInstance().add(probabilities.toString());
+		add(probabilities.toString());
+	}
+
+	public void logActivationValues(Layer layer) {
+		add(layer.toString());
 	}
 }

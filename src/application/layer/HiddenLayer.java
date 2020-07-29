@@ -9,12 +9,13 @@ import application.neuron.HiddenNeuron;
 import application.neuron.Neuron;
 
 public class HiddenLayer extends ConnectableLayer {
-	public HiddenLayer() {
-		super();
+	public HiddenLayer(int id) {
+		super("Hidden Layer " + id);
 		this.neuronList = new ArrayList<Neuron>();
 	}
 
 	public void calcActivationValues() {
+		super.calcActivationValues();
 		this.activationFunction.execute(this);
 	}
 
@@ -41,8 +42,8 @@ public class HiddenLayer extends ConnectableLayer {
 		}
 	}
 
-	public static void generate(int numOfNeurons) {
-		HiddenLayer hiddenLayer = new HiddenLayer();
+	public static void generate(int id, int numOfNeurons) {
+		HiddenLayer hiddenLayer = new HiddenLayer(id);
 		for (int i = 0; i < numOfNeurons; i++) {
 			hiddenLayer.getNeuronList().add(new HiddenNeuron());
 		}

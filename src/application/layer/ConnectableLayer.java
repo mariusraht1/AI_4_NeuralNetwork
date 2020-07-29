@@ -18,7 +18,8 @@ public class ConnectableLayer extends Layer {
 		this.activationFunction = activationFunction;
 	}
 
-	public ConnectableLayer() {
+	public ConnectableLayer(String name) {
+		super(name);
 	}
 
 	public double getTotalError() {
@@ -44,6 +45,22 @@ public class ConnectableLayer extends Layer {
 			}
 		}
 		this.activationFunction.initWeight(this);
+	}
+
+	public void calcActivationValues() {
+		for (Neuron neuron : this.neuronList) {
+			if (neuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
+
+				double activationValue = 0.0;
+				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
+					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
+					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
+				}
+				activationValue += connectableNeuron.getBias();
+				neuron.setActivationValue(activationValue);
+			}
+		}
 	}
 
 	public void calcNewWeights() {

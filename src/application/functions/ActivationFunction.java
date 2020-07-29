@@ -1,6 +1,7 @@
 package application.functions;
 
 import application.layer.ConnectableLayer;
+import application.layer.Layer;
 import application.layer.OutputLayer;
 import application.network.Connection;
 import application.neuron.ConnectableNeuron;
@@ -10,7 +11,7 @@ import application.neuron.OutputNeuron;
 public enum ActivationFunction {
 	Leaky_ReLu, ReLu, Sigmoid, Softmax, Tanh;
 
-	public void execute(ConnectableLayer layer) {
+	public void execute(Layer layer) {
 		if (this.equals(Softmax) && layer instanceof OutputLayer) {
 			softmax((OutputLayer) layer);
 		} else if (!this.equals(Softmax)) {
@@ -104,37 +105,28 @@ public enum ActivationFunction {
 		return value;
 	}
 
-	private void execute_by_loop(ConnectableLayer layer) {
+	private void execute_by_loop(Layer layer) {
 		for (Neuron neuron : layer.getNeuronList()) {
-			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
+			double activationValue = neuron.getActivationValue();
 
-				double activationValue = 0.0;
-				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
-					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
-					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
-				}
-				activationValue += connectableNeuron.getBias();
-
-				switch (this) {
-				case Leaky_ReLu:
-					activationValue = leaky_relu(activationValue);
-					break;
-				case ReLu:
-					activationValue = relu(activationValue);
-					break;
-				case Sigmoid:
-					activationValue = sigmoid(activationValue);
-					break;
-				case Tanh:
-					activationValue = tanh(activationValue);
-					break;
-				default:
-					break;
-				}
-
-				neuron.setActivationValue(activationValue);
+			switch (this) {
+			case Leaky_ReLu:
+				activationValue = leaky_relu(activationValue);
+				break;
+			case ReLu:
+				activationValue = relu(activationValue);
+				break;
+			case Sigmoid:
+				activationValue = sigmoid(activationValue);
+				break;
+			case Tanh:
+				activationValue = tanh(activationValue);
+				break;
+			default:
+				break;
 			}
+
+			neuron.setActivationValue(activationValue);
 		}
 	}
 }

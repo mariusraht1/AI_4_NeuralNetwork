@@ -8,7 +8,7 @@ import application.neuron.Neuron;
 
 public class InputLayer extends Layer {
 	public InputLayer() {
-		super();
+		super("Input Layer");
 		this.neuronList = new ArrayList<Neuron>();
 	}
 

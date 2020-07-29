@@ -61,13 +61,17 @@ public class Feedforwarding {
 		OutputLayer outputLayer = Network.getInstance().getOutputLayer();
 
 		inputLayer.setActivationValues(dataItem.getInitialValues());
+		Log.getInstance().logActivationValues(inputLayer);
+		
 		outputLayer.setTargetValues(dataItem.getLabel());
 
 		for (HiddenLayer hiddenLayer : hiddenLayerList) {
 			hiddenLayer.calcActivationValues();
+			Log.getInstance().logActivationValues(hiddenLayer);
 		}
 
 		outputLayer.calcActivationValues();
+		Log.getInstance().logActivationValues(outputLayer);
 
 		dataItem.setPrediction(outputLayer.getMostActiveNeuron().getRepresentationValue());
 		Log.getInstance().logPredictions(dataItem);

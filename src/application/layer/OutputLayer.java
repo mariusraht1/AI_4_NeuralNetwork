@@ -13,7 +13,7 @@ public class OutputLayer extends ConnectableLayer {
 	private final ActivationFunction toProbabilitiesFunction = ActivationFunction.Softmax;
 	
 	public OutputLayer() {
-		super();
+		super("Output Layer");
 		this.neuronList = new ArrayList<Neuron>();
 	}
 
@@ -41,6 +41,7 @@ public class OutputLayer extends ConnectableLayer {
 	}
 	
 	public void calcActivationValues() {
+		super.calcActivationValues();
 		this.activationFunction.execute(this);
 		this.toProbabilitiesFunction.execute(this);
 	}

@@ -1,11 +1,14 @@
 package application.layer;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import application.network.Network;
 import application.neuron.Neuron;
 
 public abstract class Layer {
+	private String name;
+	
 	protected ArrayList<Neuron> neuronList = new ArrayList<Neuron>();
 
 	public ArrayList<Neuron> getNeuronList() {
@@ -16,7 +19,8 @@ public abstract class Layer {
 		this.neuronList = neuronList;
 	}
 
-	protected Layer() {
+	protected Layer(String name) {
+		this.name = name;
 	}
 
 	public Layer getNextLayer() {
@@ -38,5 +42,20 @@ public abstract class Layer {
 		}
 
 		return result;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder logMessage = new StringBuilder(this.name + ": [");
+		Neuron lastNeuron = this.neuronList.get(this.neuronList.size() - 1);
+		for (Neuron neuron : this.neuronList) {
+			logMessage.append(String.format(Locale.US, "%.2f", neuron.getActivationValue()));
+			if (!neuron.equals(lastNeuron)) {
+				logMessage.append(", ");
+			}
+		}
+		logMessage.append("]");
+		
+		return logMessage.toString();
 	}
 }
