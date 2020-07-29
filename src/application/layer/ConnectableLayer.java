@@ -54,8 +54,8 @@ public class ConnectableLayer extends Layer {
 				// activationValue * (1 - activationValue) * error * learningRate
 				double gradient = this.activationFunction.gradient(connectableNeuron.getActivationValue())
 						* connectableNeuron.getError() * Network.getInstance().getLearningRate();
-				//double newBias = connectableNeuron.getBias() + gradient;
-				//connectableNeuron.setBias(newBias);
+				double newBias = connectableNeuron.getBias() + gradient;
+				connectableNeuron.setBias(newBias);
 
 				// Calculate weight deltas and new weight
 				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
