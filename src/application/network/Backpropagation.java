@@ -46,7 +46,8 @@ public class Backpropagation {
 		}
 	}
 
-	// FIX Calculation seems wrong: Predictions are unsure or wrong
+	// NEW Add bias calculation
+	// NEW Consider compability with more hidden layers than 1
 	public double calcTotalError(ConnectableLayer connectableLayer) {
 		double totalErrorWithRespectToOutput = 0.0;
 		for (Neuron outputNeuron : connectableLayer.getNextLayer().getNeuronList()) {

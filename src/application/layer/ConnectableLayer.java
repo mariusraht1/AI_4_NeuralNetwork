@@ -18,7 +18,7 @@ public class ConnectableLayer extends Layer {
 		this.bias = bias;
 	}
 
-	protected ActivationFunction activationFunction = ActivationFunction.Sigmoid;
+	protected ActivationFunction activationFunction = ActivationFunction.Leaky_ReLu;
 
 	public ActivationFunction getActivationFunction() {
 		return activationFunction;
