@@ -51,7 +51,7 @@ public class OutputLayer extends ConnectableLayer {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 				double error = connectableNeuron.getActivationValue() - connectableNeuron.getTargetValue();
-				error = (1.0 / 2.0) * Math.pow(error, 2);
+//				error = (1.0 / 2.0) * Math.pow(error, 2);
 				connectableNeuron.setError(error);
 			}
 		}

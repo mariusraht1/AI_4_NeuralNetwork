@@ -41,92 +41,71 @@ public class Backpropagation {
 
 			for (int i = Network.getInstance().getHiddenLayerList().size() - 1; i > 0; i--) {
 				HiddenLayer hiddenLayer = Network.getInstance().getHiddenLayerList().get(i);
-				hiddenLayer.calcErrors();
 				calcNewWeights(hiddenLayer);
 			}
 		}
 	}
 
 	// FIX Calculation seems wrong: Predictions are unsure or wrong
-	public void calcNewWeights(ConnectableLayer connectableLayer) {
-		if (connectableLayer instanceof HiddenLayer) {
-			double totalErrorWithRespectToOutput = 0.0;
-			for (Neuron outputNeuron : connectableLayer.getNextLayer().getNeuronList()) {
-				if (outputNeuron instanceof ConnectableNeuron) {
-					ConnectableNeuron connectableOutputNeuron = (ConnectableNeuron) outputNeuron;
-					// How much does the total error change with respect to the output?
-					double errorWithRespectToOutput = connectableOutputNeuron.getError();
+	public double calcTotalError(ConnectableLayer connectableLayer) {
+		double totalErrorWithRespectToOutput = 0.0;
+		for (Neuron outputNeuron : connectableLayer.getNextLayer().getNeuronList()) {
+			if (outputNeuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableOutputNeuron = (ConnectableNeuron) outputNeuron;
+				// How much does the total error change with respect to the output?
+				double errorWithRespectToOutput = connectableOutputNeuron.getError();
 
-					// How much does the output of o_n change with respect to its total net input?
-					double outputWithRespectToInput = connectableOutputNeuron.getActivationValue()
-							* (1 - connectableOutputNeuron.getActivationValue());
+				// How much does the output of o_n change with respect to its total net input?
+				double outputWithRespectToInput = connectableOutputNeuron.getActivationValue()
+						* (1 - connectableOutputNeuron.getActivationValue());
 
-					// How much does the total error change with respect to the total net input?
-					double errorWithRespectToInput = errorWithRespectToOutput * outputWithRespectToInput;
+				// How much does the total error change with respect to the total net input?
+				double errorWithRespectToInput = errorWithRespectToOutput * outputWithRespectToInput;
 
-					for (Connection inboundConnection : connectableOutputNeuron.getInboundConnections()) {
-						totalErrorWithRespectToOutput += errorWithRespectToInput * inboundConnection.getWeight();
-					}
-				}
-			}
-
-			for (Neuron hiddenNeuron : connectableLayer.getNeuronList()) {
-				if (hiddenNeuron instanceof ConnectableNeuron) {
-					ConnectableNeuron connectableHiddenNeuron = (ConnectableNeuron) hiddenNeuron;
-
-					double outputWithRespectToInput = connectableHiddenNeuron.getActivationValue()
-							* (1 - connectableHiddenNeuron.getActivationValue());
-
-					for (Connection inboundConnection : connectableHiddenNeuron.getInboundConnections()) {
-						double inputWithRespectToWeight = inboundConnection.getSourceNeuron().getActivationValue();
-						double gradient = totalErrorWithRespectToOutput * outputWithRespectToInput
-								* inputWithRespectToWeight;
-						double newWeight = inboundConnection.getWeight()
-								- (Backpropagation.getInstance().getLearningRate() * gradient);
-						inboundConnection.setWeight(newWeight);
-					}
-				}
-			}
-		} else if (connectableLayer instanceof OutputLayer) {
-			for (Neuron outputNeuron : connectableLayer.getNeuronList()) {
-				if (outputNeuron instanceof ConnectableNeuron) {
-					ConnectableNeuron connectableOutputNeuron = (ConnectableNeuron) outputNeuron;
-
-					// How much does the total error change with respect to the output?
-					double errorWithRespectToOutput = connectableOutputNeuron.getError();
-
-					// How much does the output of o_n change with respect to its total net input?
-					double outputWithRespectToInput = connectableOutputNeuron.getActivationValue()
-							* (1 - connectableOutputNeuron.getActivationValue());
-
-					for (Connection inboundConnection : connectableOutputNeuron.getInboundConnections()) {
-						// How much does the total net input of o_n change with respect to w_n?
-						double inputWithRespectToWeight = inboundConnection.getSourceNeuron().getActivationValue();
-						double gradient = errorWithRespectToOutput * outputWithRespectToInput
-								* inputWithRespectToWeight;
-						double newWeight = inboundConnection.getWeight()
-								- (Backpropagation.getInstance().getLearningRate() * gradient);
-						inboundConnection.setWeight(newWeight);
-					}
-
-//				// Gradient: activationValue * (1 - activationValue) * error * learningRate
-//				double gradient = connectableLayer.getActivationFunction()
-//						.gradient(connectableNeuron.getActivationValue());
-//				gradient *= connectableNeuron.getError() * -Backpropagation.getInstance().getLearningRate();
-//
-//				// Calculate weight deltas and new weight
-//				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
-//					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
-//					double weightDelta = sourceNeuron.getActivationValue() * gradient;
-//					double newWeight = inboundConnection.getWeight() + weightDelta;
-//					inboundConnection.setWeight(newWeight);
-//				}
+				for (Connection inboundConnection : connectableOutputNeuron.getInboundConnections()) {
+					totalErrorWithRespectToOutput += errorWithRespectToInput * inboundConnection.getWeight();
 				}
 			}
 		}
 
-		// NEW Set new bias
+		return totalErrorWithRespectToOutput;
+	}
+
+	public void calcNewWeights(ConnectableLayer connectableLayer) {
+		double totalErrorWithRespectToOutput = 0.0;
+		if (connectableLayer instanceof HiddenLayer) {
+			totalErrorWithRespectToOutput = calcTotalError(connectableLayer);
+		}
+
+		for (Neuron neuron : connectableLayer.getNeuronList()) {
+			if (neuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableOutputNeuron = (ConnectableNeuron) neuron;
+
+				// How much does the total error change with respect to the output?
+				double errorWithRespectToOutput = 0.0;
+				if (connectableLayer instanceof OutputLayer) {
+					errorWithRespectToOutput = connectableOutputNeuron.getError();
+				} else {
+					errorWithRespectToOutput = totalErrorWithRespectToOutput;
+				}
+
+				// How much does the output of o_n change with respect to its total net input?
+				double outputWithRespectToInput = connectableOutputNeuron.getActivationValue()
+						* (1 - connectableOutputNeuron.getActivationValue());
+
+				for (Connection inboundConnection : connectableOutputNeuron.getInboundConnections()) {
+					// How much does the total net input of o_n change with respect to w_n?
+					double inputWithRespectToWeight = inboundConnection.getSourceNeuron().getActivationValue();
+					double gradient = errorWithRespectToOutput * outputWithRespectToInput * inputWithRespectToWeight;
+					double newWeight = inboundConnection.getWeight()
+							- (Backpropagation.getInstance().getLearningRate() * gradient);
+					inboundConnection.setWeight(newWeight);
+				}
+			}
+		}
+	}
+
+	// NEW Set new bias
 //		double newBias = connectableLayer.getBias() + gradient;
 //		connectableLayer.setBias(newBias);
-	}
 }

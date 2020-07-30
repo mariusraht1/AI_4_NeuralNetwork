@@ -3,7 +3,6 @@ package application.neuron;
 import java.util.ArrayList;
 
 import application.network.Connection;
-import application.utilities.MathManager;
 
 public class ConnectableNeuron extends Neuron {
 	private double targetValue = 0.0;

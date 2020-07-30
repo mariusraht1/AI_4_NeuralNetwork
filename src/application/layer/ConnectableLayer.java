@@ -1,7 +1,6 @@
 package application.layer;
 
 import application.functions.ActivationFunction;
-import application.network.Backpropagation;
 import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
@@ -18,7 +17,7 @@ public class ConnectableLayer extends Layer {
 	public void setBias(double bias) {
 		this.bias = bias;
 	}
-	
+
 	protected ActivationFunction activationFunction = ActivationFunction.Sigmoid;
 
 	public ActivationFunction getActivationFunction() {
@@ -69,7 +68,7 @@ public class ConnectableLayer extends Layer {
 					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
 					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
 				}
-				activationValue += this.bias;
+//				activationValue += this.bias;
 				neuron.setActivationValue(activationValue);
 			}
 		}
