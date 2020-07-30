@@ -40,7 +40,7 @@ public class ConnectableLayer extends Layer {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				totalError += Math.sqrt(Math.pow(connectableNeuron.getError(), 2));
+				totalError += connectableNeuron.getError();
 			}
 		}
 
@@ -73,10 +73,6 @@ public class ConnectableLayer extends Layer {
 				neuron.setActivationValue(activationValue);
 			}
 		}
-	}
-
-	public void calcNewWeights() {
-		Backpropagation.getInstance().calcNewWeights(this);
 	}
 
 	public int getNumOfInboundConnections() {
