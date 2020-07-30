@@ -178,8 +178,6 @@ public class Network {
 
 	private void updateUI(boolean animate, MainScene mainScene, DataItem dataItem) {
 		mainScene.showResult(animate, dataItem);
-		// NEW Add results to history
-		// History.getInstance().add();
 	}
 
 	public void step(DataItem dataItem) {

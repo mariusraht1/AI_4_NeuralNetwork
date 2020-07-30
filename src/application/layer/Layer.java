@@ -7,7 +7,7 @@ import application.network.Network;
 import application.neuron.Neuron;
 
 public abstract class Layer {
-	private String name;
+	private String id;
 
 	protected ArrayList<Neuron> neuronList = new ArrayList<Neuron>();
 
@@ -20,7 +20,7 @@ public abstract class Layer {
 	}
 
 	protected Layer(String name) {
-		this.name = name;
+		this.id = name;
 	}
 
 	public Layer getNextLayer() {
@@ -46,7 +46,7 @@ public abstract class Layer {
 
 	@Override
 	public String toString() {
-		StringBuilder logMessage = new StringBuilder(this.name + ": [");
+		StringBuilder logMessage = new StringBuilder(this.id + ": [");
 		Neuron lastNeuron = this.neuronList.get(this.neuronList.size() - 1);
 		for (Neuron neuron : this.neuronList) {
 			logMessage.append(String.format(Locale.US, "%.2f", neuron.getActivationValue()));

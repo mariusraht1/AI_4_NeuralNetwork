@@ -104,9 +104,9 @@ public class Backpropagation {
 				}
 			}
 		}
-	}
-
-	// NEW Set new bias
+		// NEW Set new bias
 //		double newBias = connectableLayer.getBias() + gradient;
-//		connectableLayer.setBias(newBias);
+//		connectableLayer.setBias(newBias);	
+	
+	}
 }

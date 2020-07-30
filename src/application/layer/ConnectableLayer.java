@@ -68,7 +68,7 @@ public class ConnectableLayer extends Layer {
 					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
 					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
 				}
-//				activationValue += this.bias;
+				activationValue += this.bias;
 				neuron.setActivationValue(activationValue);
 			}
 		}

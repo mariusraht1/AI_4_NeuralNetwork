@@ -2,7 +2,6 @@ package application.view;
 
 import java.io.File;
 
-import application.History;
 import application.Log;
 import application.Main;
 import application.data.DataItem;
@@ -198,7 +197,6 @@ public class MainScene {
 
 	@FXML
 	private void onAction_btnExport() {
-		History.getInstance().export();
-		History.getInstance().showExport();
+		// NEW Export weights and biases
 	}
 }

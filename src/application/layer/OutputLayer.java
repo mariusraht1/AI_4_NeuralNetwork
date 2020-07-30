@@ -40,7 +40,6 @@ public class OutputLayer extends ConnectableLayer {
 		return mostActiveNeuron;
 	}
 
-	// Softmax: 
 	public void calcActivationValues() {
 		super.calcActivationValues();
 		this.activationFunction.execute(this);
