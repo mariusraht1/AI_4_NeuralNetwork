@@ -3,8 +3,10 @@ package application.view;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
 
@@ -36,6 +38,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritablePixelFormat;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.StrokeLineCap;
 import library.MathManager;
@@ -249,7 +254,7 @@ public class MainScene {
 			tf_labelDrawing.clear();
 			Log.getInstance().add(true, "Bitte Label eingeben, um Vorhersage validieren zu können.");
 		}
-		
+
 		// FIX Exactly 28x28 = 784 bytes
 
 //		SnapshotParameters params = new SnapshotParameters();
@@ -257,21 +262,34 @@ public class MainScene {
 		Image drawing = cv_canvas.snapshot(null, null);
 
 		try {
-			BufferedImage bImage = SwingFXUtils.fromFXImage(drawing, null);
+//			BufferedImage bImage = SwingFXUtils.fromFXImage(drawing, null);
+
+			PixelReader pr = drawing.getPixelReader();
+
+			int w = (int) drawing.getWidth();
+			int h = (int) drawing.getHeight();
+			int offset = 0;
+			int scanlineStride = w * 4;
+
+			byte[] buffer = new byte[w * h * 4];
+
+			pr.getPixels(0, 0, w, h, PixelFormat.getByteBgraInstance(), buffer, offset, scanlineStride);
+
+			ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
+			BufferedImage bImage = ImageIO.read(bais);
 
 			// Resize
-//			BufferedImage scaledBI = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
-//			Graphics2D graphics = scaledBI.createGraphics();
-//			graphics.setBackground(Color.BLACK);
-//			graphics.drawImage(bImage, 0, 0, 28, 28, null);
-//			graphics.dispose();
+			BufferedImage scaledBI = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
+			Graphics2D graphics = scaledBI.createGraphics();
+			graphics.setBackground(Color.BLACK);
+			graphics.drawImage(bImage, 0, 0, 28, 28, null);
+			graphics.dispose();
 
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
-			ImageIO.write(bImage, "png", s);
+			ImageIO.write(scaledBI, "png", s);
 			byte[] res = s.toByteArray();
 			s.close();
 
-			
 			if (res.length > 0) {
 
 			}
