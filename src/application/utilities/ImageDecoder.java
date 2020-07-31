@@ -3,6 +3,7 @@ package application.utilities;
 import java.io.File;
 
 import application.data.DigitImage;
+import library.MathManager;
 
 public class ImageDecoder {
 	private static ImageDecoder instance;

@@ -2,7 +2,7 @@ package application.functions;
 
 import application.layer.ConnectableLayer;
 import application.network.Network;
-import application.utilities.MathManager;
+import library.MathManager;
 
 public enum WeightInitialisation {
 	Leaky_ReLu, ReLu, Sigmoid, Tanh;

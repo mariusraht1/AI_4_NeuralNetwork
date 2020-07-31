@@ -8,7 +8,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import application.Main;
-import application.utilities.GeneralUtilities.OSType;
+import library.GeneralUtilities;
+import library.GeneralUtilities.OSType;
 
 public class SetupManager {
 	// NEW Export weights and biases

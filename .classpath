@@ -28,5 +28,7 @@
 	<classpathentry kind="lib" path="lib/javafx-11.0.2/linux"/>
 	<classpathentry kind="lib" path="lib/javafx-11.0.2/osx"/>
 	<classpathentry kind="lib" path="lib/javafx-11.0.2/windows"/>
+	<classpathentry kind="lib" path="lib/GeneralUtilities-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/MathManager-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

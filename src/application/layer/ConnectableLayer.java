@@ -4,7 +4,7 @@ import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
-import application.utilities.MathManager;
+import library.MathManager;
 
 public class ConnectableLayer extends Layer {
 	private double bias = 0.0;

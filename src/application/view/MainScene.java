@@ -8,12 +8,12 @@ import application.data.DataItem;
 import application.data.DigitImage;
 import application.functions.ActivationFunction;
 import application.functions.Distribution;
+import application.network.Backpropagation;
 import application.network.Feedforwarding;
 import application.network.Network;
 import application.network.OperationMode;
 import application.utilities.FileManager;
 import application.utilities.ImageDecoder;
-import application.utilities.MathManager;
 import application.utilities.SetupManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +28,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import library.MathManager;
 
 public class MainScene {
 	@FXML
@@ -42,6 +43,8 @@ public class MainScene {
 	private Canvas cv_canvas;
 	@FXML
 	private TextField tf_labelDrawing;
+	@FXML
+	private TextField tf_learningRate;
 	@FXML
 	private ComboBox<Distribution> cb_distribution;
 	@FXML
@@ -86,7 +89,10 @@ public class MainScene {
 	private void initUI() {
 		if (tf_numOfSteps.getText().isEmpty()) {
 			tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
-			tf_numOfSteps.setPromptText("Mind. " + String.valueOf(Main.MinNumOfSteps));
+		}
+		
+		if(tf_learningRate.getText().isEmpty()) {
+			tf_learningRate.setText(String.valueOf(Main.DefaultLearningRate));
 		}
 
 		if (cb_distribution.getItems().isEmpty()) {
@@ -228,15 +234,24 @@ public class MainScene {
 
 		if (label < 0) {
 			tf_labelDrawing.clear();
+			Log.getInstance().add(true, "Bitte Label eingeben, um Vorhersage validieren zu können.");
 		}
+		// NEW Check if something has been drawn
+		
 
 	}
 
 	@FXML
 	private void onAction_setOptions() {
-		Feedforwarding.getInstance().init();
-		Network.getInstance().setDistribution(cb_distribution.getSelectionModel().getSelectedItem());
-		Network.getInstance().setActivationFunction(cb_activationFunction.getSelectionModel().getSelectedItem());
+		double learningRate = MathManager.getInstance().parseDouble(tf_learningRate.getText());
+		if (learningRate < 0.0 || learningRate > 1.0) {
+			tf_learningRate.clear();
+		} else {
+			Feedforwarding.getInstance().init();
+			Backpropagation.getInstance().setLearningRate(learningRate);
+			Network.getInstance().setDistribution(cb_distribution.getSelectionModel().getSelectedItem());
+			Network.getInstance().setActivationFunction(cb_activationFunction.getSelectionModel().getSelectedItem());
+		}
 	}
 
 	@FXML

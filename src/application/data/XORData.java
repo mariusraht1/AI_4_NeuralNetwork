@@ -3,7 +3,7 @@ package application.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import application.utilities.MathManager;
+import library.MathManager;
 
 public class XORData extends DataItem {
 	private static final ArrayList<XORData> PossibleCombinations = new ArrayList<XORData>(

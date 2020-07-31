@@ -111,10 +111,7 @@ public class Network {
 
 	public void init() {
 		this.hiddenLayerList = new ArrayList<HiddenLayer>();
-
 		Feedforwarding.getInstance().init();
-		Backpropagation.getInstance().init();
-
 		generateLayers();
 	}
 

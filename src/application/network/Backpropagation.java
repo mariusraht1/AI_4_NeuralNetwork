@@ -18,7 +18,7 @@ public class Backpropagation {
 		return instance;
 	}
 
-	private double learningRate;
+	private double learningRate = Main.DefaultLearningRate;
 
 	public double getLearningRate() {
 		return learningRate;
@@ -29,10 +29,6 @@ public class Backpropagation {
 	}
 
 	private Backpropagation() {
-	}
-
-	public void init() {
-		this.learningRate = Main.DefaultLearningRate;
 	}
 
 	public void execute() {
