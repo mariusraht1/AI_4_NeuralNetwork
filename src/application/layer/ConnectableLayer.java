@@ -1,6 +1,5 @@
 package application.layer;
 
-import application.functions.ActivationFunction;
 import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
@@ -18,16 +17,6 @@ public class ConnectableLayer extends Layer {
 		this.bias = bias;
 	}
 
-	protected ActivationFunction activationFunction = ActivationFunction.Leaky_ReLu;
-
-	public ActivationFunction getActivationFunction() {
-		return activationFunction;
-	}
-
-	public void setActivationFunction(ActivationFunction activationFunction) {
-		this.activationFunction = activationFunction;
-	}
-
 	public ConnectableLayer(String name) {
 		super(name);
 		this.bias = MathManager.getInstance().getRandom(-1.0, 1.0);
@@ -39,7 +28,7 @@ public class ConnectableLayer extends Layer {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				totalError += connectableNeuron.getError();
+				totalError += Math.sqrt(Math.pow(connectableNeuron.getError(), 2));
 			}
 		}
 
@@ -55,7 +44,7 @@ public class ConnectableLayer extends Layer {
 				}
 			}
 		}
-		this.activationFunction.initWeight(this);
+		Network.getInstance().getActivationFunction().initWeight(this);
 	}
 
 	public void calcActivationValues() {

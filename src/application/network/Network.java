@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import application.Main;
 import application.data.DataInputType;
 import application.data.DataItem;
+import application.functions.ActivationFunction;
 import application.functions.Distribution;
 import application.layer.HiddenLayer;
 import application.layer.InputLayer;
@@ -25,16 +26,6 @@ public class Network {
 		this.dataInputType = dataInputType;
 	}
 
-	private OperationMode operationMode = OperationMode.TRAIN;
-
-	public OperationMode getOperationMode() {
-		return operationMode;
-	}
-
-	public void setOperationMode(OperationMode operationMode) {
-		this.operationMode = operationMode;
-	}
-
 	private Distribution distribution = Distribution.UNIFORM;
 
 	public Distribution getDistribution() {
@@ -43,6 +34,26 @@ public class Network {
 
 	public void setDistribution(Distribution distribution) {
 		this.distribution = distribution;
+	}
+
+	protected ActivationFunction activationFunction = ActivationFunction.Leaky_ReLu;
+
+	public ActivationFunction getActivationFunction() {
+		return activationFunction;
+	}
+
+	public void setActivationFunction(ActivationFunction activationFunction) {
+		this.activationFunction = activationFunction;
+	}
+
+	private OperationMode operationMode = OperationMode.TRAIN;
+
+	public OperationMode getOperationMode() {
+		return operationMode;
+	}
+
+	public void setOperationMode(OperationMode operationMode) {
+		this.operationMode = operationMode;
 	}
 
 	private InputLayer inputLayer;

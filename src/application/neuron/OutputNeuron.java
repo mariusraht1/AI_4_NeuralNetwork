@@ -11,16 +11,6 @@ public class OutputNeuron extends ConnectableNeuron {
 		this.representationValue = representationValue;
 	}
 
-//	private double probability = 0.0;
-//
-//	public double getProbability() {
-//		return probability;
-//	}
-//
-//	public void setProbability(double probability) {
-//		this.probability = probability;
-//	}
-
 	public OutputNeuron(int representationValue) {
 		super();
 		this.representationValue = representationValue;

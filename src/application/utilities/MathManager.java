@@ -38,7 +38,7 @@ public class MathManager {
 	}
 
 	public int parseInt(String s) {
-		int result = 0;
+		int result = -1;
 
 		try {
 			result = Integer.parseInt(s);

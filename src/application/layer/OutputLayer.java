@@ -42,7 +42,7 @@ public class OutputLayer extends ConnectableLayer {
 
 	public void calcActivationValues() {
 		super.calcActivationValues();
-		this.activationFunction.execute(this);
+		Network.getInstance().getActivationFunction().execute(this);
 		this.toProbabilitiesFunction.execute(this);
 	}
 

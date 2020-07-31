@@ -53,26 +53,36 @@ public class Log {
 		clear();
 	}
 
+	public void add(boolean critical, String message) {
+		if (critical) {
+			addMessage(message);
+		}
+	}
+
 	public void add(String message) {
 		if (!disable) {
-			System.out.println(message);
+			addMessage(message);
+		}
+	}
+	
+	private void addMessage(String message) {
+		System.out.println(message);
 
-			if (control != null) {
-				if (buffer.size() > 0) {
-					for (String msg : buffer) {
-						control.getItems().add(msg + "\n");
-					}
-
-					buffer.clear();
+		if (control != null) {
+			if (buffer.size() > 0) {
+				for (String msg : buffer) {
+					control.getItems().add(msg + "\n");
 				}
 
-				control.getItems().add(message + "\n");
-			} else {
-				buffer.add(message);
+				buffer.clear();
 			}
 
-			control.scrollTo(control.getItems().size());
+			control.getItems().add(message + "\n");
+		} else {
+			buffer.add(message);
 		}
+
+		control.scrollTo(control.getItems().size());
 	}
 
 	public void clear() {

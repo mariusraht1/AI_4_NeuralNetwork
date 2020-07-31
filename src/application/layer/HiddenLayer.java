@@ -14,7 +14,7 @@ public class HiddenLayer extends ConnectableLayer {
 
 	public void calcActivationValues() {
 		super.calcActivationValues();
-		this.activationFunction.execute(this);
+		Network.getInstance().getActivationFunction().execute(this);
 	}
 
 	public static void generate(int id, int numOfNeurons) {

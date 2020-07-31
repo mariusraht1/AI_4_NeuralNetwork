@@ -6,13 +6,19 @@ import application.Log;
 import application.Main;
 import application.data.DataItem;
 import application.data.DigitImage;
+import application.functions.ActivationFunction;
+import application.functions.Distribution;
 import application.network.Feedforwarding;
 import application.network.Network;
 import application.network.OperationMode;
 import application.utilities.FileManager;
 import application.utilities.ImageDecoder;
+import application.utilities.MathManager;
+import application.utilities.SetupManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -21,6 +27,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class MainScene {
 	@FXML
@@ -31,6 +38,14 @@ public class MainScene {
 	private TextField tf_labelFile;
 	@FXML
 	private Button btn_labelFile;
+	@FXML
+	private Canvas cv_canvas;
+	@FXML
+	private TextField tf_labelDrawing;
+	@FXML
+	private ComboBox<Distribution> cb_distribution;
+	@FXML
+	private ComboBox<ActivationFunction> cb_activationFunction;
 	@FXML
 	private ComboBox<OperationMode> cb_operationMode;
 	@FXML
@@ -52,14 +67,45 @@ public class MainScene {
 	private void initialize() {
 		Log.getInstance().setOutputControl(lv_console);
 
-		tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
-		tf_numOfSteps.setPromptText("Mind. " + String.valueOf(Main.MinNumOfSteps));
+		initInputData();
+		initUI();
+
+		graphicsContext = cv_canvas.getGraphicsContext2D();
+	}
+
+	private void initInputData() {
+		File imageFile = Main.DefaultTrainImageFile;
+		File labelFile = Main.DefaultTrainLabelFile;
+
+		ImageDecoder.getInstance().readFiles(imageFile, labelFile);
+		Network.getInstance().init();
+
+		Log.getInstance().add("Dateien wurden erfolgreich geladen.");
+	}
+
+	private void initUI() {
+		if (tf_numOfSteps.getText().isEmpty()) {
+			tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
+			tf_numOfSteps.setPromptText("Mind. " + String.valueOf(Main.MinNumOfSteps));
+		}
+
+		if (cb_distribution.getItems().isEmpty()) {
+			cb_distribution.getItems().addAll(Distribution.values());
+			cb_distribution.getSelectionModel().select(Network.getInstance().getDistribution());
+		}
+
+		if (cb_activationFunction.getItems().isEmpty()) {
+			cb_activationFunction.getItems().addAll(ActivationFunction.values());
+			cb_activationFunction.getItems().remove(ActivationFunction.Softmax);
+			cb_activationFunction.getSelectionModel().select(Network.getInstance().getActivationFunction());
+		}
 
 		if (cb_operationMode.getItems().isEmpty()) {
 			cb_operationMode.getItems().addAll(OperationMode.values());
 			cb_operationMode.getSelectionModel().select(Network.getInstance().getOperationMode());
 		}
 
+		lbl_results.setText("Ergebnisse (" + String.format("%.2f", 0.00) + " %)");
 		lv_results.getItems().clear();
 	}
 
@@ -126,12 +172,12 @@ public class MainScene {
 	}
 
 	@FXML
-	private void onAction_setOptions() {
+	private void onAction_loadData() {
 		boolean setOptions = true;
 		File imageFile = new File(tf_imageFile.getText());
 		File labelFile = new File(tf_labelFile.getText());
 
-		if (!useInternalFiles) {
+		if (!this.useInternalFiles) {
 			if (!imageFile.exists()) {
 				setOptions = false;
 				tf_imageFile.setText("");
@@ -151,13 +197,46 @@ public class MainScene {
 			Network.getInstance().init();
 			initialize();
 
-			Log.getInstance().add("Optionen erfolgreich gespeichert und Dateien geladen.");
+			Log.getInstance().add("Dateien wurden erfolgreich geladen.");
 		}
 	}
 
+	private GraphicsContext graphicsContext;
+
 	@FXML
-	private void onAction_cbOperationMode(ActionEvent e) {
-		Network.getInstance().setOperationMode(cb_operationMode.getSelectionModel().getSelectedItem());
+	private void onMouseDragged_canvas(MouseEvent event) {
+		graphicsContext.lineTo(event.getX(), event.getY());
+		graphicsContext.stroke();
+	}
+
+	@FXML
+	private void onMousePressed_canvas(MouseEvent event) {
+		graphicsContext.beginPath();
+		graphicsContext.moveTo(event.getX(), event.getY());
+		graphicsContext.stroke();
+	}
+
+	@FXML
+	private void onAction_btnClearCanvas() {
+		graphicsContext.clearRect(0, 0, cv_canvas.getWidth(), cv_canvas.getHeight());
+	}
+
+	// NEW Implement save drawing
+	@FXML
+	private void onAction_btnSaveDrawing() {
+		int label = MathManager.getInstance().parseInt(tf_labelDrawing.getText());
+
+		if (label < 0) {
+			tf_labelDrawing.clear();
+		}
+
+	}
+
+	@FXML
+	private void onAction_setOptions() {
+		Feedforwarding.getInstance().init();
+		Network.getInstance().setDistribution(cb_distribution.getSelectionModel().getSelectedItem());
+		Network.getInstance().setActivationFunction(cb_activationFunction.getSelectionModel().getSelectedItem());
 	}
 
 	@FXML
@@ -170,6 +249,7 @@ public class MainScene {
 			} else {
 				boolean animate = chk_animate.isSelected();
 				boolean disableLogging = chk_disableLogging.isSelected();
+
 				Log.getInstance().setDisable(disableLogging);
 				if (animate) {
 					Log.getInstance().setIsActive(true);
@@ -181,7 +261,7 @@ public class MainScene {
 						&& ImageDecoder.getInstance().getLabelFileContent() != null) {
 					Network.getInstance().runPlay(animate, numOfSteps, this);
 				} else {
-					Log.getInstance().add("Zuerst bitte Optionen setzen und bestätigen.");
+					Log.getInstance().add(true, "Zuerst bitte Optionen setzen und bestätigen.");
 				}
 			}
 		} catch (Exception e) {
@@ -197,6 +277,7 @@ public class MainScene {
 
 	@FXML
 	private void onAction_btnExport() {
-		// NEW Export weights and biases
+		SetupManager.getInstance().export();
+		SetupManager.getInstance().showExport();
 	}
 }
