@@ -85,7 +85,7 @@ public class MainScene {
 
 		graphicsContext = cv_canvas.getGraphicsContext2D();
 		graphicsContext.setStroke(javafx.scene.paint.Color.WHITE);
-		graphicsContext.setLineWidth(10.0);
+		graphicsContext.setLineWidth(2.0);
 		graphicsContext.setLineCap(StrokeLineCap.SQUARE);
 	}
 
@@ -249,6 +249,8 @@ public class MainScene {
 			tf_labelDrawing.clear();
 			Log.getInstance().add(true, "Bitte Label eingeben, um Vorhersage validieren zu können.");
 		}
+		
+		// FIX Exactly 28x28 = 784 bytes
 
 //		SnapshotParameters params = new SnapshotParameters();
 //		params.setFill(Color.BLACK);
@@ -258,18 +260,18 @@ public class MainScene {
 			BufferedImage bImage = SwingFXUtils.fromFXImage(drawing, null);
 
 			// Resize
-			BufferedImage scaledBI = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
-			Graphics2D graphics = scaledBI.createGraphics();
-			graphics.setBackground(Color.BLACK);
-			graphics.drawImage(bImage, 0, 0, 28, 28, null);
-			graphics.dispose();
+//			BufferedImage scaledBI = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
+//			Graphics2D graphics = scaledBI.createGraphics();
+//			graphics.setBackground(Color.BLACK);
+//			graphics.drawImage(bImage, 0, 0, 28, 28, null);
+//			graphics.dispose();
 
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
-			ImageIO.write(scaledBI, "png", s);
+			ImageIO.write(bImage, "png", s);
 			byte[] res = s.toByteArray();
 			s.close();
 
-			// FIX Exactly 28x28 = 784 bytes
+			
 			if (res.length > 0) {
 
 			}
