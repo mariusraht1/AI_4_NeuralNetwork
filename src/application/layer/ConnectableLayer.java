@@ -35,16 +35,14 @@ public class ConnectableLayer extends Layer {
 		return totalError;
 	}
 
-	public void connectWith(Layer prevLayer) {
-		StringBuilder connectionID = new StringBuilder(this.getId() + "_");
-		
+	public void connectWith(Layer prevLayer) {	
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				connectionID.append(connectableNeuron.getId());
 				for (Neuron sourceNeuron : prevLayer.getNeuronList()) {
-					connectionID.append(sourceNeuron.getId());
-					connectableNeuron.getInboundConnections().add(new Connection(connectionID.toString(), sourceNeuron));
+					String connectionID = this.getId() + "_" + connectableNeuron.getId() + sourceNeuron.getId();
+					connectableNeuron.getInboundConnections().add(new Connection(connectionID, sourceNeuron));
+					
 				}
 			}
 		}

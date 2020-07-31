@@ -11,6 +11,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -93,7 +94,7 @@
                               <RowConstraints />
                            </rowConstraints>
                            <children>
-                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <children>
             								<Canvas fx:id="cv_canvas" height="84.0" onMouseDragged="#onMouseDragged_canvas" onMousePressed="#onMousePressed_canvas" width="84.0" />
                                  </children>

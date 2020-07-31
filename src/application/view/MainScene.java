@@ -1,6 +1,12 @@
 package application.view;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+
+import javax.imageio.ImageIO;
 
 import application.Log;
 import application.Main;
@@ -15,8 +21,10 @@ import application.network.OperationMode;
 import application.utilities.FileManager;
 import application.utilities.ImageDecoder;
 import application.utilities.SetupManager;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -26,8 +34,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.StrokeLineCap;
 import library.MathManager;
 
 public class MainScene {
@@ -74,6 +84,9 @@ public class MainScene {
 		initUI();
 
 		graphicsContext = cv_canvas.getGraphicsContext2D();
+		graphicsContext.setStroke(javafx.scene.paint.Color.WHITE);
+		graphicsContext.setLineWidth(10.0);
+		graphicsContext.setLineCap(StrokeLineCap.SQUARE);
 	}
 
 	private void initInputData() {
@@ -90,8 +103,8 @@ public class MainScene {
 		if (tf_numOfSteps.getText().isEmpty()) {
 			tf_numOfSteps.setText(String.valueOf(Main.DefaultNumOfSteps));
 		}
-		
-		if(tf_learningRate.getText().isEmpty()) {
+
+		if (tf_learningRate.getText().isEmpty()) {
 			tf_learningRate.setText(String.valueOf(Main.DefaultLearningRate));
 		}
 
@@ -236,9 +249,33 @@ public class MainScene {
 			tf_labelDrawing.clear();
 			Log.getInstance().add(true, "Bitte Label eingeben, um Vorhersage validieren zu können.");
 		}
-		// NEW Check if something has been drawn
-		
 
+//		SnapshotParameters params = new SnapshotParameters();
+//		params.setFill(Color.BLACK);
+		Image drawing = cv_canvas.snapshot(null, null);
+
+		try {
+			BufferedImage bImage = SwingFXUtils.fromFXImage(drawing, null);
+
+			// Resize
+			BufferedImage scaledBI = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
+			Graphics2D graphics = scaledBI.createGraphics();
+			graphics.setBackground(Color.BLACK);
+			graphics.drawImage(bImage, 0, 0, 28, 28, null);
+			graphics.dispose();
+
+			ByteArrayOutputStream s = new ByteArrayOutputStream();
+			ImageIO.write(scaledBI, "png", s);
+			byte[] res = s.toByteArray();
+			s.close();
+
+			// FIX Exactly 28x28 = 784 bytes
+			if (res.length > 0) {
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
