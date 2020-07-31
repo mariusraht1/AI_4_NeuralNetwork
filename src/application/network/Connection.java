@@ -3,6 +3,16 @@ package application.network;
 import application.neuron.Neuron;
 
 public class Connection {
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	private Neuron sourceNeuron;
 
 	public Neuron getSourceNeuron() {
@@ -23,7 +33,8 @@ public class Connection {
 		this.weight = weight;
 	}
 
-	public Connection(Neuron sourceNeuron) {
+	public Connection(String id, Neuron sourceNeuron) {
+		this.id = id;
 		this.sourceNeuron = sourceNeuron;
 	}
 }

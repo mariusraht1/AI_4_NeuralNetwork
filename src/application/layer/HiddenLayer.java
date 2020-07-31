@@ -20,7 +20,7 @@ public class HiddenLayer extends ConnectableLayer {
 	public static void generate(int id, int numOfNeurons) {
 		HiddenLayer hiddenLayer = new HiddenLayer(id);
 		for (int i = 0; i < numOfNeurons; i++) {
-			hiddenLayer.getNeuronList().add(new HiddenNeuron());
+			hiddenLayer.getNeuronList().add(new HiddenNeuron(i + 1));
 		}
 		Network.getInstance().getHiddenLayerList().add(hiddenLayer);
 		Layer prevLayer = hiddenLayer.getPreviousLayer();

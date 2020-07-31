@@ -1,7 +1,7 @@
 package application.neuron;
 
 public class HiddenNeuron extends ConnectableNeuron {
-	public HiddenNeuron() {
-		super();
+	public HiddenNeuron(int id) {
+		super(id);
 	}
 }

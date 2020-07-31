@@ -23,7 +23,7 @@ public class InputLayer extends Layer {
 		InputLayer inputLayer = new InputLayer();
 		int numOfNeurons = Network.getInstance().getDataInputType().getNumOfInputNeurons();
 		for (int i = 0; i < numOfNeurons; i++) {
-			inputLayer.getNeuronList().add(new InputNeuron());
+			inputLayer.getNeuronList().add(new InputNeuron(i + 1));
 		}
 		Network.getInstance().setInputLayer(inputLayer);
 	}

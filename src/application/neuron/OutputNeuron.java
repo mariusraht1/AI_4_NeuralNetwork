@@ -11,8 +11,8 @@ public class OutputNeuron extends ConnectableNeuron {
 		this.representationValue = representationValue;
 	}
 
-	public OutputNeuron(int representationValue) {
-		super();
+	public OutputNeuron(int id, int representationValue) {
+		super(id);
 		this.representationValue = representationValue;
 	}
 

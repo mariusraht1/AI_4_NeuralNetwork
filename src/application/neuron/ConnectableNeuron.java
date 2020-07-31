@@ -35,8 +35,8 @@ public class ConnectableNeuron extends Neuron {
 		this.inboundConnections = inboundConnections;
 	}
 
-	public ConnectableNeuron() {
-		super();
+	public ConnectableNeuron(int id) {
+		super(id);
 	}
 
 	public Connection getInboundConnectionBySourceNeuron(Neuron sourceNeuron) {

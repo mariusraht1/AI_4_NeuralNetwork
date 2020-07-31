@@ -22,7 +22,7 @@ public class OutputLayer extends ConnectableLayer {
 		DataInputType dataInputType = Network.getInstance().getDataInputType();
 
 		for (int i = 0; i < dataInputType.getPossibleTargetValues().size(); i++) {
-			outputLayer.getNeuronList().add(new OutputNeuron(dataInputType.getPossibleTargetValues().get(i)));
+			outputLayer.getNeuronList().add(new OutputNeuron(i + 1, dataInputType.getPossibleTargetValues().get(i)));
 		}
 		Network.getInstance().setOutputLayer(outputLayer);
 		Layer prevLayer = outputLayer.getPreviousLayer();
