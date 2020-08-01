@@ -36,7 +36,7 @@ public class Network {
 		this.distribution = distribution;
 	}
 
-	protected ActivationFunction activationFunction = ActivationFunction.Leaky_ReLu;
+	protected ActivationFunction activationFunction = ActivationFunction.LEAKY_RELU;
 
 	public ActivationFunction getActivationFunction() {
 		return activationFunction;

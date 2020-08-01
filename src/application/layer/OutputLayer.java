@@ -10,7 +10,7 @@ import application.neuron.Neuron;
 import application.neuron.OutputNeuron;
 
 public class OutputLayer extends ConnectableLayer {
-	private final ActivationFunction toProbabilitiesFunction = ActivationFunction.Softmax;
+	private final ActivationFunction toProbabilitiesFunction = ActivationFunction.SOFTMAX;
 
 	public OutputLayer() {
 		super("OL");

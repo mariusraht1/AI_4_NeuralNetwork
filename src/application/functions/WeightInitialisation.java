@@ -2,10 +2,9 @@ package application.functions;
 
 import application.layer.ConnectableLayer;
 import application.network.Network;
-import library.MathManager;
 
 public enum WeightInitialisation {
-	Leaky_ReLu, ReLu, Sigmoid, Tanh;
+	LEAKY_RELU, RELU, SIGMOID, TANH;
 
 	// Xavier initialization
 	public double execute(ConnectableLayer layer) {
@@ -27,36 +26,20 @@ public enum WeightInitialisation {
 		}
 
 		switch (this) {
-		case Leaky_ReLu:
-		case ReLu:
-			weight = relu(min, max);
+		case LEAKY_RELU:
+			weight = Leaky_Relu.getInstance().getInitializedWeight(min, max);
 			break;
-		case Sigmoid:
-			weight = sigmoid(min, max);
+		case RELU:
+			weight = Relu.getInstance().getInitializedWeight(min, max);
 			break;
-		case Tanh:
-			weight = tanh(min, max);
+		case SIGMOID:
+			weight = Sigmoid.getInstance().getInitializedWeight(min, max);
+			break;
+		case TANH:
+			weight = Tanh.getInstance().getInitializedWeight(min, max);
 			break;
 		}
 
 		return weight;
-	}
-
-	private double relu(double min, double max) {
-		min *= Math.sqrt(2);
-		max *= Math.sqrt(2);
-
-		return MathManager.getInstance().getRandom(min, max);
-	}
-
-	private double sigmoid(double min, double max) {
-		min *= 4;
-		max *= 4;
-
-		return MathManager.getInstance().getRandom(min, max);
-	}
-
-	private double tanh(double min, double max) {
-		return MathManager.getInstance().getRandom(min, max);
 	}
 }

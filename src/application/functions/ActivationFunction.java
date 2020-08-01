@@ -6,15 +6,14 @@ import application.layer.OutputLayer;
 import application.network.Connection;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
-import application.neuron.OutputNeuron;
 
 public enum ActivationFunction {
-	Leaky_ReLu, ReLu, Sigmoid, Softmax, Tanh;
+	LEAKY_RELU, RELU, SIGMOID, SOFTMAX, TANH;
 
 	public void execute(Layer layer) {
-		if (this.equals(Softmax) && layer instanceof OutputLayer) {
-			softmax((OutputLayer) layer);
-		} else if (!this.equals(Softmax)) {
+		if (this.equals(SOFTMAX) && layer instanceof OutputLayer) {
+			Softmax.getInstance().setActivationValue(layer);
+		} else if (!this.equals(SOFTMAX)) {
 			executeInLoop(layer);
 		}
 	}
@@ -27,17 +26,17 @@ public enum ActivationFunction {
 					double weight = 0.0;
 
 					switch (this) {
-					case Leaky_ReLu:
-						weight = WeightInitialisation.Leaky_ReLu.execute(layer);
+					case LEAKY_RELU:
+						weight = WeightInitialisation.LEAKY_RELU.execute(layer);
 						break;
-					case ReLu:
-						weight = WeightInitialisation.ReLu.execute(layer);
+					case RELU:
+						weight = WeightInitialisation.RELU.execute(layer);
 						break;
-					case Sigmoid:
-						weight = WeightInitialisation.Sigmoid.execute(layer);
+					case SIGMOID:
+						weight = WeightInitialisation.SIGMOID.execute(layer);
 						break;
-					case Tanh:
-						weight = WeightInitialisation.Tanh.execute(layer);
+					case TANH:
+						weight = WeightInitialisation.TANH.execute(layer);
 						break;
 					default:
 						break;
@@ -53,9 +52,9 @@ public enum ActivationFunction {
 		double result = 0.0;
 
 		switch (this) {
-		case Leaky_ReLu:
-		case ReLu:
-		case Tanh:
+		case LEAKY_RELU:
+		case RELU:
+		case TANH:
 			result = ((value <= 0) ? 0.0 : 1.0);
 			break;
 		default:
@@ -66,62 +65,22 @@ public enum ActivationFunction {
 		return result;
 	}
 
-	private double relu(double value) {
-		if (value < 0) {
-			value = 0.0;
-		}
-
-		return value;
-	}
-
-	private double sigmoid(double value) {
-		return 1 / (1 + Math.exp(-value));
-	}
-
-	private void softmax(OutputLayer layer) {
-		double total = 0.0;
-		for (Neuron neuron : layer.getNeuronList()) {
-			total += Math.exp(neuron.getActivationValue());
-		}
-
-		for (Neuron neuron : layer.getNeuronList()) {
-			if (neuron instanceof OutputNeuron) {
-				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-//				outputNeuron.setProbability(Math.exp(neuron.getActivationValue()) / total);
-				outputNeuron.setActivationValue(Math.exp(neuron.getActivationValue()) / total);
-			}
-		}
-	}
-
-	private double tanh(double value) {
-		return Math.tanh(value);
-	}
-
-	public double leaky_relu(double value) {
-		double a = 0.01;
-		if (value < 0) {
-			value *= a;
-		}
-
-		return value;
-	}
-
 	private void executeInLoop(Layer layer) {
 		for (Neuron neuron : layer.getNeuronList()) {
 			double activationValue = neuron.getActivationValue();
 
 			switch (this) {
-			case Leaky_ReLu:
-				activationValue = leaky_relu(activationValue);
+			case LEAKY_RELU:
+				activationValue = Leaky_Relu.getInstance().getActivationValue(activationValue);
 				break;
-			case ReLu:
-				activationValue = relu(activationValue);
+			case RELU:
+				activationValue = Relu.getInstance().getActivationValue(activationValue);
 				break;
-			case Sigmoid:
-				activationValue = sigmoid(activationValue);
+			case SIGMOID:
+				activationValue = Sigmoid.getInstance().getActivationValue(activationValue);
 				break;
-			case Tanh:
-				activationValue = tanh(activationValue);
+			case TANH:
+				activationValue = Tanh.getInstance().getActivationValue(activationValue);
 				break;
 			default:
 				break;

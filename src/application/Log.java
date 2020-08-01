@@ -64,7 +64,7 @@ public class Log {
 			addMessage(message);
 		}
 	}
-	
+
 	private void addMessage(String message) {
 		System.out.println(message);
 

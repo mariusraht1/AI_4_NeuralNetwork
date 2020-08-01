@@ -4,7 +4,7 @@ import application.neuron.Neuron;
 
 public class Connection {
 	private String id;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -12,7 +12,7 @@ public class Connection {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	private Neuron sourceNeuron;
 
 	public Neuron getSourceNeuron() {
