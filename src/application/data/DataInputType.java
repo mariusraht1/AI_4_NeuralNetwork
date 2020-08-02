@@ -3,19 +3,20 @@ package application.data;
 import java.util.ArrayList;
 
 import application.network.Network;
+import application.utilities.ImageDecoder;
 
 public enum DataInputType {
-	DIGIT, SAME_DIGIT, XOR;
+	MNIST_DIGIT, MNIST_SAME_DIGIT, XOR;
 
 	public ArrayList<DataItem> getList(int size) {
 		ArrayList<DataItem> dataItems = null;
 
 		switch (Network.getInstance().getDataInputType()) {
-		case DIGIT:
-			dataItems = DigitImage.getList(size);
+		case MNIST_DIGIT:
+			dataItems = MNISTImage.getList(size);
 			break;
-		case SAME_DIGIT:
-			dataItems = DigitImage.getListSameDigit(size);
+		case MNIST_SAME_DIGIT:
+			dataItems = MNISTImage.getListSameDigit(size);
 			break;
 		case XOR:
 			dataItems = XORData.getList(size);
@@ -31,9 +32,9 @@ public enum DataInputType {
 		int numOfInputNeurons = 0;
 
 		switch (Network.getInstance().getDataInputType()) {
-		case DIGIT:
-		case SAME_DIGIT:
-			numOfInputNeurons = DigitImage.getNumOfInputNeurons();
+		case MNIST_DIGIT:
+		case MNIST_SAME_DIGIT:
+			numOfInputNeurons = ImageDecoder.getInstance().size();
 			break;
 		case XOR:
 			numOfInputNeurons = XORData.getNumOfInputNeurons();
@@ -49,9 +50,9 @@ public enum DataInputType {
 		ArrayList<Integer> possibleTargetValues = null;
 
 		switch (Network.getInstance().getDataInputType()) {
-		case DIGIT:
-		case SAME_DIGIT:
-			possibleTargetValues = DigitImage.getPossibleTargetValues();
+		case MNIST_DIGIT:
+		case MNIST_SAME_DIGIT:
+			possibleTargetValues = Digit.getPossibleTargetValues();
 			break;
 		case XOR:
 			possibleTargetValues = XORData.getPossibleTargetValues();

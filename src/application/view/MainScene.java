@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import application.Log;
 import application.Main;
 import application.data.DataItem;
-import application.data.DigitImage;
+import application.data.Digit;
 import application.functions.ActivationFunction;
 import application.functions.Distribution;
 import application.network.Backpropagation;
@@ -73,7 +73,7 @@ public class MainScene {
 	@FXML
 	private CheckBox chk_disableLogging;
 	@FXML
-	private ListView<DigitImage> lv_results;
+	private ListView<Digit> lv_results;
 	@FXML
 	private ListView<String> lv_console;
 
@@ -139,15 +139,15 @@ public class MainScene {
 		double successRate = Feedforwarding.getInstance().getSuccessRate();
 		lbl_results.setText("Ergebnisse (" + String.format("%.2f", successRate) + " %)");
 
-		if (animate && dataItem instanceof DigitImage) {
-			DigitImage digit = (DigitImage) dataItem;
+		if (animate && dataItem instanceof Digit) {
+			Digit digit = (Digit) dataItem;
 			lv_results.getItems().add(digit);
 			lv_results.scrollTo(digit);
-			lv_results.setCellFactory(listview -> new ListCell<DigitImage>() {
+			lv_results.setCellFactory(listview -> new ListCell<Digit>() {
 				private ImageView imageView = new ImageView();
 
 				@Override
-				protected void updateItem(final DigitImage item, final boolean empty) {
+				protected void updateItem(final Digit item, final boolean empty) {
 					super.updateItem(item, empty);
 
 					if (empty) {

@@ -7,7 +7,7 @@ import application.utilities.ImageDecoder;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-public class DigitImage extends DataItem {
+public class Digit extends DataItem {
 	private byte[] image;
 
 	public byte[] getImage() {
@@ -18,7 +18,7 @@ public class DigitImage extends DataItem {
 		this.image = image;
 	}
 
-	public DigitImage(int label, byte[] image) {
+	public Digit(int label, byte[] image) {
 		super(label);
 		this.image = image;
 
@@ -60,35 +60,6 @@ public class DigitImage extends DataItem {
 		}
 
 		return gray;
-	}
-
-	public static ArrayList<DataItem> getList(int size) {
-		ArrayList<DataItem> dataItems = new ArrayList<DataItem>();
-
-		for (int i = 0; i < size; i++) {
-			dataItems.add(ImageDecoder.getInstance().readRandomDigit());
-		}
-
-		return dataItems;
-	}
-
-	private static DataItem RandomDigit = null;
-
-	public static ArrayList<DataItem> getListSameDigit(int size) {
-		ArrayList<DataItem> dataItems = new ArrayList<DataItem>();
-		if (RandomDigit == null) {
-			RandomDigit = ImageDecoder.getInstance().readRandomDigit();
-		}
-
-		for (int i = 0; i < size; i++) {
-			dataItems.add(RandomDigit);
-		}
-
-		return dataItems;
-	}
-
-	public static int getNumOfInputNeurons() {
-		return ImageDecoder.getInstance().getImageWidth() * ImageDecoder.getInstance().getImageHeight();
 	}
 
 	public static ArrayList<Integer> getPossibleTargetValues() {

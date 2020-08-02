@@ -2,7 +2,7 @@ package application.utilities;
 
 import java.io.File;
 
-import application.data.DigitImage;
+import application.data.Digit;
 import library.MathManager;
 
 public class ImageDecoder {
@@ -94,7 +94,7 @@ public class ImageDecoder {
 		this.imageIndex = imageOffset;
 	}
 
-	public DigitImage readNextDigit() {
+	public Digit readNextDigit() {
 		if (labelIndex > labelFileContent.length || imageIndex > imageFileContent.length) {
 			this.labelIndex = labelOffset;
 			this.imageIndex = imageOffset;
@@ -112,10 +112,10 @@ public class ImageDecoder {
 		labelIndex++;
 		imageIndex += (imageWidth * imageHeight);
 
-		return new DigitImage(label, image);
+		return new Digit(label, image);
 	}
 
-	public DigitImage readRandomDigit() {
+	public Digit readRandomDigit() {
 		int numOfImages = labelFileContent.length - labelOffset;
 		int randomIndex = MathManager.getInstance().getRandom(0, numOfImages - 1);
 
@@ -129,7 +129,7 @@ public class ImageDecoder {
 			index++;
 		}
 
-		return new DigitImage(label, image);
+		return new Digit(label, image);
 	}
 
 	public byte[][] to2DByteArray(byte[] byte1DArray, int offset, int rows, int cols) {

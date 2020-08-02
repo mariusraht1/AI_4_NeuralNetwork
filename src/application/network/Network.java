@@ -16,7 +16,7 @@ import javafx.concurrent.Task;
 import javafx.scene.Cursor;
 
 public class Network {
-	private DataInputType dataInputType = DataInputType.DIGIT;
+	private DataInputType dataInputType = DataInputType.MNIST_DIGIT;
 
 	public DataInputType getDataInputType() {
 		return dataInputType;
