@@ -80,8 +80,12 @@ public class ConnectableLayer extends Layer {
 				result = Network.getInstance().getHiddenLayerList().get(indexOfHiddenLayer - 1);
 			}
 		} else if (this.equals(Network.getInstance().getOutputLayer())) {
-			int maxIndex = Network.getInstance().getHiddenLayerList().size() - 1;
-			result = Network.getInstance().getHiddenLayerList().get(maxIndex);
+			if (Network.getInstance().getHiddenLayerList().size() > 0) {
+				int maxIndex = Network.getInstance().getHiddenLayerList().size() - 1;
+				result = Network.getInstance().getHiddenLayerList().get(maxIndex);
+			} else {
+				result = Network.getInstance().getInputLayer();
+			}
 		}
 
 		return result;

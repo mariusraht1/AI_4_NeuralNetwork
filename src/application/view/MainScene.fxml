@@ -11,6 +11,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -93,9 +94,9 @@
                               <RowConstraints />
                            </rowConstraints>
                            <children>
-                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <StackPane fx:id="sp_parentOfCanvas" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <children>
-            								<Canvas fx:id="cv_canvas" height="28.0" onMouseDragged="#onMouseDragged_canvas" onMousePressed="#onMousePressed_canvas" width="28.0" />
+            								<Canvas fx:id="cv_canvas" height="84.0" onMouseDragged="#onMouseDragged_canvas" onMousePressed="#onMousePressed_canvas" width="84.0" />
                                  </children>
                               </StackPane>
                               <VBox spacing="5.0" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
@@ -105,6 +106,7 @@
                                     <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAction_btnSaveDrawing" text="OK" />
                                  </children>
                               </VBox>
+                              <ImageView fx:id="iv_test" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
                            </children>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

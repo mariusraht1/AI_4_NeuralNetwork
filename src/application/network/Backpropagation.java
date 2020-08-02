@@ -35,15 +35,14 @@ public class Backpropagation {
 		if (Network.getInstance().getOperationMode().equals(OperationMode.TRAIN)) {
 			calcNewWeights(Network.getInstance().getOutputLayer());
 
-			for (int i = Network.getInstance().getHiddenLayerList().size() - 1; i > 0; i--) {
-				HiddenLayer hiddenLayer = Network.getInstance().getHiddenLayerList().get(i);
-				calcNewWeights(hiddenLayer);
-			}
+//			for (int i = Network.getInstance().getHiddenLayerList().size() - 1; i >= 0; i--) {
+//				HiddenLayer hiddenLayer = Network.getInstance().getHiddenLayerList().get(i);
+//				calcNewWeights(hiddenLayer);
+//			}
 		}
 	}
 
 	// NEW Add bias calculation
-	// NEW Consider compability with more hidden layers than 1
 	public double calcTotalError(ConnectableLayer connectableLayer) {
 		double totalErrorWithRespectToOutput = 0.0;
 		for (Neuron outputNeuron : connectableLayer.getNextLayer().getNeuronList()) {

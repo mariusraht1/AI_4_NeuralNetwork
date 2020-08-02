@@ -145,4 +145,8 @@ public class ImageDecoder {
 
 		return byteArray;
 	}
+
+	public int size() {
+		return imageWidth * imageHeight;
+	}
 }

@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
 
@@ -40,8 +39,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritablePixelFormat;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.StrokeLineCap;
 import library.MathManager;
 
@@ -55,7 +54,9 @@ public class MainScene {
 	@FXML
 	private Button btn_labelFile;
 	@FXML
-	private Canvas cv_canvas;
+	private StackPane sp_parentOfCanvas;
+	@FXML
+	private ResizableCanvas cv_canvas;
 	@FXML
 	private TextField tf_labelDrawing;
 	@FXML
@@ -90,8 +91,12 @@ public class MainScene {
 
 		graphicsContext = cv_canvas.getGraphicsContext2D();
 		graphicsContext.setStroke(javafx.scene.paint.Color.WHITE);
-		graphicsContext.setLineWidth(2.0);
+		graphicsContext.setLineWidth(5.0);
 		graphicsContext.setLineCap(StrokeLineCap.SQUARE);
+		
+		// Bind canvas to stackpane
+		cv_canvas.widthProperty().bind(sp_parentOfCanvas.widthProperty());
+	    cv_canvas.heightProperty().bind(sp_parentOfCanvas.heightProperty());
 	}
 
 	private void initInputData() {
@@ -120,7 +125,7 @@ public class MainScene {
 
 		if (cb_activationFunction.getItems().isEmpty()) {
 			cb_activationFunction.getItems().addAll(ActivationFunction.values());
-			cb_activationFunction.getItems().remove(ActivationFunction.Softmax);
+			cb_activationFunction.getItems().remove(ActivationFunction.SOFTMAX);
 			cb_activationFunction.getSelectionModel().select(Network.getInstance().getActivationFunction());
 		}
 
@@ -245,6 +250,9 @@ public class MainScene {
 		graphicsContext.clearRect(0, 0, cv_canvas.getWidth(), cv_canvas.getHeight());
 	}
 
+	@FXML
+	private ImageView iv_test;
+	
 	// NEW Implement save drawing
 	@FXML
 	private void onAction_btnSaveDrawing() {
@@ -255,43 +263,40 @@ public class MainScene {
 			Log.getInstance().add(true, "Bitte Label eingeben, um Vorhersage validieren zu können.");
 		}
 
-		// FIX Exactly 28x28 = 784 bytes
-
-//		SnapshotParameters params = new SnapshotParameters();
-//		params.setFill(Color.BLACK);
-		Image drawing = cv_canvas.snapshot(null, null);
-
 		try {
-//			BufferedImage bImage = SwingFXUtils.fromFXImage(drawing, null);
-
-			PixelReader pr = drawing.getPixelReader();
-
-			int w = (int) drawing.getWidth();
-			int h = (int) drawing.getHeight();
-			int offset = 0;
-			int scanlineStride = w * 4;
-
-			byte[] buffer = new byte[w * h * 4];
-
-			pr.getPixels(0, 0, w, h, PixelFormat.getByteBgraInstance(), buffer, offset, scanlineStride);
-
-			ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
-			BufferedImage bImage = ImageIO.read(bais);
+			// Image to buffered image
+			SnapshotParameters params = new SnapshotParameters();
+			params.setFill(javafx.scene.paint.Color.BLACK);
+			Image drawing = cv_canvas.snapshot(params, null);
+			BufferedImage bImage = SwingFXUtils.fromFXImage(drawing, null);
 
 			// Resize
 			BufferedImage scaledBI = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = scaledBI.createGraphics();
-			graphics.setBackground(Color.BLACK);
 			graphics.drawImage(bImage, 0, 0, 28, 28, null);
 			graphics.dispose();
 
+			// Image to byte array 
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
 			ImageIO.write(scaledBI, "png", s);
 			byte[] res = s.toByteArray();
 			s.close();
 
 			if (res.length > 0) {
-
+				int fillWidth = ImageDecoder.getInstance().size() - res.length;
+				if (fillWidth > 0) {
+					// Byte array to image
+					byte[] imageBytes = new byte[ImageDecoder.getInstance().size()];
+					int j = 0;
+					for (int i = 0; i < res.length; i++) {
+						imageBytes[i] = res[j];
+						j++;
+					}
+					
+					ByteArrayInputStream in = new ByteArrayInputStream(imageBytes); 
+					Image image = new Image(in);
+					iv_test.setImage(image);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -321,6 +326,11 @@ public class MainScene {
 			} else {
 				boolean animate = chk_animate.isSelected();
 				boolean disableLogging = chk_disableLogging.isSelected();
+				OperationMode operationMode = cb_operationMode.getSelectionModel().getSelectedItem();
+				if (!Network.getInstance().getOperationMode().equals(operationMode)) {
+					Network.getInstance().setOperationMode(operationMode);
+					Feedforwarding.getInstance().init();
+				}
 
 				Log.getInstance().setDisable(disableLogging);
 				if (animate) {
