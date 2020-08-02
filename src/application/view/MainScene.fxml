@@ -34,7 +34,7 @@
 			<rowConstraints>
 				<RowConstraints />
 				<RowConstraints />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+				<RowConstraints minHeight="10.0" prefHeight="30.0" />
 				<RowConstraints />
 				<RowConstraints />
 				<RowConstraints />
@@ -56,62 +56,62 @@
 						<Tab text="Bilddatei">
 							<content>
 								<GridPane hgap="5.0" vgap="5.0">
-                           <children>
-                  				<Label prefWidth="64.0" text="Bilddatei:" />
-                  				<TextField fx:id="tf_imageFile" disable="true" prefWidth="160.0" GridPane.columnIndex="1" />
-                  				<Button fx:id="btn_imageFile" disable="true" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAction_chooseImageFile" text="..." GridPane.columnIndex="2" />
-                  				<Label prefWidth="64.0" text="Labeldatei:" GridPane.rowIndex="1" />
-                  				<TextField fx:id="tf_labelFile" disable="true" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  				<Button fx:id="btn_labelFile" disable="true" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAction_chooseLabelFile" text="..." GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  				<CheckBox mnemonicParsing="false" onAction="#onAction_chkInternalFiles" selected="true" text="Verwende interne Dateien" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                  				<Button mnemonicParsing="false" onAction="#onAction_loadData" prefWidth="50.0" text="Laden" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                           </children>
-                           <rowConstraints>
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <columnConstraints>
-                              <ColumnConstraints />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints />
-                           </columnConstraints>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </GridPane>
+									<children>
+										<Label prefWidth="64.0" text="Bilddatei:" />
+										<TextField fx:id="tf_imageFile" disable="true" prefWidth="160.0" GridPane.columnIndex="1" />
+										<Button fx:id="btn_imageFile" disable="true" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAction_chooseImageFile" text="..." GridPane.columnIndex="2" />
+										<Label prefWidth="64.0" text="Labeldatei:" GridPane.rowIndex="1" />
+										<TextField fx:id="tf_labelFile" disable="true" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+										<Button fx:id="btn_labelFile" disable="true" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAction_chooseLabelFile" text="..." GridPane.columnIndex="2" GridPane.rowIndex="1" />
+										<CheckBox mnemonicParsing="false" onAction="#onAction_chkInternalFiles" selected="true" text="Verwende interne Dateien" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+										<Button mnemonicParsing="false" onAction="#onAction_loadData" prefWidth="50.0" text="Laden" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+									</children>
+									<rowConstraints>
+										<RowConstraints />
+										<RowConstraints />
+										<RowConstraints vgrow="SOMETIMES" />
+									</rowConstraints>
+									<columnConstraints>
+										<ColumnConstraints />
+										<ColumnConstraints hgrow="SOMETIMES" />
+										<ColumnConstraints />
+									</columnConstraints>
+									<padding>
+										<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+									</padding>
+								</GridPane>
 							</content>
 						</Tab>
 						<Tab text="Zeichnen">
 							<content>
-                        <GridPane hgap="5.0" vgap="5.0">
-                           <columnConstraints>
-                              <ColumnConstraints />
-                              <ColumnConstraints />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints />
-                           </rowConstraints>
-                           <children>
-                              <StackPane fx:id="sp_parentOfCanvas" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                 <children>
-            								<Canvas fx:id="cv_canvas" height="84.0" onMouseDragged="#onMouseDragged_canvas" onMousePressed="#onMousePressed_canvas" width="84.0" />
-                                 </children>
-                              </StackPane>
-                              <VBox spacing="5.0" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-                                 <children>
-                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAction_btnClearCanvas" text="Clear" />
-                                    <TextField fx:id="tf_labelDrawing" alignment="CENTER" prefWidth="40.0" promptText="0-9" />
-                                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAction_btnSaveDrawing" text="OK" />
-                                 </children>
-                              </VBox>
-                              <ImageView fx:id="iv_test" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </GridPane>
+								<GridPane hgap="5.0" vgap="5.0">
+									<columnConstraints>
+										<ColumnConstraints />
+										<ColumnConstraints />
+										<ColumnConstraints hgrow="SOMETIMES" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints />
+									</rowConstraints>
+									<children>
+										<StackPane fx:id="sp_parentOfCanvas" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+											<children>
+												<Canvas fx:id="cv_canvas" height="${sp_parentOfCanvas.height}" width="${sp_parentOfCanvas.width}" onMouseDragged="#onMouseDragged_canvas" onMousePressed="#onMousePressed_canvas" />
+											</children>
+										</StackPane>
+										<VBox spacing="5.0" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+											<children>
+												<Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAction_btnClearCanvas" text="Clear" />
+												<TextField fx:id="tf_labelDrawing" alignment="CENTER" prefWidth="40.0" promptText="0-9" />
+												<Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAction_btnSaveDrawing" text="OK" />
+											</children>
+										</VBox>
+										<ImageView fx:id="iv_test" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+									</children>
+									<padding>
+										<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+									</padding>
+								</GridPane>
 							</content>
 						</Tab>
 					</tabs>
@@ -139,13 +139,15 @@
 				</VBox>
 				<ComboBox fx:id="cb_distribution" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
 				<Label text="Verteilung:" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets right="5.0" />
-               </GridPane.margin></Label>
+					<GridPane.margin>
+						<Insets right="5.0" />
+					</GridPane.margin>
+				</Label>
 				<Label text="Aktivierung:" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets right="5.0" />
-               </GridPane.margin></Label>
+					<GridPane.margin>
+						<Insets right="5.0" />
+					</GridPane.margin>
+				</Label>
 				<ComboBox fx:id="cb_activationFunction" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
 				<Button mnemonicParsing="false" onAction="#onAction_setOptions" prefWidth="50.0" text="OK" GridPane.columnIndex="4" GridPane.rowIndex="4" />
 				<ComboBox fx:id="cb_operationMode" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="7" />
@@ -157,8 +159,8 @@
 				<Button minWidth="50.0" mnemonicParsing="false" onAction="#onAction_btnExport" text="Export" GridPane.columnIndex="4" GridPane.rowIndex="8" />
 				<CheckBox fx:id="chk_animate" mnemonicParsing="false" text="Ausführung animieren" GridPane.columnSpan="3" GridPane.rowIndex="9" />
 				<CheckBox fx:id="chk_disableLogging" mnemonicParsing="false" text="Logging ausschalten" GridPane.columnSpan="3" GridPane.rowIndex="10" />
-            <Label text="Lernrate:" GridPane.rowIndex="2" />
-            <TextField fx:id="tf_learningRate" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" promptText="0.0-1.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Lernrate:" GridPane.rowIndex="2" />
+				<TextField fx:id="tf_learningRate" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" promptText="0.0-1.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 			</children>
 			<VBox.margin>
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -1,6 +1,5 @@
 package application.view;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -37,8 +36,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelFormat;
-import javafx.scene.image.PixelReader;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.StrokeLineCap;
@@ -56,7 +53,7 @@ public class MainScene {
 	@FXML
 	private StackPane sp_parentOfCanvas;
 	@FXML
-	private ResizableCanvas cv_canvas;
+	private Canvas cv_canvas;
 	@FXML
 	private TextField tf_labelDrawing;
 	@FXML
@@ -93,10 +90,10 @@ public class MainScene {
 		graphicsContext.setStroke(javafx.scene.paint.Color.WHITE);
 		graphicsContext.setLineWidth(5.0);
 		graphicsContext.setLineCap(StrokeLineCap.SQUARE);
-		
+
 		// Bind canvas to stackpane
 		cv_canvas.widthProperty().bind(sp_parentOfCanvas.widthProperty());
-	    cv_canvas.heightProperty().bind(sp_parentOfCanvas.heightProperty());
+		cv_canvas.heightProperty().bind(sp_parentOfCanvas.heightProperty());
 	}
 
 	private void initInputData() {
@@ -252,7 +249,7 @@ public class MainScene {
 
 	@FXML
 	private ImageView iv_test;
-	
+
 	// NEW Implement save drawing
 	@FXML
 	private void onAction_btnSaveDrawing() {
@@ -276,7 +273,7 @@ public class MainScene {
 			graphics.drawImage(bImage, 0, 0, 28, 28, null);
 			graphics.dispose();
 
-			// Image to byte array 
+			// Image to byte array
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
 			ImageIO.write(scaledBI, "png", s);
 			byte[] res = s.toByteArray();
@@ -292,8 +289,8 @@ public class MainScene {
 						imageBytes[i] = res[j];
 						j++;
 					}
-					
-					ByteArrayInputStream in = new ByteArrayInputStream(imageBytes); 
+
+					ByteArrayInputStream in = new ByteArrayInputStream(imageBytes);
 					Image image = new Image(in);
 					iv_test.setImage(image);
 				}
