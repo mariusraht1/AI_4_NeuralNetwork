@@ -48,7 +48,7 @@ public class Connection {
 		String layerID = id.substring(0, 2);
 		int lastOccIdDivider = id.lastIndexOf("_");
 		int targetNeuronID = Integer.parseInt(id.substring(3, lastOccIdDivider));
-		int sourceNeuronID = Integer.parseInt(id.substring(lastOccIdDivider, id.length()));
+		int sourceNeuronID = Integer.parseInt(id.substring(lastOccIdDivider + 1, id.length()));
 
 		ArrayList<ConnectableLayer> layerList = new ArrayList<ConnectableLayer>();
 		layerList.addAll(Network.getInstance().getHiddenLayerList());

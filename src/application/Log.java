@@ -53,10 +53,8 @@ public class Log {
 		clear();
 	}
 
-	public void add(boolean critical, String message) {
-		if (critical) {
-			addMessage(message);
-		}
+	public void addCritical(String message) {
+		addMessage(message);
 	}
 
 	public void add(String message) {

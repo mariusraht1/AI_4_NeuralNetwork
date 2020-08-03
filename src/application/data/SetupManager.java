@@ -1,4 +1,4 @@
-package application.utilities;
+package application.data;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import application.Log;
 import application.Main;
 import application.layer.ConnectableLayer;
+import application.layer.Layer;
 import application.network.Connection;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
@@ -20,8 +21,6 @@ import library.GeneralUtilities;
 import library.GeneralUtilities.OSType;
 
 public class SetupManager {
-	// NEW Export weights and biases
-	// NEW Import weights and biases and init network with them
 	private static SetupManager instance;
 
 	public static SetupManager getInstance() {
@@ -64,30 +63,38 @@ public class SetupManager {
 		initHeader();
 	}
 
-	public void addWeight(String connectionID, double weight) {
-		this.weights.add(new String[] { connectionID, Double.toString(weight) });
-	}
-
 	public void importSetup() {
 		if (this.file.exists()) {
 			try {
+				boolean importWeights = true;
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 				String line;
 				while ((line = reader.readLine()) != null) {
-					if (!line.equals(divider)) {
+					if (line.equals(divider)) {
+						importWeights = false;
+					} else {
 						int indexCSVDivider = line.indexOf(";");
-						String connectID = line.substring(0, indexCSVDivider);
-						Double weight = Double.parseDouble(line.substring(indexCSVDivider + 1, line.length()));
-						Connection inboundConnection = Connection.getById(connectID);
-						inboundConnection.setWeight(weight);
+						if (importWeights) {
+							String connectID = line.substring(0, indexCSVDivider);
+							Double weight = Double.parseDouble(line.substring(indexCSVDivider + 1, line.length()));
+							Connection inboundConnection = Connection.getById(connectID);
+							inboundConnection.setWeight(weight);
+						} else {
+							String layerID = line.substring(0, 2);
+							Double bias = Double.parseDouble(line.substring(indexCSVDivider + 1, line.length()));
+							ConnectableLayer connectableLayer = (ConnectableLayer) Layer.getbyId(layerID);
+							connectableLayer.setBias(bias);
+						}
 					}
 				}
 				reader.close();
+				Log.getInstance().addCritical("Gewichte und Bias wurden importiert.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			Log.getInstance().add(true, "setup.csv nicht gefunden: Gewichte und Bias müssen zuerst exportiert werden.");
+			Log.getInstance()
+					.addCritical("setup.csv nicht gefunden: Gewichte und Bias müssen zuerst exportiert werden.");
 		}
 	}
 
@@ -109,7 +116,11 @@ public class SetupManager {
 					}
 				}
 			}
-			stringBuilder.append(this.divider);
+			stringBuilder.append(this.divider + "\n");
+			for (ConnectableLayer layer : layerList) {
+				stringBuilder.append(layer.getId() + ";" + layer.getBias());
+				stringBuilder.append("\n");
+			}
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.append(stringBuilder);

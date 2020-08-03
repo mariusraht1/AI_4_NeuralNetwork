@@ -2,6 +2,7 @@ package application.network;
 
 import java.util.ArrayList;
 
+import application.Log;
 import application.Main;
 import application.data.DataInputType;
 import application.data.DataItem;
@@ -113,6 +114,7 @@ public class Network {
 		this.hiddenLayerList = new ArrayList<HiddenLayer>();
 		Feedforwarding.getInstance().init();
 		generateLayers();
+		Log.getInstance().addCritical("Neuronales Netz aufgebaut und initialisiert.");
 	}
 
 	public void generateLayers() {

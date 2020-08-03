@@ -66,4 +66,22 @@ public abstract class Layer {
 
 		return logMessage.toString();
 	}
+
+	public static Layer getbyId(String layerID) {
+		Layer result = null;
+
+		ArrayList<Layer> layerList = new ArrayList<Layer>();
+		layerList.add(Network.getInstance().getInputLayer());
+		layerList.addAll(Network.getInstance().getHiddenLayerList());
+		layerList.add(Network.getInstance().getOutputLayer());
+
+		for (Layer layer : layerList) {
+			if (layer.getId().equals(layerID)) {
+				result = layer;
+				break;
+			}
+		}
+
+		return result;
+	}
 }

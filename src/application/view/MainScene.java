@@ -9,6 +9,7 @@ import application.data.DataInputType;
 import application.data.DataItem;
 import application.data.Digit;
 import application.data.HandwrittenDigit;
+import application.data.SetupManager;
 import application.functions.ActivationFunction;
 import application.functions.Distribution;
 import application.network.Backpropagation;
@@ -17,7 +18,6 @@ import application.network.Network;
 import application.network.OperationMode;
 import application.utilities.FileManager;
 import application.utilities.ImageDecoder;
-import application.utilities.SetupManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -256,7 +256,7 @@ public class MainScene {
 
 		if (label < 0) {
 			tf_labelDrawing.clear();
-			Log.getInstance().add(true, "Bitte Label eingeben, um Vorhersage validieren zu können.");
+			Log.getInstance().addCritical("Bitte Label eingeben, um Vorhersage validieren zu können.");
 		} else {
 			try {
 				Image handwrittenDigit = ImageDecoder.getInstance().getImageFromCanvas(cv_canvas);
@@ -317,7 +317,7 @@ public class MainScene {
 						Network.getInstance().setDataInputType(DataInputType.MNIST_DIGIT);
 						Network.getInstance().runPlay(animate, numOfSteps, this);
 					} else {
-						Log.getInstance().add(true, "Bitte zuerst Eingabedaten laden.");
+						Log.getInstance().addCritical("Bitte zuerst Eingabedaten laden.");
 					}
 					break;
 				case 1:
@@ -325,7 +325,7 @@ public class MainScene {
 						Network.getInstance().setDataInputType(DataInputType.HANDWRITTEN_DIGIT);
 						Network.getInstance().runPlay(animate, numOfSteps, this);
 					} else {
-						Log.getInstance().add(true, "Bitte zuerst eine handschriftliche Nummer eingeben.");
+						Log.getInstance().addCritical("Bitte zuerst eine handschriftliche Nummer eingeben.");
 					}
 					break;
 				}
