@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import application.utilities.ImageDecoder;
 
-public class MNISTImage extends Digit {
-	public MNISTImage(int label, byte[] image) {
+public class MNISTDigit extends Digit {
+	public MNISTDigit(int label, byte[] image) {
 		super(label, image);
 	}
 
@@ -18,7 +18,7 @@ public class MNISTImage extends Digit {
 
 		return dataItems;
 	}
-	
+
 	private static DataItem RandomDigit = null;
 
 	public static ArrayList<DataItem> getListSameDigit(int size) {

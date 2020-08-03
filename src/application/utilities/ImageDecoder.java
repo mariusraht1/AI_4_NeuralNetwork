@@ -1,8 +1,17 @@
 package application.utilities;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
+import javax.imageio.ImageIO;
+
 import application.data.Digit;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import library.MathManager;
 
 public class ImageDecoder {
@@ -148,5 +157,61 @@ public class ImageDecoder {
 
 	public int size() {
 		return imageWidth * imageHeight;
+	}
+
+	public BufferedImage resize(Image image) {
+		BufferedImage bufferedImage = toBufferedImage(image);
+		BufferedImage scaledBufferedImage = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics2D = scaledBufferedImage.createGraphics();
+		graphics2D.drawImage(bufferedImage, 0, 0, 28, 28, null);
+		graphics2D.dispose();
+
+		return scaledBufferedImage;
+	}
+
+	public Image getImageFromCanvas(Canvas cv_canvas) {
+		SnapshotParameters params = new SnapshotParameters();
+		params.setFill(javafx.scene.paint.Color.BLACK);
+		return cv_canvas.snapshot(params, null);
+	}
+
+	public BufferedImage toBufferedImage(Image image) {
+		return SwingFXUtils.fromFXImage(image, null);
+	}
+	
+	public Image toImage(BufferedImage bufferedImage) {
+		return SwingFXUtils.toFXImage(bufferedImage, null);
+	}
+
+	public byte[] toBytes(BufferedImage scaledImage) {
+		byte[] imageBytes = null;
+
+		try {
+			ByteArrayOutputStream s = new ByteArrayOutputStream();
+			ImageIO.write(scaledImage, "png", s);
+			imageBytes = s.toByteArray();
+			s.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return imageBytes;
+	}
+
+	public byte[] toMNIST(byte[] scaledImageBytes) {
+		byte[] mnistImageBytes = new byte[ImageDecoder.getInstance().size()];
+		if (mnistImageBytes.length != scaledImageBytes.length) {
+			for (int i = 0; i < scaledImageBytes.length; i++) {
+				mnistImageBytes[i] = scaledImageBytes[i];
+			}
+		} else {
+			mnistImageBytes = scaledImageBytes;
+		}
+		return mnistImageBytes;
+	}
+
+	public boolean isNull() {
+		return ImageDecoder.getInstance().getImageFileContent() == null
+				|| ImageDecoder.getInstance().getLabelFileContent() == null;
 	}
 }

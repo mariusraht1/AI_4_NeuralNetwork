@@ -1,17 +1,14 @@
 package application.view;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-
-import javax.imageio.ImageIO;
 
 import application.Log;
 import application.Main;
+import application.data.DataInputType;
 import application.data.DataItem;
 import application.data.Digit;
+import application.data.HandwrittenDigit;
 import application.functions.ActivationFunction;
 import application.functions.Distribution;
 import application.network.Backpropagation;
@@ -21,10 +18,8 @@ import application.network.OperationMode;
 import application.utilities.FileManager;
 import application.utilities.ImageDecoder;
 import application.utilities.SetupManager;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -33,6 +28,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +38,8 @@ import javafx.scene.shape.StrokeLineCap;
 import library.MathManager;
 
 public class MainScene {
+	@FXML
+	private TabPane tp_inputData;
 	@FXML
 	private TextField tf_imageFile;
 	@FXML
@@ -244,13 +242,17 @@ public class MainScene {
 
 	@FXML
 	private void onAction_btnClearCanvas() {
-		graphicsContext.clearRect(0, 0, cv_canvas.getWidth(), cv_canvas.getHeight());
+		clearCanvas();
 	}
 
-	@FXML
-	private ImageView iv_test;
+	private void clearCanvas() {
+		graphicsContext.clearRect(0, 0, cv_canvas.getWidth(), cv_canvas.getHeight());
+		tf_labelDrawing.clear();
+	}
 
-	// NEW Implement save drawing
+//	@FXML
+//	private ImageView iv_test;
+	
 	@FXML
 	private void onAction_btnSaveDrawing() {
 		int label = MathManager.getInstance().parseInt(tf_labelDrawing.getText());
@@ -258,45 +260,23 @@ public class MainScene {
 		if (label < 0) {
 			tf_labelDrawing.clear();
 			Log.getInstance().add(true, "Bitte Label eingeben, um Vorhersage validieren zu können.");
-		}
+		} else {
+			try {
+				Image handwrittenDigit = ImageDecoder.getInstance().getImageFromCanvas(cv_canvas);
+				BufferedImage scaledImage = ImageDecoder.getInstance().resize(handwrittenDigit);
+//				iv_test.setImage(ImageDecoder.getInstance().toImage(scaledImage));
+				byte[] scaledImageBytes = ImageDecoder.getInstance().toBytes(scaledImage);
 
-		try {
-			// Image to buffered image
-			SnapshotParameters params = new SnapshotParameters();
-			params.setFill(javafx.scene.paint.Color.BLACK);
-			Image drawing = cv_canvas.snapshot(params, null);
-			BufferedImage bImage = SwingFXUtils.fromFXImage(drawing, null);
-
-			// Resize
-			BufferedImage scaledBI = new BufferedImage(28, 28, BufferedImage.TYPE_INT_RGB);
-			Graphics2D graphics = scaledBI.createGraphics();
-			graphics.drawImage(bImage, 0, 0, 28, 28, null);
-			graphics.dispose();
-
-			// Image to byte array
-			ByteArrayOutputStream s = new ByteArrayOutputStream();
-			ImageIO.write(scaledBI, "png", s);
-			byte[] res = s.toByteArray();
-			s.close();
-
-			if (res.length > 0) {
-				int fillWidth = ImageDecoder.getInstance().size() - res.length;
-				if (fillWidth > 0) {
-					// Byte array to image
-					byte[] imageBytes = new byte[ImageDecoder.getInstance().size()];
-					int j = 0;
-					for (int i = 0; i < res.length; i++) {
-						imageBytes[i] = res[j];
-						j++;
-					}
-
-					ByteArrayInputStream in = new ByteArrayInputStream(imageBytes);
-					Image image = new Image(in);
-					iv_test.setImage(image);
+				if (scaledImageBytes.length > 0) {
+					scaledImageBytes = ImageDecoder.getInstance().toMNIST(scaledImageBytes);
+					// FIX Always the first image ever drawn - doesn't change except of the label
+					new HandwrittenDigit(label, scaledImageBytes);
+					Network.getInstance().setDataInputType(DataInputType.HANDWRITTEN_DIGIT);
+					clearCanvas();
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -336,12 +316,25 @@ public class MainScene {
 					Log.getInstance().setIsActive(false);
 				}
 
-				if (ImageDecoder.getInstance().getImageFileContent() != null
-						&& ImageDecoder.getInstance().getLabelFileContent() != null) {
-					Network.getInstance().runPlay(animate, numOfSteps, this);
-				} else {
-					Log.getInstance().add(true, "Zuerst bitte Optionen setzen und bestätigen.");
+				switch (tp_inputData.getSelectionModel().getSelectedIndex()) {
+				case 0:
+					if (!ImageDecoder.getInstance().isNull()) {
+						Network.getInstance().setDataInputType(DataInputType.MNIST_DIGIT);
+						Network.getInstance().runPlay(animate, numOfSteps, this);
+					} else {
+						Log.getInstance().add(true, "Bitte zuerst Eingabedaten laden.");
+					}
+					break;
+				case 1:
+					if (!HandwrittenDigit.isNull()) {
+						Network.getInstance().setDataInputType(DataInputType.HANDWRITTEN_DIGIT);
+						Network.getInstance().runPlay(animate, numOfSteps, this);
+					} else {
+						Log.getInstance().add(true, "Bitte zuerst eine handschriftliche Nummer eingeben.");
+					}
+					break;
 				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
