@@ -345,7 +345,6 @@ public class MainScene {
 	@FXML
 	private void onAction_btnImport() {
 		SetupManager.getInstance().importSetup();
-		// NEW Init weights and biases
 	}
 
 	@FXML

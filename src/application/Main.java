@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  * Neural Network for handwritten digit recognition
  * 
  * @author Marius Raht
- * @version 27.07.2020-001
+ * @version 03.08.2020-001
  */
 public class Main extends Application {
 	private static Stage primaryStage;
