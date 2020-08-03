@@ -59,8 +59,12 @@ public class SetupManager {
 	public void addWeight(String connectionID, double weight) {
 		this.weights.add(new String[] { connectionID, Double.toString(weight) });
 	}
+	
+	public void importSetup() {
+		
+	}
 
-	public void export() {
+	public void exportSetup() {
 		try {
 			StringBuilder stringBuilder = new StringBuilder();
 			for (String[] x : this.weights) {

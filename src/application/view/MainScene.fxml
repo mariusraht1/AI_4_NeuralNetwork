@@ -33,6 +33,7 @@
 			<rowConstraints>
 				<RowConstraints />
 				<RowConstraints />
+            <RowConstraints />
 				<RowConstraints minHeight="10.0" prefHeight="30.0" />
 				<RowConstraints />
 				<RowConstraints />
@@ -114,18 +115,19 @@
 						</Tab>
 					</tabs>
 				</TabPane>
-				<ListView fx:id="lv_console" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="350.0" GridPane.columnIndex="6" GridPane.hgrow="ALWAYS" GridPane.rowSpan="12" GridPane.vgrow="ALWAYS" />
-				<Separator GridPane.columnSpan="5" GridPane.rowIndex="5">
+				<ListView fx:id="lv_console" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="350.0" GridPane.columnIndex="6" GridPane.hgrow="ALWAYS" GridPane.rowSpan="13" GridPane.vgrow="ALWAYS" />
+				<Separator GridPane.columnSpan="5" GridPane.rowIndex="6">
 					<padding>
 						<Insets top="2.0" />
 					</padding>
 				</Separator>
-				<Label text="Ablaufsteuerung:" GridPane.columnSpan="2" GridPane.rowIndex="6">
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAction_btnImport" text="Gewichte und Bias importieren" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" />
+				<Label text="Ablaufsteuerung:" GridPane.columnSpan="2" GridPane.rowIndex="7">
 					<font>
 						<Font name="System Bold" size="12.0" />
 					</font>
 				</Label>
-				<VBox maxHeight="1.7976931348623157E308" spacing="5.0" GridPane.columnIndex="5" GridPane.rowSpan="12" GridPane.vgrow="ALWAYS">
+				<VBox maxHeight="1.7976931348623157E308" spacing="5.0" GridPane.columnIndex="5" GridPane.rowSpan="13" GridPane.vgrow="ALWAYS">
 					<children>
 						<Label fx:id="lbl_results" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Ergebnisse (0,00 %)">
 							<font>
@@ -135,30 +137,31 @@
 						<ListView fx:id="lv_results" />
 					</children>
 				</VBox>
-				<ComboBox fx:id="cb_distribution" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
-				<Label text="Verteilung:" GridPane.rowIndex="3">
+				<ComboBox fx:id="cb_distribution" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
+				<Label text="Verteilung:" GridPane.rowIndex="4">
 					<GridPane.margin>
-						<Insets right="5.0" />
+						<Insets />
 					</GridPane.margin>
 				</Label>
-				<Label text="Aktivierung:" GridPane.rowIndex="4">
+				<Label text="Aktivierung:" GridPane.rowIndex="5">
 					<GridPane.margin>
-						<Insets right="5.0" />
+						<Insets />
 					</GridPane.margin>
 				</Label>
-				<ComboBox fx:id="cb_activationFunction" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
-				<Button mnemonicParsing="false" onAction="#onAction_setOptions" prefWidth="50.0" text="OK" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-				<ComboBox fx:id="cb_operationMode" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="7" />
-				<Label text="Modus:" GridPane.rowIndex="7" />
-				<Label text="Steps:" GridPane.rowIndex="8" />
-				<TextField fx:id="tf_numOfSteps" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" promptText="1-N" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-				<Button mnemonicParsing="false" onAction="#onAction_btnPlay" prefWidth="50.0" text="Play" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-				<Button minWidth="50.0" mnemonicParsing="false" onAction="#onAction_btnReset" text="Reset" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-				<Button minWidth="50.0" mnemonicParsing="false" onAction="#onAction_btnExport" text="Export" GridPane.columnIndex="4" GridPane.rowIndex="8" />
-				<CheckBox fx:id="chk_animate" mnemonicParsing="false" text="Ausführung animieren" GridPane.columnSpan="3" GridPane.rowIndex="9" />
-				<CheckBox fx:id="chk_disableLogging" mnemonicParsing="false" text="Logging ausschalten" GridPane.columnSpan="3" GridPane.rowIndex="10" />
-				<Label text="Lernrate:" GridPane.rowIndex="2" />
-				<TextField fx:id="tf_learningRate" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" promptText="0.0-1.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<ComboBox fx:id="cb_activationFunction" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+				<Button mnemonicParsing="false" onAction="#onAction_setOptions" prefWidth="50.0" text="OK" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+				<ComboBox fx:id="cb_operationMode" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="8" />
+				<Label text="Modus:" GridPane.rowIndex="8" />
+				<Label text="Steps:" GridPane.rowIndex="9" />
+				<TextField fx:id="tf_numOfSteps" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" promptText="1-N" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+				<Button mnemonicParsing="false" onAction="#onAction_btnPlay" prefWidth="50.0" text="Play" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+				<Button minWidth="50.0" mnemonicParsing="false" onAction="#onAction_btnReset" text="Reset" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+				<Button minWidth="50.0" mnemonicParsing="false" onAction="#onAction_btnExport" text="Export" GridPane.columnIndex="4" GridPane.rowIndex="9" />
+				<CheckBox fx:id="chk_animate" mnemonicParsing="false" text="Ausführung animieren" GridPane.columnSpan="3" GridPane.rowIndex="10" />
+				<CheckBox fx:id="chk_disableLogging" mnemonicParsing="false" text="Logging ausschalten" GridPane.columnSpan="3" GridPane.rowIndex="11" />
+				<Label text="Lernrate:" GridPane.rowIndex="3" />
+				<TextField fx:id="tf_learningRate" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" promptText="0.0-1.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Konf.-Import:" GridPane.rowIndex="2" />
 			</children>
 			<VBox.margin>
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -249,9 +249,6 @@ public class MainScene {
 		graphicsContext.clearRect(0, 0, cv_canvas.getWidth(), cv_canvas.getHeight());
 		tf_labelDrawing.clear();
 	}
-
-//	@FXML
-//	private ImageView iv_test;
 	
 	@FXML
 	private void onAction_btnSaveDrawing() {
@@ -264,12 +261,10 @@ public class MainScene {
 			try {
 				Image handwrittenDigit = ImageDecoder.getInstance().getImageFromCanvas(cv_canvas);
 				BufferedImage scaledImage = ImageDecoder.getInstance().resize(handwrittenDigit);
-//				iv_test.setImage(ImageDecoder.getInstance().toImage(scaledImage));
 				byte[] scaledImageBytes = ImageDecoder.getInstance().toBytes(scaledImage);
 
 				if (scaledImageBytes.length > 0) {
 					scaledImageBytes = ImageDecoder.getInstance().toMNIST(scaledImageBytes);
-					// FIX Always the first image ever drawn - doesn't change except of the label
 					new HandwrittenDigit(label, scaledImageBytes);
 					Network.getInstance().setDataInputType(DataInputType.HANDWRITTEN_DIGIT);
 					clearCanvas();
@@ -348,8 +343,13 @@ public class MainScene {
 	}
 
 	@FXML
+	private void onAction_btnImport() {
+		SetupManager.getInstance().importSetup();
+	}
+	
+	@FXML
 	private void onAction_btnExport() {
-		SetupManager.getInstance().export();
+		SetupManager.getInstance().exportSetup();
 		SetupManager.getInstance().showExport();
 	}
 }
