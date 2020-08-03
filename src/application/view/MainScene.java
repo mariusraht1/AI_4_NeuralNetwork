@@ -249,7 +249,7 @@ public class MainScene {
 		graphicsContext.clearRect(0, 0, cv_canvas.getWidth(), cv_canvas.getHeight());
 		tf_labelDrawing.clear();
 	}
-	
+
 	@FXML
 	private void onAction_btnSaveDrawing() {
 		int label = MathManager.getInstance().parseInt(tf_labelDrawing.getText());
@@ -345,8 +345,9 @@ public class MainScene {
 	@FXML
 	private void onAction_btnImport() {
 		SetupManager.getInstance().importSetup();
+		// NEW Init weights and biases
 	}
-	
+
 	@FXML
 	private void onAction_btnExport() {
 		SetupManager.getInstance().exportSetup();

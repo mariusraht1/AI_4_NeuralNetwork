@@ -178,7 +178,7 @@ public class ImageDecoder {
 	public BufferedImage toBufferedImage(Image image) {
 		return SwingFXUtils.fromFXImage(image, null);
 	}
-	
+
 	public Image toImage(BufferedImage bufferedImage) {
 		return SwingFXUtils.toFXImage(bufferedImage, null);
 	}

@@ -40,7 +40,7 @@ public class ConnectableLayer extends Layer {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 				for (Neuron sourceNeuron : prevLayer.getNeuronList()) {
-					String connectionID = this.getId() + "_" + connectableNeuron.getId() + sourceNeuron.getId();
+					String connectionID = this.getId() + "_" + connectableNeuron.getId() + "_" + sourceNeuron.getId();
 					connectableNeuron.getInboundConnections().add(new Connection(connectionID, sourceNeuron));
 
 				}
