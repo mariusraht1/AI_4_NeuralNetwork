@@ -82,7 +82,7 @@
 								</GridPane>
 							</content>
 						</Tab>
-						<Tab text="Zeichnen">
+						<Tab disable="true" text="Zeichnen">
 							<content>
 								<GridPane hgap="5.0" vgap="5.0">
 									<columnConstraints>
