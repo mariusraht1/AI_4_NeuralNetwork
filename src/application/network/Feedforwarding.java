@@ -1,12 +1,8 @@
 package application.network;
 
-import java.util.ArrayList;
-
 import application.Log;
 import application.data.DataItem;
 import application.layer.HiddenLayer;
-import application.layer.InputLayer;
-import application.layer.OutputLayer;
 
 public class Feedforwarding {
 	private static Feedforwarding instance;
@@ -56,35 +52,31 @@ public class Feedforwarding {
 	}
 
 	public void execute(DataItem dataItem) {
-		InputLayer inputLayer = Network.getInstance().getInputLayer();
-		ArrayList<HiddenLayer> hiddenLayerList = Network.getInstance().getHiddenLayerList();
-		OutputLayer outputLayer = Network.getInstance().getOutputLayer();
+		prepareInputAndOutput(dataItem);
+		calcActivationValues();
+		setPrediction(dataItem);
+		calcErrors();
+	}
 
-		inputLayer.setActivationValues(dataItem.getInitialValues());
-		Log.getInstance().logActivationValues(inputLayer);
+	private void prepareInputAndOutput(DataItem dataItem) {
+		Network.getInstance().getInputLayer().setActivationValues(dataItem.getInitialValues());
+		Network.getInstance().getOutputLayer().setTargetValues(dataItem.getLabel());
+	}
 
-		outputLayer.setTargetValues(dataItem.getLabel());
-
-		for (HiddenLayer hiddenLayer : hiddenLayerList) {
+	private void calcActivationValues() {
+		for (HiddenLayer hiddenLayer : Network.getInstance().getHiddenLayerList()) {
 			hiddenLayer.calcActivationValues();
-			Log.getInstance().logActivationValues(hiddenLayer);
 		}
+		Network.getInstance().getOutputLayer().calcActivationValues();
+	}
 
-		outputLayer.calcActivationValues();
-		Log.getInstance().logActivationValues(outputLayer);
+	private void setPrediction(DataItem dataItem) {
+		dataItem.setPrediction(Network.getInstance().getOutputLayer().getPrediction(dataItem).getRepresentationValue());
+	}
 
-		dataItem.setPrediction(outputLayer.getMostActiveNeuron().getRepresentationValue());
-		Log.getInstance().logPredictions(dataItem);
-
-		this.numOfPredictions++;
-		if (dataItem.getPrediction() != dataItem.getLabel()) {
-			this.numOfErrors++;
-		}
-
+	private void calcErrors() {
 		// Larger if the network is uncertain of the prediction
 		Network.getInstance().getOutputLayer().calcErrors();
-		double totalError = outputLayer.getTotalError();
-		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 	}
 
 	public double getSuccessRate() {

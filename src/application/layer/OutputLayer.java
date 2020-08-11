@@ -2,8 +2,11 @@ package application.layer;
 
 import java.util.ArrayList;
 
+import application.Log;
 import application.data.DataInputType;
+import application.data.DataItem;
 import application.functions.ActivationFunction;
+import application.network.Feedforwarding;
 import application.network.Network;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
@@ -54,6 +57,9 @@ public class OutputLayer extends ConnectableLayer {
 				connectableNeuron.setError(error);
 			}
 		}
+
+		double totalError = Network.getInstance().getOutputLayer().getTotalError();
+		Log.getInstance().add("Gesamtkosten: " + String.format("%.2f", totalError));
 	}
 
 	public void setTargetValues(int target) {
@@ -67,5 +73,18 @@ public class OutputLayer extends ConnectableLayer {
 				}
 			}
 		}
+	}
+
+	public OutputNeuron getPrediction(DataItem dataItem) {
+		OutputNeuron mostActiveNeuron = Network.getInstance().getOutputLayer().getMostActiveNeuron();
+		dataItem.setPrediction(mostActiveNeuron.getRepresentationValue());
+		Log.getInstance().logPredictions(dataItem);
+
+		Feedforwarding.getInstance().increaseNumOfPredictions();
+		if (dataItem.getPrediction() != dataItem.getLabel()) {
+			Feedforwarding.getInstance().increaseNumOfErrors();
+		}
+		
+		return mostActiveNeuron;
 	}
 }
