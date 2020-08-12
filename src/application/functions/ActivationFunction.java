@@ -48,17 +48,24 @@ public enum ActivationFunction {
 		}
 	}
 
-	public double gradient(double value) {
+	public double getDerivative(double value) {
 		double result = 0.0;
 
 		switch (this) {
 		case LEAKY_RELU:
-		case RELU:
-		case TANH:
-			result = ((value <= 0) ? 0.0 : 1.0);
+			result = Leaky_Relu.getInstance().getDerivative(value);
 			break;
-		default:
-			result = value * (1 - value);
+		case RELU:
+			result = Relu.getInstance().getDerivative(value);
+			break;
+		case SIGMOID:
+			result = Sigmoid.getInstance().getDerivative(value);
+			break;
+		case SOFTMAX:
+			result = Softmax.getInstance().getDerivative(value);
+			break;
+		case TANH:
+			result = Tanh.getInstance().getDerivative(value);
 			break;
 		}
 

@@ -90,4 +90,8 @@ public class ConnectableLayer extends Layer {
 
 		return result;
 	}
+
+	public double getDerivativeActivationValue(Neuron neuron) {
+		return Network.getInstance().getActivationFunction().getDerivative(neuron.getActivationValue());
+	}
 }

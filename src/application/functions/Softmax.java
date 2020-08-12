@@ -27,29 +27,6 @@ public class Softmax {
 				outputNeuron.setActivationValue(Math.exp(neuron.getActivationValue()) / total);
 			}
 		}
-
-//		double max = Double.MIN_VALUE;
-//		for (Neuron neuron : layer.getNeuronList()) {
-//			if (neuron.getActivationValue() > max) {
-//				max = neuron.getActivationValue();
-//			}
-//		}
-//
-//		for (Neuron neuron : layer.getNeuronList()) {
-//			neuron.setActivationValue(neuron.getActivationValue() - max);
-//		}
-//
-//		double total = 0.0;
-//		for (Neuron neuron : layer.getNeuronList()) {
-//			total += Math.exp(neuron.getActivationValue());
-//		}
-//
-//		for (Neuron neuron : layer.getNeuronList()) {
-//			if (neuron instanceof OutputNeuron) {
-//				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-//				outputNeuron.setActivationValue(Math.exp(neuron.getActivationValue()) / total);
-//			}
-//		}
 	}
 
 	public double getDerivative(double value) {

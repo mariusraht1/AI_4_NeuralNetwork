@@ -84,7 +84,7 @@ public class OutputLayer extends ConnectableLayer {
 		if (dataItem.getPrediction() != dataItem.getLabel()) {
 			Feedforwarding.getInstance().increaseNumOfErrors();
 		}
-		
+
 		return mostActiveNeuron;
 	}
 }

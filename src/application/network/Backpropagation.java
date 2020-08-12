@@ -42,7 +42,6 @@ public class Backpropagation {
 		}
 	}
 
-	// NEW Add bias calculation
 	public double calcTotalError(ConnectableLayer connectableLayer) {
 		double totalErrorWithRespectToOutput = 0.0;
 		for (Neuron outputNeuron : connectableLayer.getNextLayer().getNeuronList()) {
@@ -85,23 +84,26 @@ public class Backpropagation {
 					errorWithRespectToOutput = totalErrorWithRespectToOutput;
 				}
 
-				// How much does the output of o_n change with respect to its total net input?
-				double outputWithRespectToInput = connectableOutputNeuron.getActivationValue()
-						* (1 - connectableOutputNeuron.getActivationValue());
+				// How much does the output output change with respect to the output input?
+				double outputWithRespectToInput = connectableLayer
+						.getDerivativeActivationValue(connectableOutputNeuron);
 
 				for (Connection inboundConnection : connectableOutputNeuron.getInboundConnections()) {
-					// How much does the total net input of o_n change with respect to w_n?
+					// How much does the input of o_n change with respect to w_n?
 					double inputWithRespectToWeight = inboundConnection.getSourceNeuron().getActivationValue();
-					double gradient = errorWithRespectToOutput * outputWithRespectToInput * inputWithRespectToWeight;
-					double newWeight = inboundConnection.getWeight()
-							- (Backpropagation.getInstance().getLearningRate() * gradient);
+					double gradient = errorWithRespectToOutput * outputWithRespectToInput * inputWithRespectToWeight
+							* Backpropagation.getInstance().getLearningRate();
+					double newWeight = inboundConnection.getWeight() - gradient;
 					inboundConnection.setWeight(newWeight);
 				}
+
+				// How much does the output input change with respect to the bias?
+				double inputWithRespectToBias = connectableOutputNeuron.getActivationValue();
+				double gradient = errorWithRespectToOutput * outputWithRespectToInput * inputWithRespectToBias
+						* Backpropagation.getInstance().getLearningRate();
+				double newBias = connectableLayer.getBias() - gradient;
+				connectableLayer.setBias(newBias);
 			}
 		}
-		// NEW Set new bias
-//		double newBias = connectableLayer.getBias() + gradient;
-//		connectableLayer.setBias(newBias);	
-
 	}
 }
