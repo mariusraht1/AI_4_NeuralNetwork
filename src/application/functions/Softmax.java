@@ -18,13 +18,13 @@ public class Softmax {
 	public void setActivationValue(Layer layer) {
 		double total = 0.0;
 		for (Neuron neuron : layer.getNeuronList()) {
-			total += Math.exp(neuron.getActivationValue());
+			total += Math.exp(neuron.getActivationValue().get());
 		}
 
 		for (Neuron neuron : layer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				outputNeuron.setActivationValue(Math.exp(neuron.getActivationValue()) / total);
+				outputNeuron.setActivationValue(Math.exp(neuron.getActivationValue().get()) / total);
 			}
 		}
 	}

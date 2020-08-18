@@ -57,7 +57,7 @@ public class ConnectableLayer extends Layer {
 				double activationValue = 0.0;
 				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
 					Neuron sourceNeuron = inboundConnection.getSourceNeuron();
-					activationValue += (sourceNeuron.getActivationValue() * inboundConnection.getWeight());
+					activationValue += (sourceNeuron.getActivationValue().get() * inboundConnection.getWeight());
 				}
 				activationValue += this.bias;
 				neuron.setActivationValue(activationValue);
@@ -89,9 +89,5 @@ public class ConnectableLayer extends Layer {
 		}
 
 		return result;
-	}
-
-	public double getDerivativeActivationValue(Neuron neuron) {
-		return Network.getInstance().getActivationFunction().getDerivative(neuron.getActivationValue());
 	}
 }

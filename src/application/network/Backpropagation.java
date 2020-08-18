@@ -1,9 +1,9 @@
 package application.network;
 
 import application.Main;
+import application.functions.ActivationFunction;
 import application.layer.ConnectableLayer;
 import application.layer.HiddenLayer;
-import application.layer.OutputLayer;
 import application.neuron.ConnectableNeuron;
 import application.neuron.Neuron;
 
@@ -42,64 +42,77 @@ public class Backpropagation {
 		}
 	}
 
-	public double calcTotalError(ConnectableLayer connectableLayer) {
-		double totalErrorWithRespectToOutput = 0.0;
-		for (Neuron outputNeuron : connectableLayer.getNextLayer().getNeuronList()) {
-			if (outputNeuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableOutputNeuron = (ConnectableNeuron) outputNeuron;
-				// How much does the total error change with respect to the output?
-				double errorWithRespectToOutput = connectableOutputNeuron.getError();
+	public void calcError(ConnectableLayer connectableLayer) {
+		ActivationFunction activationFunction = Network.getInstance().getActivationFunction();
 
-				// How much does the output of o_n change with respect to its total net input?
-				double outputWithRespectToInput = connectableOutputNeuron.getActivationValue()
-						* (1 - connectableOutputNeuron.getActivationValue());
+		for (Neuron hiddenNeuron : connectableLayer.getNeuronList()) {
+			if (hiddenNeuron instanceof ConnectableNeuron) {
+				ConnectableNeuron connectableHiddenNeuron = (ConnectableNeuron) hiddenNeuron;
 
-				// How much does the total error change with respect to the total net input?
-				double errorWithRespectToInput = errorWithRespectToOutput * outputWithRespectToInput;
+				// How much does the total error change with respect to the hidden output?
+				double totalErrorWithRespectToHiddenOutput = 0.0;
+				for (Neuron outputNeuron : connectableLayer.getNextLayer().getNeuronList()) {
+					if (outputNeuron instanceof ConnectableNeuron) {
+						ConnectableNeuron connectableOutputNeuron = (ConnectableNeuron) outputNeuron;
 
-				for (Connection inboundConnection : connectableOutputNeuron.getInboundConnections()) {
-					totalErrorWithRespectToOutput += errorWithRespectToInput * inboundConnection.getWeight();
+						// How much does the output error change with respect to the output output?
+						double outputErrorWithRespectToOutputOutput = connectableOutputNeuron.getError();
+
+						// How much does the output output change with respect to the output input?
+						double outputOutputWithRespectToOutputInput = connectableOutputNeuron.getActivationValue()
+								.getDerivative(activationFunction);
+
+						// How much does the output error change with respect to the output input?
+						double outputErrorWithRespectToOutputInput = outputErrorWithRespectToOutputOutput
+								* outputOutputWithRespectToOutputInput;
+
+						// How much does the output input change with respect to the hidden output?
+						Connection connection = connectableOutputNeuron
+								.getInboundConnectionBySourceNeuron(connectableHiddenNeuron);
+						double outputInputWithRespectToHiddenOutput = connection.getWeight();
+
+						// How much does the output error change with respect to the hidden output?
+						double outputErrorWithRespectToHiddenOutput = outputErrorWithRespectToOutputInput
+								* outputInputWithRespectToHiddenOutput;
+
+						totalErrorWithRespectToHiddenOutput += outputErrorWithRespectToHiddenOutput;
+					}
 				}
+
+				connectableHiddenNeuron.setError(totalErrorWithRespectToHiddenOutput);
 			}
 		}
-
-		return totalErrorWithRespectToOutput;
 	}
 
 	public void calcNewWeights(ConnectableLayer connectableLayer) {
-		double totalErrorWithRespectToOutput = 0.0;
 		if (connectableLayer instanceof HiddenLayer) {
-			totalErrorWithRespectToOutput = calcTotalError(connectableLayer);
+			calcError(connectableLayer);
 		}
 
+		ActivationFunction activationFunction = Network.getInstance().getActivationFunction();
 		for (Neuron neuron : connectableLayer.getNeuronList()) {
 			if (neuron instanceof ConnectableNeuron) {
-				ConnectableNeuron connectableOutputNeuron = (ConnectableNeuron) neuron;
+				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
 
 				// How much does the total error change with respect to the output?
-				double errorWithRespectToOutput = 0.0;
-				if (connectableLayer instanceof OutputLayer) {
-					errorWithRespectToOutput = connectableOutputNeuron.getError();
-				} else {
-					errorWithRespectToOutput = totalErrorWithRespectToOutput;
-				}
+				double totalErrorWithRespectToOutput = connectableNeuron.getError();
 
 				// How much does the output output change with respect to the output input?
-				double outputWithRespectToInput = connectableLayer
-						.getDerivativeActivationValue(connectableOutputNeuron);
+				double outputWithRespectToInput = connectableNeuron.getActivationValue()
+						.getDerivative(activationFunction);
 
-				for (Connection inboundConnection : connectableOutputNeuron.getInboundConnections()) {
+				for (Connection inboundConnection : connectableNeuron.getInboundConnections()) {
 					// How much does the input of o_n change with respect to w_n?
-					double inputWithRespectToWeight = inboundConnection.getSourceNeuron().getActivationValue();
-					double gradient = errorWithRespectToOutput * outputWithRespectToInput * inputWithRespectToWeight
-							* Backpropagation.getInstance().getLearningRate();
+					double inputWithRespectToWeight = inboundConnection.getSourceNeuron().getActivationValue().get();
+					double gradient = totalErrorWithRespectToOutput * outputWithRespectToInput
+							* inputWithRespectToWeight * Backpropagation.getInstance().getLearningRate();
 					double newWeight = inboundConnection.getWeight() - gradient;
 					inboundConnection.setWeight(newWeight);
 				}
 
 				// How much does the output input change with respect to the bias?
-				double inputWithRespectToBias = connectableOutputNeuron.getActivationValue();
-				double gradient = errorWithRespectToOutput * outputWithRespectToInput * inputWithRespectToBias
+				double inputWithRespectToBias = connectableNeuron.getActivationValue().get();
+				double gradient = totalErrorWithRespectToOutput * outputWithRespectToInput * inputWithRespectToBias
 						* Backpropagation.getInstance().getLearningRate();
 				double newBias = connectableLayer.getBias() - gradient;
 				connectableLayer.setBias(newBias);

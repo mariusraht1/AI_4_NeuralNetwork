@@ -11,21 +11,21 @@ public abstract class Neuron {
 		this.id = id;
 	}
 
-	private double activationValue = 0.0;
+	private ActivationValue activationValue = new ActivationValue(0.0);
 
-	public double getActivationValue() {
+	public ActivationValue getActivationValue() {
 		return activationValue;
 	}
 
 	public void setActivationValue(double activationValue) {
-		this.activationValue = activationValue;
+		this.activationValue.set(activationValue);
 	}
 
 	protected Neuron(int id) {
 		this.id = id;
 	}
 
-	protected Neuron(int id, double activationValue) {
+	protected Neuron(int id, ActivationValue activationValue) {
 		this.id = id;
 		this.activationValue = activationValue;
 	}

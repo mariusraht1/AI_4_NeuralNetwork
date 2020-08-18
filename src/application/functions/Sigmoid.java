@@ -37,7 +37,7 @@ public class Sigmoid {
 		for (Neuron neuron : layer.getNeuronList()) {
 			if (neuron instanceof OutputNeuron) {
 				OutputNeuron outputNeuron = (OutputNeuron) neuron;
-				outputNeuron.setActivationValue(getActivationValue(outputNeuron.getActivationValue()));
+				outputNeuron.setActivationValue(getActivationValue(outputNeuron.getActivationValue().get()));
 			}
 		}
 	}

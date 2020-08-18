@@ -35,7 +35,7 @@ public class OutputLayer extends ConnectableLayer {
 	public OutputNeuron getMostActiveNeuron() {
 		OutputNeuron mostActiveNeuron = (OutputNeuron) this.neuronList.get(0);
 		for (int i = 1; i < this.neuronList.size(); i++) {
-			if (this.neuronList.get(i).getActivationValue() > mostActiveNeuron.getActivationValue()) {
+			if (this.neuronList.get(i).getActivationValue().get() > mostActiveNeuron.getActivationValue().get()) {
 				mostActiveNeuron = (OutputNeuron) this.neuronList.get(i);
 			}
 		}
@@ -53,7 +53,7 @@ public class OutputLayer extends ConnectableLayer {
 		for (Neuron neuron : this.neuronList) {
 			if (neuron instanceof ConnectableNeuron) {
 				ConnectableNeuron connectableNeuron = (ConnectableNeuron) neuron;
-				double error = connectableNeuron.getActivationValue() - connectableNeuron.getTargetValue();
+				double error = connectableNeuron.getActivationValue().get() - connectableNeuron.getTargetValue();
 				connectableNeuron.setError(error);
 			}
 		}

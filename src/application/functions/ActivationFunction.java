@@ -74,7 +74,7 @@ public enum ActivationFunction {
 
 	private void executeInLoop(Layer layer) {
 		for (Neuron neuron : layer.getNeuronList()) {
-			double activationValue = neuron.getActivationValue();
+			double activationValue = neuron.getActivationValue().get();
 
 			switch (this) {
 			case LEAKY_RELU:

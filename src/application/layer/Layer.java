@@ -57,7 +57,7 @@ public abstract class Layer {
 		StringBuilder logMessage = new StringBuilder(this.getId() + ": [");
 		Neuron lastNeuron = this.neuronList.get(this.neuronList.size() - 1);
 		for (Neuron neuron : this.neuronList) {
-			logMessage.append(String.format(Locale.US, "%.2f", neuron.getActivationValue()));
+			logMessage.append(String.format(Locale.US, "%.2f", neuron.getActivationValue().get()));
 			if (!neuron.equals(lastNeuron)) {
 				logMessage.append(", ");
 			}
