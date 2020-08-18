@@ -1,10 +1,14 @@
 package application.utilities;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.GZIPInputStream;
 
@@ -37,7 +41,13 @@ public class FileManager {
 		byte[] fileContent = null;
 
 		try {
-			fileContent = Files.readAllBytes(Paths.get(file.toURI()));
+			Path path = null;
+			if (file.toURI().toString().contains("file:")) {
+				fileContent = getClass().getClassLoader().getResourceAsStream("data/" + file.getName()).readAllBytes();
+			} else {
+				path = Paths.get(file.toURI());
+				fileContent = Files.readAllBytes(path);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

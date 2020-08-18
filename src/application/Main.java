@@ -27,14 +27,10 @@ public class Main extends Application {
 	public final static int DefaultNumOfSteps = 1;
 	public final static double DefaultLearningRate = 0.1;
 
-	public final static File DefaultTrainImageFile = new File(
-			Main.getDataDirectory().getPath() + "train-images.idx3-ubyte");
-	public final static File DefaultTrainLabelFile = new File(
-			Main.getDataDirectory().getPath() + "train-labels.idx1-ubyte");
-	public final static File DefaultTestImageFile = new File(
-			Main.getDataDirectory().getPath() + "t10k-images-idx3-ubyte");
-	public final static File DefaultTestLabelFile = new File(
-			Main.getDataDirectory().getPath() + "t10k-labels-idx1-ubyte");
+	public final static File DefaultTrainImageFile = new File(getDataDirectory().getPath() + "train-images.idx3-ubyte");
+	public final static File DefaultTrainLabelFile = new File(getDataDirectory().getPath() + "train-labels.idx1-ubyte");
+	public final static File DefaultTestImageFile = new File(getDataDirectory().getPath() + "t10k-images-idx3-ubyte");
+	public final static File DefaultTestLabelFile = new File(getDataDirectory().getPath() + "t10k-labels-idx1-ubyte");
 
 	@Override
 	public void start(Stage primaryStage) {
