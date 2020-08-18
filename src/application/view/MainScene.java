@@ -101,7 +101,7 @@ public class MainScene {
 		ImageDecoder.getInstance().readFiles(imageFile, labelFile);
 		Network.getInstance().init();
 
-		Log.getInstance().add("Dateien wurden erfolgreich geladen.");
+		Log.getInstance().addCritical("Dateien wurden erfolgreich geladen.");
 	}
 
 	private void initUI() {
@@ -285,6 +285,8 @@ public class MainScene {
 			Backpropagation.getInstance().setLearningRate(learningRate);
 			Network.getInstance().setDistribution(cb_distribution.getSelectionModel().getSelectedItem());
 			Network.getInstance().setActivationFunction(cb_activationFunction.getSelectionModel().getSelectedItem());
+			
+			Log.getInstance().addCritical("Optionen gespeichert.");
 		}
 	}
 
