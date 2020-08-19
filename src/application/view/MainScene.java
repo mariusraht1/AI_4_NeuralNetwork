@@ -300,17 +300,12 @@ public class MainScene {
 			} else {
 				boolean animate = chk_animate.isSelected();
 				boolean disableLogging = chk_disableLogging.isSelected();
+				Log.getInstance().setDisable(disableLogging);
+				
 				OperationMode operationMode = cb_operationMode.getSelectionModel().getSelectedItem();
 				if (!Network.getInstance().getOperationMode().equals(operationMode)) {
 					Network.getInstance().setOperationMode(operationMode);
 					Feedforwarding.getInstance().init();
-				}
-
-				Log.getInstance().setDisable(disableLogging);
-				if (animate) {
-					Log.getInstance().setIsActive(true);
-				} else {
-					Log.getInstance().setIsActive(false);
 				}
 
 				switch (tp_inputData.getSelectionModel().getSelectedIndex()) {

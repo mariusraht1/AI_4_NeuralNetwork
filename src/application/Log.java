@@ -38,16 +38,6 @@ public class Log {
 
 	private ListView<String> control;
 
-	private boolean isActive;
-
-	public boolean getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(boolean active) {
-		this.isActive = active;
-	}
-
 	public void setOutputControl(ListView<String> control) {
 		this.control = control;
 		clear();
